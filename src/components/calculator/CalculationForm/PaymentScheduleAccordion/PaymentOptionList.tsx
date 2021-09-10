@@ -1,0 +1,100 @@
+import { useMemo } from 'react';
+import { makeStyles, createStyles, Theme } from '@material-ui/core';
+import { FieldArrayRenderProps } from 'react-final-form-arrays';
+import { PaymentYearTable } from './PaymentYearTable';
+import { MonthPaymentOption } from 'schema';
+import { YearFields } from './types';
+import Box from '@material-ui/core/Box';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: "0px 30px",
+    },
+    table: {
+      float: 'left',
+      width: '100%',
+    },
+    header: {
+      marginTop: '14px',
+      marginBottom: '14px',
+      lineHeight: 1.2,
+    },
+    Box: {
+      fontSize: '14px',
+      fontWeight: 700,
+      color: theme.palette.divider
+    }
+  })
+);
+
+export type PaymentOptionListProps = FieldArrayRenderProps<MonthPaymentOption, HTMLDivElement> & {
+  numberOfMonths: number;
+  date?: string;
+};
+
+export const PaymentOptionList = (props: PaymentOptionListProps) => {
+  const classes = useStyles();
+  const { fields, date, numberOfMonths } = props;
+  const { map } = fields;
+
+  const years = useMemo(() => {
+    const years: YearFields[] = [];
+    let currentDate = date ? new Date(date) : new Date();
+    let current: YearFields | null = null;
+
+    map((name: string, index: number) => {
+      const monthField = { name, index };
+
+      if (current === null) {
+        current = {
+          year: currentDate.getFullYear(),
+          fields: [monthField],
+        };
+        years.push(current);
+      } else {
+        const nextDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + 1,
+          currentDate.getDate()
+        );
+        if (nextDate.getFullYear() !== currentDate.getFullYear()) {
+          current = {
+            year: nextDate.getFullYear(),
+            fields: [],
+          };
+          years.push(current);
+        }
+        current.fields.push(monthField);
+        currentDate = nextDate;
+      }
+    });
+
+    return years;
+  }, [date, map]);
+
+  return (
+    <div className={classes.root}>
+      {years.map((yearProps) => {
+        const { year } = yearProps;
+        const gridProps = {
+          ...yearProps,
+          numberOfMonths,
+        };
+        return (
+          <div key={year} className={classes.table}>
+            <div className={classes.header}>
+              <Box className={classes.Box} >
+                {year}
+              </Box>
+            </div>
+            <PaymentYearTable {...gridProps} />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
