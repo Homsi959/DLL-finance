@@ -1,4 +1,5 @@
 import { Overrides } from '@material-ui/core/styles/overrides';
+import type {} from '@material-ui/lab/themeAugmentation';
 import MuiButton from './MuiButton';
 import MuiIconButton from './MuiIconButton';
 import MuiPaper from './MuiPaper';
@@ -13,11 +14,16 @@ import MuiAccordion from './MuiAccordion';
 import MuiAccordionSummary from './MuiAccordionSummary';
 import MuiFormControl from './MuiFormControl';
 import MuiInputBase from './MuiInputBase';
+import MuiInput from './MuiInput';
 import MuiFormLabel from './MuiFormLabel';
-import MuiCheckbox from './MuiCheckbox'
-import MuiCardHeader from './MuiCardHeader'
-import MuiTextField from './MuiTextField'
-import MuiAccordionDetails from './MuiAccordionDetails'
+import MuiCheckbox from './MuiCheckbox';
+import MuiCardHeader from './MuiCardHeader';
+import MuiCardActions from './MuiCardActions';
+import MuiTextField from './MuiTextField';
+import MuiAccordionDetails from './MuiAccordionDetails';
+import MuiTable from './MuiTable';
+import MuiTableBody from './MuiTableBody';
+import MuiAutocomplete from './MuiAutocomplete';
 
 const style: Overrides = {
   MuiButton,
@@ -34,11 +40,16 @@ const style: Overrides = {
   MuiAccordionSummary,
   MuiFormControl,
   MuiInputBase,
+  MuiInput,
   MuiFormLabel,
   MuiCheckbox,
   MuiCardHeader,
+  MuiCardActions,
   MuiTextField,
-  MuiAccordionDetails
+  MuiAccordionDetails,
+  MuiTable,
+  MuiTableBody,
+  MuiAutocomplete,
 };
 
 export default style;

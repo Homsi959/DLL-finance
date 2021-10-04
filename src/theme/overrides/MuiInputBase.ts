@@ -27,11 +27,14 @@ const style: Partial<StyleRules<InputBaseClassKey>> = {
       },
     },
     '& fieldset': {
-      border: `1px ​solid ${palette.secondary.dark}`,
+      border: `1px solid ${palette.secondary.dark}`,
       borderRadius: '0px',
       '& legend': {
         fontSize: '0.75em',
       },
+    },
+    '& .MuiSelect-select:focus': {
+      backgroundColor: 'transparent',
     },
   },
 };

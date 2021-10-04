@@ -268,155 +268,155 @@ template {
 [hidden] {
   display: none;
 }
-.svg-icon-arrow-left {
+.arrow-left {
   width: 7px;
   height: 8px;
 }
-.svg-icon-arrow-right {
+.arrow-right {
   width: 7px;
   height: 8px;
 }
-.svg-icon-button-arrow-small {
+.button-arrow-small {
   width: 8px;
   height: 5px;
 }
-.svg-icon-calendar {
+.calendar {
   width: 14px;
   height: 15px;
 }
-.svg-icon-copy {
+.copy {
   width: 12px;
   height: 15px;
 }
-.svg-icon-cross-small {
+.cross-small {
   width: 10px;
   height: 10px;
 }
-.svg-icon-datepicker-next {
+.datepicker-next {
   width: 13px;
   height: 7px;
 }
-.svg-icon-datepicker-prev {
+.datepicker-prev {
   width: 13px;
   height: 7px;
 }
-.svg-icon-delete {
+.delete {
   width: 14px;
   height: 15px;
 }
-.svg-icon-dll-clear {
+.dll-clear {
   width: 37px;
   height: 25px;
 }
-.svg-icon-download {
+.download {
   width: 14px;
   height: 13px;
 }
-.svg-icon-dropdown {
+.dropdown {
   width: 11px;
   height: 6px;
 }
-.svg-icon-edit {
+.edit {
   width: 14px;
   height: 14px;
 }
-.svg-icon-logout {
+.logout {
   width: 16px;
   height: 16px;
 }
-.svg-icon-menu-agents {
+.menu-agents {
   width: 16px;
   height: 16px;
 }
-.svg-icon-menu-calculations {
+.menu-calculations {
   width: 16px;
   height: 16px;
 }
-.svg-icon-menu-catalogs {
+.menu-catalogs {
   width: 16px;
   height: 16px;
 }
-.svg-icon-menu-groups {
+.menu-groups {
   width: 16px;
   height: 16px;
 }
-.svg-icon-menu-home {
+.menu-home {
   width: 15px;
   height: 16px;
 }
-.svg-icon-menu-projects {
+.menu-projects {
   width: 16px;
   height: 16px;
 }
-.svg-icon-menu-settings {
+.menu-settings {
   width: 16px;
   height: 16px;
 }
-.svg-icon-menu-tasks {
+.menu-tasks {
   width: 15px;
   height: 16px;
 }
-.svg-icon-menu-templates {
+.menu-templates {
   width: 16px;
   height: 16px;
 }
-.svg-icon-page-first {
+.page-first {
   width: 8px;
   height: 8px;
 }
-.svg-icon-page-last {
+.page-last {
   width: 8px;
   height: 8px;
 }
-.svg-icon-page-next {
+.page-next {
   width: 5px;
   height: 8px;
 }
-.svg-icon-page-prev {
+.page-prev {
   width: 5px;
   height: 8px;
 }
-.svg-icon-pdf-file {
+.pdf-file {
   width: 14px;
   height: 15px;
 }
-.svg-icon-rotate {
+.rotate {
   width: 14px;
   height: 14px;
 }
-.svg-icon-save-new {
+.save-new {
   width: 23px;
   height: 16px;
 }
-.svg-icon-save {
+.save {
   width: 17px;
   height: 17px;
 }
-.svg-icon-search {
+.search {
   width: 15px;
   height: 15px;
 }
-.svg-icon-spoiler-dropdown {
+.spoiler-dropdown {
   width: 16px;
   height: 9px;
 }
-.svg-icon-template-document {
+.template-document {
   width: 22px;
   height: 30px;
 }
-.svg-icon-tick {
+.tick {
   width: 16px;
   height: 13px;
 }
-.svg-icon-trash {
+.trash {
   width: 14px;
   height: 15px;
 }
-.svg-icon-vertical-menu {
+.vertical-menu {
   width: 24px;
   height: 24px;
 }
-.svg-icon-view {
+.view {
   width: 15px;
   height: 10px;
 }
@@ -1931,7 +1931,7 @@ button > .svg-icon {
   padding-bottom: 0.5em;
   margin-bottom: 2px;
 }
-.button-action-small > .svg-icon-button-arrow-small {
+.button-action-small > .button-arrow-small {
   display: inline-block;
   margin-left: 5px;
   position: relative;
@@ -4349,7 +4349,7 @@ input:checked ~ .switch-span .label-checked {
   -ms-flex-align: stretch;
   align-items: stretch;
 }
-.svg-icon-search {
+.search {
   position: absolute;
   top: 4px;
   bottom: 0;
@@ -5495,6 +5495,11 @@ table.gravity-center td:last-child {
 .good-name > span + span {
   border-left: 2px solid var(--dll-blue);
   padding: 0 0 0 4px;
+}
+.nav-icon-user {
+  position: absolute;
+    left: 10px;
+    top: 10px;
 }
 .good .producer {
   padding: 13px 0 0;

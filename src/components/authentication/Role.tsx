@@ -9,7 +9,7 @@ export type RoleProps = {
 export const Role = (props: RoleProps) => {
   const { role, children } = props;
 
-  const { isLoading, user } = useUserAuth();
+  const { user, isLoading } = useUserAuth();
 
   if (user === null || isLoading) {
     return null;

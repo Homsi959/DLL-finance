@@ -12,6 +12,7 @@ import { UserViewModel } from 'schema/serverTypes';
 import { useAutocompleteTextField } from 'components/calculator/CalculationForm/useAutocompleteTextField';
 import { TextFieldProps } from 'components/form/TextField';
 import { useTranslation } from 'react-i18next';
+import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 
 export type UserAutocompleteProps = FieldRenderProps<string | undefined, HTMLElement> &
   Omit<TextFieldProps, 'error' | 'helperText'> & {
@@ -107,9 +108,10 @@ export const UserAutocomplete = (props: UserAutocompleteProps) => {
       options={options}
       onChange={handleOnChange}
       onInputChange={handleOnInputChange}
+      popupIcon={<KeyboardArrowDownRoundedIcon color="primary" fontSize="default" />}
       getOptionSelected={(option, value) => option.id === value.id}
       getOptionLabel={(option) => option.name}
-      noOptionsText={t('ResultsNotFound')}
+      noOptionsText={t('no results')}
       inputValue={inputValue}
       renderInput={renderInput}
       openText={t('Open')}

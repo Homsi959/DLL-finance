@@ -11,6 +11,8 @@ import { FilterFormValues, UserFilterFormRenderProps, UserFilterFormProps } from
 import MenuItem from '@material-ui/core/MenuItem';
 import { SelectField } from 'components/form';
 import { useTranslation } from 'react-i18next';
+import { IconSprite } from '../../icons';
+import { palette } from '../../../theme';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -88,7 +90,17 @@ export const UserFilterFormInner = (props: UserFilterFormRenderProps) => {
           </Field>
         </Grid>
         <Grid item className={classes.item}>
-          <Field label={t('Search')} variant="standard" name="search" component={TextField} />
+          <Field
+            label={t('Search')}
+            variant="standard"
+            name="search"
+            component={TextField}
+            InputProps={{
+              endAdornment: (
+                <IconSprite width="16px" color={palette.textGrey2.main} icon="search" />
+              ),
+            }}
+          />
         </Grid>
         <Grid className={classes.buttonReset} item>
           <FormControl>

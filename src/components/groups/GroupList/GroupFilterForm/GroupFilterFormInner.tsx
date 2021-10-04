@@ -8,6 +8,8 @@ import { TextField } from 'components/form/TextField';
 import { useDebounce } from 'use-debounce';
 import { FilterFormValues, GroupFilterFormRenderProps, GroupFilterFormProps } from './types';
 import { useTranslation } from 'react-i18next';
+import { IconSprite } from '../../../icons';
+import { palette } from '../../../../theme';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,12 +73,22 @@ export const GroupFilterFormInner = (props: GroupFilterFormRenderProps) => {
       </FormSpy>
       <Grid container spacing={1} className={classes.grid}>
         <Grid item className={classes.item}>
-          <Field label={t('Search')} variant="standard" name="search" component={TextField} />
+          <Field
+            label={t('Search')}
+            variant="standard"
+            name="search"
+            component={TextField}
+            InputProps={{
+              endAdornment: (
+                <IconSprite width="16px" color={palette.textGrey2.main} icon="search" />
+              ),
+            }}
+          />
         </Grid>
         <Grid className={classes.buttonReset} item>
           <FormControl>
             <Button variant="text" onClick={handleOnReset}>
-              {t('Save')}
+              {t('Reset')}
             </Button>
           </FormControl>
         </Grid>

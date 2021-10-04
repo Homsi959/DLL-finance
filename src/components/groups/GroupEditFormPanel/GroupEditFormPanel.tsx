@@ -10,7 +10,6 @@ export const GroupEditFormPanel = () => {
 
   const id = Number.parseInt(idString);
   const { group, isLoading } = useGroupQuery(id);
-
   const goBack = useGoBack();
 
   const handleOnClose = useCallback(() => {

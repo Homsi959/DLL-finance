@@ -10,13 +10,17 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr",
-      gap: "0px 30px",
     },
     table: {
+      width: '50%',
       float: 'left',
-      width: '100%',
+      '&:nth-child(2n-1)': {
+        paddingRight: theme.spacing(1.3),
+      },
+      '&:nth-child(2n)': {
+        float: 'right',
+        paddingLeft: theme.spacing(1.3),
+      },
     },
     header: {
       marginTop: '14px',
@@ -26,8 +30,8 @@ const useStyles = makeStyles((theme: Theme) =>
     Box: {
       fontSize: '14px',
       fontWeight: 700,
-      color: theme.palette.divider
-    }
+      color: theme.palette.divider,
+    },
   })
 );
 
@@ -39,7 +43,7 @@ export type PaymentOptionListProps = FieldArrayRenderProps<MonthPaymentOption, H
 export const PaymentOptionList = (props: PaymentOptionListProps) => {
   const classes = useStyles();
   const { fields, date, numberOfMonths } = props;
-  const { map } = fields;
+  const { map, update } = fields;
 
   const years = useMemo(() => {
     const years: YearFields[] = [];
@@ -83,13 +87,12 @@ export const PaymentOptionList = (props: PaymentOptionListProps) => {
         const gridProps = {
           ...yearProps,
           numberOfMonths,
+          update,
         };
         return (
           <div key={year} className={classes.table}>
             <div className={classes.header}>
-              <Box className={classes.Box} >
-                {year}
-              </Box>
+              <Box className={classes.Box}>{year}</Box>
             </div>
             <PaymentYearTable {...gridProps} />
           </div>

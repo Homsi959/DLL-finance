@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { GridSortModel, GridSortModelParams } from '@material-ui/data-grid';
+import { useEffect, useMemo, useState } from 'react';
 import { useQueryParams, NumberParam, withDefault } from 'use-query-params';
 import { calculationUrl } from 'services/calculation';
 import { CounterpartyListResult } from './types';
+import { CounterpartyType } from 'schema/serverTypes';
 import { useBackendQuery } from 'services';
 
 export type QuotaAction = 'changeOwner' | 'viewHistory';
@@ -10,47 +10,42 @@ export type QuotaAction = 'changeOwner' | 'viewHistory';
 type SearchUrlParams = {
   page: number;
   pageSize: number;
-  isDealer?: boolean;
-  isLessee?: boolean;
-  isInsuranceCompany?: boolean;
-  isLessor?: boolean;
   search?: string;
-  sortModel?: GridSortModel;
+  type?: CounterpartyType;
+};
+
+const getCounterpartyFilterName = (type: CounterpartyType) => {
+  switch (type) {
+    case CounterpartyType.dealer:
+      return 'isDealer';
+    case CounterpartyType.lessee:
+      return 'isLessee';
+    case CounterpartyType.lessor:
+      return 'isLessor';
+    case CounterpartyType.insuranceCompany:
+      return 'isInsuranceCompany';
+  }
 };
 
 const useSearchUrl = (searchParams: SearchUrlParams) => {
-  const { page, pageSize, isDealer, isLessor, isInsuranceCompany, isLessee, search, sortModel } =
-    searchParams;
+  const { page, pageSize, search, type } = searchParams;
 
   return useMemo(() => {
     const searchParams = new URLSearchParams();
     searchParams.set('page', page.toString());
     searchParams.set('pageSize', pageSize.toString());
 
-    if (isDealer) {
-      searchParams.set('isDealer', `${isDealer}`);
-    }
-    if (isLessor) {
-      searchParams.set('isLessor', `${isLessor}`);
-    }
-    if (isInsuranceCompany) {
-      searchParams.set('isInsuranceCompany', `${isInsuranceCompany}`);
-    }
-    if (isLessee) {
-      searchParams.set('isDealer', `${isLessee}`);
-    }
     if (search) {
       searchParams.set('search', search);
     }
 
-    if (sortModel?.length === 1) {
-      searchParams.set('sortBy', sortModel[0].field);
-      if (sortModel[0].sort) {
-        searchParams.set('order', sortModel[0].sort);
-      }
+    if (type) {
+      const name = getCounterpartyFilterName(type);
+      searchParams.set(name, 'true');
     }
+
     return `${calculationUrl}/api/v1/counterparties?${searchParams}`;
-  }, [page, pageSize, isDealer, isLessor, isInsuranceCompany, isLessee, search, sortModel]);
+  }, [page, pageSize, search, type]);
 };
 
 export const useCounterpartiesData = () => {
@@ -60,36 +55,21 @@ export const useCounterpartiesData = () => {
   });
   const { page, pageSize } = queryParams;
 
-  const [isDealer, setIsDealer] = useState<boolean>();
-  const [isLessee, setIsLessee] = useState<boolean>();
-  const [isInsuranceCompany, setInsuranceCompany] = useState<boolean>();
-  const [isLessor, setIsLessor] = useState<boolean>();
   const [search, setSearch] = useState<string>();
-
-  const [sortModel, setSortModel] = useState<GridSortModel>();
-  const onSortModelChange = useCallback(
-    (params: GridSortModelParams) => {
-      setSortModel(params.sortModel);
-    },
-    [setSortModel]
-  );
+  const [type, setType] = useState<CounterpartyType>();
 
   const url = useSearchUrl({
     page,
     pageSize,
-    isLessor,
-    isDealer,
-    isLessee,
-    isInsuranceCompany,
     search,
-    sortModel,
+    type,
   });
 
   const {
     data,
     isLoading: loading,
     refetch,
-  } = useBackendQuery<CounterpartyListResult>(url, ['counteparties', page, pageSize]);
+  } = useBackendQuery<CounterpartyListResult>(url, ['counteparties', url]);
 
   useEffect(() => {
     refetch();
@@ -98,15 +78,8 @@ export const useCounterpartiesData = () => {
   const rows = data?.data ?? [];
 
   return {
-    sorting: {
-      sortModel,
-      onSortModelChange,
-    },
     filter: {
-      setIsDealer,
-      setIsLessee,
-      setIsLessor,
-      setInsuranceCompany,
+      setType,
       setSearch,
     },
     paging: {

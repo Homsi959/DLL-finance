@@ -14,6 +14,7 @@ import { useAutocompleteTextField } from '../../useAutocompleteTextField';
 import { useMemo } from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 
 type CounterpartyAutocompleteProps = FieldRenderProps<string | undefined, HTMLElement> &
   Omit<TextFieldProps, 'error' | 'helperText'> & {
@@ -121,7 +122,7 @@ const CounterpartyAutocomplete = (props: CounterpartyAutocompleteProps) => {
       onInputChange={handleOnInputChange}
       getOptionSelected={(option, value) => option.inn === value.inn}
       getOptionLabel={(option) => option.name}
-      noOptionsText={t('ResultsNotFound')}
+      noOptionsText={t('no results')}
       inputValue={inputValue}
       renderInput={renderInput}
       openText={t('Open')}
@@ -129,6 +130,7 @@ const CounterpartyAutocomplete = (props: CounterpartyAutocompleteProps) => {
       clearText={t('Clear')}
       autoHighlight={true}
       disabled={disabled}
+      popupIcon={<KeyboardArrowDownRoundedIcon color="primary" />}
     />
   );
 };

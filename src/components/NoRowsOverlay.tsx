@@ -1,5 +1,6 @@
 import { GridOverlay } from '@material-ui/data-grid';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -14,10 +15,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const NoRowsOverlay = () => {
   const classes = useStyles();
+  const { t } = useTranslation();
 
   return (
     <GridOverlay className={classes.root}>
-      <div className={classes.label}>По вашему запросу ничего не найдено</div>
+      <div className={classes.label}>{t('SearchNotFound')}</div>
     </GridOverlay>
   );
 };

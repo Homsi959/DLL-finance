@@ -22,15 +22,28 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       '& .MuiDataGrid-cell': {
         color: theme.palette.secondary.main,
+        '&:first-child': {
+          paddingLeft: 0,
+          '&:not(:last-child)': {
+            paddingRight: '20px',
+          },
+        },
+        '& li': {
+          lineHeight: 1.5,
+        },
         '& a': {
-          color: theme.palette.secondary.main,
+          color: theme.palette.blue3.main,
+          '&[href^="mailto:"]': {
+            color: theme.palette.textGrey1.main,
+            textDecoration: 'underline',
+          },
         },
       },
       '& .MuiDataGrid-columnHeader': {
         paddingLeft: theme.spacing(0.5),
       },
-      '& .MuiDataGrid-columnHeader:nth-child(1)': {
-        paddingLeft: 2,
+      '& .MuiDataGrid-columnHeader:first-child': {
+        paddingLeft: theme.spacing(2),
       },
       '& .MuiDataGrid-columnHeaderTitle': {
         color: theme.palette.text.primary,
@@ -48,9 +61,10 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       '& .MuiDataGrid-row': {
         borderTop: `1px solid ${theme.palette.grey[300]}`,
+        padding: '0 20px',
         '&:hover': {
           backgroundColor: 'rgba(0, 153, 255, 0.08)',
-        }
+        },
       },
       '& .MuiPaginationItem-root': {
         borderRadius: 0,

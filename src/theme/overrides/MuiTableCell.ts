@@ -8,12 +8,19 @@ const style: MuiTableCellStyles = {
   root: {
     ...typography.body1,
     textTransform: 'none',
-    borderBottom: `1px solid ${palette.divider}`,
     position: 'relative',
+    borderBottom: 'none',
+    padding: '16px 6px',
+    '&:first-of-type': {
+      paddingLeft: '14px',
+    },
+    '&:last-of-type': {
+      paddingRight: '14px',
+    },
   },
   head: {
     textTransform: 'uppercase',
-    color: 'palette.text.secondary',
+    color: palette.textGrey1.main,
     fontWeight: 700,
     fontSize: 12,
   },

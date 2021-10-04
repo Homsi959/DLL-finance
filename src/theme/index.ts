@@ -1,5 +1,4 @@
 import { createMuiTheme } from '@material-ui/core';
-
 import palette from './palette';
 import typography from './typography';
 import overrides from './overrides';
@@ -24,4 +23,4 @@ const theme = createMuiTheme({
 });
 
 export default theme;
-export { default as palette } from './palette'
+export { default as palette } from './palette';

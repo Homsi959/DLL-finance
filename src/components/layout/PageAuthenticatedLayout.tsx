@@ -4,9 +4,24 @@ import { PageLayoutProps } from './types';
 import { PageLayout } from './PageLayout';
 import { Role } from 'components/authentication';
 import { useTranslation } from 'react-i18next';
+import { IconSprite } from 'components/icons';
+import { palette } from 'theme';
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+
+const useStyles = makeStyles((theme) => ({
+  navSvg: {
+    '& svg': {
+      position: 'absolute',
+      left: '15px',
+      top: '10px',
+    },
+  },
+}));
 
 export const PageAuthenticatedLayout = (props: PageLayoutProps) => {
   const { pageContent, headerContent, ...rest } = props;
+  const classes = useStyles();
 
   useEffect(() => {
     // Scroll to top of page during navigation
@@ -18,31 +33,23 @@ export const PageAuthenticatedLayout = (props: PageLayoutProps) => {
   const content = (
     <>
       <section className="left-menu js-menu-collapse">
-        <nav className="nav js-custom-scrollbar">
+        <nav className={clsx('nav js-custom-scrollbar', classes.navSvg)}>
           <NavItemLink to="/" exact>
-            <svg className="svg-icon svg-icon-menu-home nav-image">
-              <use xlinkHref="/img/svg-sprite.svg#svg-icon-menu-home"></use>
-            </svg>
+            <IconSprite width="16px" color={palette.primary.main} icon="menu-home" />
             <span className="nav-title">{t('Main')}</span>
           </NavItemLink>
           <Role role="admin">
             <NavItemLink to="/users">
-              <svg className="svg-icon svg-icon-menu-groups nav-image">
-                <use xlinkHref="/img/svg-sprite.svg#svg-icon-menu-groups"></use>
-              </svg>
+              <IconSprite width="16px" color={palette.primary.main} icon="user" />
               <span className="nav-title">{t('User_plural')}</span>
             </NavItemLink>
           </Role>
           <NavItemLink to="/calculator/results" exact>
-            <svg className="svg-icon svg-icon-menu-calculations nav-image">
-              <use xlinkHref="/img/svg-sprite.svg#svg-icon-menu-calculations"></use>
-            </svg>
+            <IconSprite width="16px" color={palette.primary.main} icon="menu-calculations" />
             <span className="nav-title">{t('Calculation_plural')}</span>
           </NavItemLink>
           <NavItemLink to="/counterparties" exact>
-            <svg className="svg-icon svg-icon-menu-calculations nav-image">
-              <use xlinkHref="/img/svg-sprite.svg#svg-icon-menu-calculations"></use>
-            </svg>
+            <IconSprite width="16px" color={palette.primary.main} icon="user" />
             <span className="nav-title">{t('Counterparty_plural')}</span>
           </NavItemLink>
         </nav>

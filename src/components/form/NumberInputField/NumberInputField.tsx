@@ -7,7 +7,7 @@ import {
   Grid,
 } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { NumberInput, NumberInputProps } from 'components/NumberInput';
+import { NumberFormat, NumberFormatProps } from 'components/NumberInput';
 import { FieldRenderProps } from 'react-final-form-hooks';
 import { ActionButton } from './ActionButton';
 
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export type NumberInputFieldProps = FieldRenderProps<number | undefined> &
-  Pick<NumberInputProps, 'allowNegative' | 'decimalScale' | 'allowLeadingZeros'> &
+  Pick<NumberFormatProps, 'allowNegative' | 'decimalScale' | 'allowLeadingZeros'> &
   Omit<
     OutlinedTextFieldProps,
     'label' | 'InputLabelProps' | 'variant' | 'SelectProps' | 'select'
@@ -114,7 +114,7 @@ export const NumberInputField = forwardRef<HTMLDivElement, NumberInputFieldProps
                 decimalScale,
                 allowLeadingZeros,
               }}
-              inputComponent={NumberInput}
+              inputComponent={NumberFormat}
               {...input}
             />
           </Grid>

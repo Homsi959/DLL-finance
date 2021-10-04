@@ -28,6 +28,7 @@ export type AutocompleteProps<FreeSolo extends boolean | undefined> = Pick<
   | 'clearText'
   | 'renderInput'
   | 'autoHighlight'
+  | 'popupIcon'
 >;
 
 export type AutocompleteFieldDefaultProps<FreeSolo extends boolean | undefined> = Omit<

@@ -18,7 +18,7 @@ const styles = (theme: Theme) =>
       },
       '& .Mui-checked': {
         '& .MuiSvgIcon-root': {
-          fill: palette.primary.main
+          fill: palette.primary.main,
         },
       },
       '& .MuiFormControlLabel-root': {
@@ -31,16 +31,16 @@ const styles = (theme: Theme) =>
         marginTop: theme.spacing(1),
       },
       '& .MuiFormLabel-root': {
-        fontSize: '9px'
-      }
+        fontSize: '9px',
+      },
     },
     group: {},
     option: {
       '&:hover': {
         '& svg': {
-          fill: theme.palette.primary.main
-        }
-      }
+          fill: theme.palette.primary.main,
+        },
+      },
     },
     error: {},
   });

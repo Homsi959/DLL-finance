@@ -12,7 +12,7 @@ import { AmountType } from 'schema';
 import { formatCurrency } from '../utils';
 import { CurrencyRatesContext } from '../CurrencyRatesContext';
 import { OnChange } from 'react-final-form-listeners';
-import { IconArrowLightMain } from 'components/icons/IconArrowLightMain';
+import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,11 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.secondary.light,
       position: 'absolute',
       right: '0',
-      '& svg': {
-        position: 'absolute',
-        right: '0px',
-        pointerEvents: 'none',
-      },
       '& .MuiSelect-root': {
         paddingLeft: theme.spacing(1),
         height: '100%',
@@ -35,6 +30,10 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
+      },
+      '& .MuiSelect-icon': {
+        color: theme.palette.primary.main,
+        pointerEvents: 'none',
       },
     },
     paper: {
@@ -112,7 +111,7 @@ export const AmountTypeButton = (props: AmountTypeButtonProps) => {
             },
             getContentAnchorEl: null,
           }}
-          IconComponent={IconArrowLightMain}
+          IconComponent={KeyboardArrowDownRoundedIcon}
         >
           <MenuItem value={AmountType.Percents}>%</MenuItem>
           <MenuItem value={AmountType.Money}>{label}</MenuItem>

@@ -9,18 +9,20 @@ import {
   Theme,
   Grid,
   IconButton,
+  Typography,
+  MenuItem,
 } from '@material-ui/core';
 import { Skeleton, Alert } from '@material-ui/lab';
 import { Field } from 'react-final-form';
-import { FieldArray } from 'react-final-form-arrays';
-import { AutoFocusedForm, TextField, useRequired } from 'components';
-import { GroupUsersViewModel, GroupUserViewModel } from '../types';
+import { AutoFocusedForm, SelectField, TextField, useRequired } from 'components';
+import { GroupUsersViewModel } from '../types';
 import { useEditForm } from './useEditForm';
-import { GroupUserSelectField } from '../GroupUserSelectField';
 import { useGoBack } from 'hooks';
 import { useCallback } from 'react';
 import { palette } from 'theme';
 import { useTranslation } from 'react-i18next';
+import { UserSelectField } from '../UserSelectField';
+import { useUserSearchQuery } from '../useUserSearchQuery';
 
 export interface GroupEditFormProps {
   group: GroupUsersViewModel;
@@ -40,17 +42,17 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     header: {
       fontWeight: 'bolder',
-      textAlign: 'center',
+      textAlign: 'left',
       paddingTop: 0,
     },
     actions: {
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
     },
     cancelButton: {
       color: theme.palette.error.main,
     },
     item: {
-      marginBottom: theme.spacing(2),
+      marginBottom: theme.spacing(1),
     },
     GridCloseButton: {
       backgroundColor: palette.secondary.light,
@@ -65,11 +67,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const GroupEditForm = (props: GroupEditFormProps) => {
+export const GroupEditForm = (props: any) => {
+  //TODO any -> GroupEditFormProps
   const classes = useStyles();
   const { group } = props;
   const title = group.name;
   const { onSubmit, initialValues, isLoading } = useEditForm(group);
+  const { users } = useUserSearchQuery('', []);
   const goBack = useGoBack();
   const handleOnClose = useCallback(() => {
     goBack('/users/groups');
@@ -77,11 +81,10 @@ export const GroupEditForm = (props: GroupEditFormProps) => {
 
   const { required } = useRequired();
   const { t } = useTranslation();
-
   return (
     <AutoFocusedForm
       onSubmit={onSubmit}
-      initialValues={initialValues}
+      initialValues={initialValues as any} //TODO type
       subscription={{
         submitError: true,
       }}
@@ -96,23 +99,36 @@ export const GroupEditForm = (props: GroupEditFormProps) => {
               </Grid>
               <CardHeader className={classes.header} title={title} />
               <CardContent>
-                <Grid container spacing={4}>
+                <Grid container spacing={1}>
                   <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
                     <Field name="name" component={TextField} validate={required} />
                   </Grid>
                   <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
-                    <FieldArray<GroupUserViewModel>
-                      label={t('Owners')}
+                    <Field
+                      label={t('Owner')}
                       name="owners"
-                      component={GroupUserSelectField}
-                    />
+                      component={SelectField}
+                      validate={required}
+                    >
+                      {users.map((user) => {
+                        return (
+                          <MenuItem key={user.id} value={user.id}>
+                            {user.name}
+                          </MenuItem>
+                        );
+                      })}
+                    </Field>
                   </Grid>
                   <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
-                    <FieldArray<GroupUserViewModel>
+                    <Field
                       label={t('Members')}
                       name="users"
-                      component={GroupUserSelectField}
+                      component={UserSelectField}
+                      validate={required}
                     />
+                  </Grid>
+                  <Grid item lg={12} md={12} xl={12} xs={12}>
+                    <Typography variant="body1">{t('All fields are required')}</Typography>
                   </Grid>
                 </Grid>
                 {submitError && <Alert severity="error">{submitError}</Alert>}

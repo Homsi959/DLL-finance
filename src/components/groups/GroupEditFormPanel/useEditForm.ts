@@ -14,12 +14,10 @@ const useUpdateGroupMutation = (id: number) => {
       const requestUrl = `${IDENTITY_CONFIG.authority}/api/v1/groups/${id}`;
       const group = {
         ...values,
-        users: values.users.map((owner) => {
-          return { id: owner.id };
+        users: values.users.map((user) => {
+          return { id: user.id };
         }),
-        owners: values.owners.map((owner) => {
-          return { id: owner.id };
-        }),
+        owners: [{ id: values.owners }],
       };
       const response = await fetch(requestUrl, {
         method: 'PUT',
@@ -64,7 +62,10 @@ const useUpdateGroupMutation = (id: number) => {
 };
 
 export const useEditForm = (group: GroupUsersViewModel) => {
-  const initialValues: GroupEditFormValues = group;
+  const initialValues = {
+    ...group,
+    owners: group.owners.id,
+  };
 
   const { mutateAsync, isLoading, isError } = useUpdateGroupMutation(group.id);
 

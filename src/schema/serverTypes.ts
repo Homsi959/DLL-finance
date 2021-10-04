@@ -150,6 +150,7 @@ export type QuotaPayment = {
 
 export type CalculationResult = {
   model?: string;
+  leaseSubject?: string;
   calculationMethod: CalculationMethod;
   assetCost: number;
   fundingAmount: number;
@@ -279,7 +280,7 @@ export type QuotaListViewModel = {
   quotaId: number;
   user: User;
   createdDate: string;
-  leaseProduct?: string;
+  leaseSubject?: string;
   numberOfItems?: number;
   prepayment?: Amount;
   calculationMethod: CalculationMethod;
@@ -333,6 +334,17 @@ export type UserViewModel = {
   name: string;
 };
 
+export enum UserSortBy {
+  id = 'id',
+  name = 'name',
+  email = 'email',
+}
+
+export enum GroupSortBy {
+  id = 'id',
+  name = 'name',
+}
+
 export enum QuotaSortBy {
   id = 'id',
   lessee = 'lessee',
@@ -344,36 +356,112 @@ export type Topo = {
 };
 
 export type Address = {
-  zipCode: string;
   kladrCode: string;
-  regionCode: string;
-  regionName: Topo;
-  settlement: Topo;
-  district: Topo;
-  city: Topo;
-  street: Topo;
-  house: Topo;
-  flat: Topo;
-  bulk: Topo;
+  country?: string;
+  zipCode?: string;
+  regionCode?: string;
+  regionName?: string;
+  regionNameFull?: string;
+  regionValue?: string;
+  settlementName?: string;
+  settlementNameFull?: string;
+  settlementValue?: string;
+  districtName?: string;
+  districtNameFull?: string;
+  districtValue?: string;
+  cityName?: string;
+  cityNameFull?: string;
+  cityValue?: string;
+  streetName?: string;
+  streetNameFull?: string;
+  streetValue?: string;
+  houseName?: string;
+  houseNameFull?: string;
+  houseValue?: string;
+  blockName?: string;
+  blockNameFull?: string;
+  blockValue?: string;
+  flatName?: string;
+  flatNameFull?: string;
+  flatValue?: string;
+  bulkName?: string;
+  bulkNameFull?: string;
+  bulkValue?: string;
+  value?: string;
   comment?: string;
 };
 
 export type Head = {
-  fio: string;
+  lastName?: string;
+  firstName?: string;
+  middleName?: string;
   position: string;
+  initials?: string;
+  phoneNumber?: string;
+  email?: string;
+  level?: string;
+  reason?: string;
+  number?: string;
+  date?: string;
+};
+
+export type Contact = {
+  lastName?: string;
+  firstName?: string;
+  middleName?: string;
+  position: string;
+  initials?: string;
+  phoneNumber?: string;
+  email?: string;
+};
+
+export type CounterpartyRequisite = {
+  bic: string;
+  bank: string;
+  account: string;
+  correspondentAccount: string;
+  isMain: boolean;
+};
+
+export type CounterpartyActivity = {
+  code: string;
+  text: string;
+  date?: string;
+};
+
+export type GroupViewModel = {
+  id: string;
+  name: string;
 };
 
 export type CounterpartyViewModel = {
   inn: string;
   name: string;
   fullName: string;
-  ogrn: string;
-  kpp: string;
-  okpo: string;
-  registrationDate: string;
-  heads: Head[];
+  transliteratedName: string;
+  opf?: string;
+  transliteratedOpf?: string;
+  ogrn?: string;
+  kpp?: string;
+  okpo?: string;
+  registrationDate?: string;
+  isLessee: boolean;
+  isDealer: boolean;
+  isInsuranceCompany: boolean;
+  isLessor: boolean;
+  phoneNumber?: string;
+  email?: string;
   legalAddress: Address;
-  actualAddress: Address;
+  actualAddress?: Address;
+  mailingAddress?: Address;
+  generalCondidionsSellerDate?: string;
+  generalCondidionsLesseeDate?: string;
+  heads: Head[];
+  contacts: Contact[];
+  requisites: CounterpartyRequisite[];
+  principalActivity?: CounterpartyActivity;
+  complementaryActivities: CounterpartyActivity[];
+  groups: GroupViewModel[];
 };
 
 export type CounterpartyListViewModel = {
@@ -384,6 +472,7 @@ export type CounterpartyListViewModel = {
   isLessee: boolean;
   isInsuranceCompany: boolean;
   isLessor: boolean;
+  groups: GroupViewModel[];
 };
 
 export enum CounterpartySortBy {

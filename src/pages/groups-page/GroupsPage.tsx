@@ -6,12 +6,12 @@ export const GroupsPage = () => {
   const addGroupPath = `/users/groups/create`;
 
   return (
-    <Route path="/users/groups">
+    <>
       <GroupList />
       <Switch>
         <Route exact path={addGroupPath} component={GroupCreateFormPanel} />
         <Route exact path={groupPath} component={GroupEditFormPanel} />
       </Switch>
-    </Route>
+    </>
   );
 };

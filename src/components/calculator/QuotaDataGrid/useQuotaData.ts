@@ -92,7 +92,7 @@ export const useQuotaData = (tabIndex: number) => {
     data,
     isLoading: loading,
     refetch,
-  } = useBackendQuery<QuotaListResult>(url, ['quotas', page, pageSize]);
+  } = useBackendQuery<QuotaListResult>(url, ['quotas', url]);
 
   useEffect(() => {
     refetch();
@@ -104,7 +104,7 @@ export const useQuotaData = (tabIndex: number) => {
   const rows = quotas.map(
     ({
       quotaId,
-      leaseProduct = 'Не задано',
+      leaseSubject = 'Не задано',
       createdDate,
       user,
       numberOfItems = 1,
@@ -119,7 +119,7 @@ export const useQuotaData = (tabIndex: number) => {
       return {
         id: quotaId,
         asset: {
-          name: leaseProduct,
+          name: leaseSubject,
           numberOfItems,
           prepayment,
           numberOfMonths,

@@ -12,7 +12,7 @@ const style = {
     },
     '& span.MuiTabs-indicator': {
       height: '3px',
-    }
+    },
   },
 };
 

@@ -14,6 +14,10 @@ export const useRequired = (errorMessage: string | undefined = undefined) => {
       if (typeof value === 'string' && value === '') {
         return isRequiredMessage;
       }
+
+      if (Array.isArray(value) && value.length === 0) {
+        return isRequiredMessage;
+      }
     },
     [isRequiredMessage]
   );

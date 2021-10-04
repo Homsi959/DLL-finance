@@ -15,8 +15,8 @@ export const LogoutButton = () => {
       onClick={handleLogout}
       tabIndex={0}
     >
-      <svg className="svg-icon svg-icon-logout">
-        <use xlinkHref="/img/svg-sprite.svg#svg-icon-logout"></use>
+      <svg className="svg-icon logout">
+        <use xlinkHref="/img/svg-sprite.svg#logout"></use>
       </svg>
     </button>
   );

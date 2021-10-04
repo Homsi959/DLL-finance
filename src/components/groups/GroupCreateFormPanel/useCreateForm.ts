@@ -17,9 +17,7 @@ const useCreateGroupMutation = () => {
         users: values.users.map((owner) => {
           return { id: owner.id };
         }),
-        owners: values.owners.map((owner) => {
-          return { id: owner.id };
-        }),
+        owners: [{ id: values.owners }],
       };
       const response = await fetch(requestUrl, {
         method: 'POST',
@@ -63,10 +61,11 @@ const useCreateGroupMutation = () => {
 };
 
 export const useCreateForm = () => {
-  const initialValues: GroupEditFormValues = {
+  const initialValues: any = {
+    //TODO type
     name: '',
     users: [],
-    owners: [],
+    owners: '',
   };
 
   const { mutateAsync, isLoading, isError } = useCreateGroupMutation();

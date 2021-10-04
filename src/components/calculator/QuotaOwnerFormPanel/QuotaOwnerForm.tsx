@@ -34,17 +34,17 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     header: {
       fontWeight: 'bolder',
-      textAlign: 'center',
+      textAlign: 'left',
       paddingTop: 0,
     },
     actions: {
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
     },
     cancelButton: {
       color: theme.palette.error.main,
     },
     item: {
-      marginBottom: theme.spacing(4),
+      marginBottom: theme.spacing(1),
     },
     subtitile: {
       fontSize: '12px',

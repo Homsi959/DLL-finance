@@ -19,8 +19,8 @@ const style: Partial<StyleRules<AccordionSummaryClassKey>> = {
       margin: '12px 0',
     },
     '& .MuiTypography-root': {
-      lineHeight: '15px'
-    }
+      lineHeight: '15px',
+    },
   },
   expanded: {},
 };

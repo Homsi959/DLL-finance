@@ -32,10 +32,13 @@ export const useStyles = makeStyles((theme: Theme) =>
       fontSize: '12px',
       paddingBottom: theme.spacing(0.8),
       color: theme.palette.divider,
+      fontWeight: 400,
     },
     table: {
       '& dd': {
         fontSize: '14px',
+        color: theme.palette.secondary.main,
+        fontWeight: 400,
       },
     },
   })
@@ -58,7 +61,7 @@ export const CalculationResults = forwardRef<HTMLDivElement, CalculationResultsP
                   {t('LeaseSubject')}
                 </Typography>
               </dt>
-              <dd>{data.model ?? 'Не указан'}</dd>
+              <dd>{data.leaseSubject ?? 'Не указан'}</dd>
             </dl>
           </Grid>
           <Grid item lg={2} md={4} xs={12}>
@@ -103,7 +106,8 @@ export const CalculationResults = forwardRef<HTMLDivElement, CalculationResultsP
                 </Typography>
               </dt>
               <dd>
-                {formatNumber(data.fundingAmount)} {formatCurrency(data.leaseCurrency)}
+                {formatNumber(data.fundingAmount - (data.subsidyAmount ?? 0))}{' '}
+                {formatCurrency(data.leaseCurrency)}
               </dd>
             </dl>
           </Grid>
@@ -135,7 +139,7 @@ export const CalculationResults = forwardRef<HTMLDivElement, CalculationResultsP
             <dl>
               <dt>
                 <Typography color="textSecondary" className={classes.label}>
-                  {`${t('LeaseTerm')}, ${t('MonthWithCount', { count: 0 })}`}
+                  {`${t('LeaseTerm')}, ${t('months')}`}
                 </Typography>
               </dt>
               <dd>{data.numberOfMonths}</dd>

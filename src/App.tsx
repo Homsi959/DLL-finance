@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import { QueryParamProvider } from 'use-query-params';
 import theme from 'theme';
-import { PrivateRoute } from 'components';
+import { LoadingLinearIndicator, PageLayout, PrivateRoute } from 'components';
 import {
   HomePage,
   LoginPage,
@@ -44,7 +44,7 @@ const PagesWithLanguage = () => {
 
 const App = () => {
   return (
-    <Suspense fallback="loading">
+    <Suspense fallback={<PageLayout pageContent={<LoadingLinearIndicator />} />}>
       <ThemeProvider theme={theme}>
         <Router>
           <QueryParamProvider ReactRouterRoute={Route}>

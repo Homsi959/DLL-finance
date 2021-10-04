@@ -10,13 +10,13 @@ const style = {
     paddingBottom: '2px',
     '&:not(.Mui-selected):hover': {
       borderColor: palette.primary.main,
-      color: palette.text.primary
+      color: palette.text.primary,
     },
     '&:not(:first-child)': {
-      marginLeft: '50px'
+      marginLeft: '50px',
     },
     '@media (min-width: 0px)': {
-      minWidth: 0
+      minWidth: 0,
     },
   },
 };

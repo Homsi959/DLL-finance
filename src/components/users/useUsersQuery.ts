@@ -46,7 +46,7 @@ export const useUsersQuery = () => {
     data,
     isLoading: loading,
     refetch,
-  } = useBackendQuery<UserListResult>(url, ['users', page, pageSize]);
+  } = useBackendQuery<UserListResult>(url, ['users', url]);
 
   useEffect(() => {
     refetch();

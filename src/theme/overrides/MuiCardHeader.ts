@@ -8,7 +8,7 @@ const style: Partial<StyleRules<CardHeaderClassKey>> = {
       // fontSize: '14px',
       // fontWeight: 700,
       color: palette.primary.main,
-    }
+    },
   },
 };
 

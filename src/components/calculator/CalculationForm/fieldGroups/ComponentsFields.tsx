@@ -102,7 +102,7 @@ export const ComponentsFields = (props: FormFieldsProps) => {
   return (
     <Grid container spacing={0}>
       <Grid container item xs={12} spacing={2}>
-        <Grid className={classes.balanceHolder} item lg={3} md={4} xs={12}>
+        <Grid className={classes.balanceHolder} item lg={2} md={3} xs={12}>
           <Field
             name="balanceHolder"
             label={t('BalanceHolder')}
@@ -218,7 +218,19 @@ export const ComponentsFields = (props: FormFieldsProps) => {
           <AmountField name="itemDiscount" label={t('Discount')} useSaleCurrency={true} />
         </Grid>
         <Grid className={classes.subsidyVendor} item md={2} xs={12}>
-          <AmountField name="subsidyDealer" label={t('Subsidy')} useSaleCurrency={true} />
+          <Field<CalculationMethodType> name="calculationMethodType">
+            {({ input }) => {
+              const disabled = input.value !== CalculationMethodType.Forward;
+              return (
+                <AmountField
+                  name="subsidyDealer"
+                  label={t('Subsidy')}
+                  useSaleCurrency={true}
+                  disabled={disabled}
+                />
+              );
+            }}
+          </Field>
         </Grid>
         <Grid className={classes.switchField} item lg={2} md={3} xs={12}>
           <Field

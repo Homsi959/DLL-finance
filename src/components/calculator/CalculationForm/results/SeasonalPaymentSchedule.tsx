@@ -7,20 +7,18 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       width: '100%',
       fontSize: '12px',
-      columnCount: 4,
-      columnGap: 0,
       fontWeight: 500,
-      [theme.breakpoints.down('sm')]: {
-        columnCount: 2,
+      columns: '9',
+      listStyleType: 'none',
+      // display: "grid",
+      // gridTemplateRows: "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+      // gap: "0px 20px",
+      // gridAutoFlow: "column",
+      [theme.breakpoints.down('lg')]: {
+        columns: '6',
       },
       [theme.breakpoints.down('md')]: {
-        columnCount: 4,
-      },
-      [theme.breakpoints.up('lg')]: {
-        columnCount: 6,
-      },
-      [theme.breakpoints.up('xl')]: {
-        columnCount: 8,
+        columns: '2',
       },
     },
     row: {

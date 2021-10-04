@@ -1,8 +1,21 @@
+import { useEffect } from 'react';
 import { LoginButton } from 'components';
 import { useTranslation } from 'react-i18next';
+import { useGoBack } from 'hooks';
+import { useUserAuth } from 'services';
 
 export const LoginPage = () => {
+  const { user } = useUserAuth();
+  const goBack = useGoBack();
+
+  useEffect(() => {
+    if (user) {
+      goBack();
+    }
+  }, [user, goBack]);
+
   const { t } = useTranslation();
+
   return (
     <div className="authorization">
       <div className="auth-another-wrapper">

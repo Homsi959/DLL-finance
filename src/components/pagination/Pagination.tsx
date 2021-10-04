@@ -41,15 +41,15 @@ export const Pagination = (props: PaginationProps) => {
       <div className="pagination-links">
         {showFirst && (
           <PaginationLink page={1} disabled={page === 1}>
-            <svg className="svg-icon svg-icon-page-first">
-              <use xlinkHref="/img/svg-sprite.svg#svg-icon-page-first"></use>
+            <svg className="svg-icon page-first">
+              <use xlinkHref="/img/svg-sprite.svg#page-first"></use>
             </svg>
           </PaginationLink>
         )}
         {showPrev && (
           <PaginationLink page={prevPage} disabled={page === prevPage}>
-            <svg className="svg-icon svg-icon-page-prev">
-              <use xlinkHref="/img/svg-sprite.svg#svg-icon-page-prev"></use>
+            <svg className="svg-icon page-prev">
+              <use xlinkHref="/img/svg-sprite.svg#page-prev"></use>
             </svg>
           </PaginationLink>
         )}
@@ -58,15 +58,15 @@ export const Pagination = (props: PaginationProps) => {
         })}
         {showNext && (
           <PaginationLink page={nextPage} disabled={page === nextPage}>
-            <svg className="svg-icon svg-icon-page-next">
-              <use xlinkHref="/img/svg-sprite.svg#svg-icon-page-next"></use>
+            <svg className="svg-icon page-next">
+              <use xlinkHref="/img/svg-sprite.svg#page-next"></use>
             </svg>
           </PaginationLink>
         )}
         {showLast && (
           <PaginationLink page={pageCount} disabled={page === pageCount}>
-            <svg className="svg-icon svg-icon-page-last">
-              <use xlinkHref="/img/svg-sprite.svg#svg-icon-page-last"></use>
+            <svg className="svg-icon page-last">
+              <use xlinkHref="/img/svg-sprite.svg#page-last"></use>
             </svg>
           </PaginationLink>
         )}

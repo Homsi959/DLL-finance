@@ -26,7 +26,7 @@ const style: MuiButtonStyles = {
     '&.Mui-disabled': {
       backgroundColor: palette.secondary.dark,
       color: white,
-    }
+    },
   },
   outlined: {
     padding: '3px 20px',
@@ -38,11 +38,11 @@ const style: MuiButtonStyles = {
       boxShadow: 'none',
       '&.MuiButton-outlinedPrimary': {
         backgroundColor: palette.secondary.light,
-      }
+      },
     },
     '&.Mui-disabled': {
-      boxShadow: 'none'
-    }
+      boxShadow: 'none',
+    },
   },
   text: {
     padding: 0,

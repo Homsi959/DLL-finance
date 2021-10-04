@@ -146,7 +146,7 @@ const CalculationFormInner = forwardRef<HTMLDivElement, CalculationInnerFormProp
           </Accordion>
           <Accordion disabled defaultExpanded={false} expanded={!!data}>
             <AccordionSummary aria-controls="panel5a-content" id="panel5a-header">
-              <Typography color="textPrimary" variant="subtitle1">
+              <Typography color="secondary" variant="subtitle1">
                 {t('ScheduleOfPayments')}
               </Typography>
             </AccordionSummary>

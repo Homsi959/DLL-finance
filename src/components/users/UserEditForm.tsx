@@ -11,15 +11,17 @@ import {
   Grid,
   MenuItem,
   IconButton,
+  Typography,
 } from '@material-ui/core';
 import { Skeleton, Alert } from '@material-ui/lab';
 import { Field } from 'react-final-form';
-import { AutoFocusedForm, TextField, SelectField, useRequired } from '../form';
+import { AutoFocusedForm, TextField, SelectField, useRequired, PhoneInputField } from '../form';
 import { UserViewModel } from './types';
 import { useEditForm } from './useEditForm';
 import { useGoBack } from 'hooks';
 import { palette } from 'theme';
 import { useTranslation } from 'react-i18next';
+import { Avatar } from '../avatar';
 
 export interface UserEditFormProps {
   user: UserViewModel;
@@ -43,13 +45,20 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingTop: 0,
     },
     actions: {
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
     },
     cancelButton: {
       color: theme.palette.error.main,
     },
     item: {
-      marginBottom: theme.spacing(2),
+      marginBottom: theme.spacing(1),
+      justifyContent: 'center',
+    },
+    membershipTitle: {
+      marginBottom: 6,
+    },
+    membershipItem: {
+      marginBottom: 4,
     },
     GridCloseButton: {
       backgroundColor: palette.secondary.light,
@@ -68,6 +77,7 @@ export const UserEditForm = (props: UserEditFormProps) => {
   const classes = useStyles();
   const { user } = props;
   const title = user.name ?? user.userName;
+  const groups = user.groups || [];
   const { onSubmit, initialValues, isLoading } = useEditForm(user);
   const goBack = useGoBack();
   const handleOnClose = useCallback(() => {
@@ -98,36 +108,64 @@ export const UserEditForm = (props: UserEditFormProps) => {
                 <CardHeader className={classes.header} title={title} />
               </Grid>
               <CardContent>
-                <Grid container spacing={4}>
+                <Grid container spacing={1}>
+                  <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
+                    <Avatar size="large" />
+                  </Grid>
+                </Grid>
+                <Grid container spacing={1}>
                   <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
                     <Field
-                      name="name"
-                      label={t('LastFirstName')}
+                      name="lastName"
+                      label={t('LastName')}
                       component={TextField}
                       validate={required}
                     />
                   </Grid>
-                </Grid>
-                <Grid container>
                   <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
-                    <Field
-                      name="role"
-                      label={t('UserType')}
-                      component={SelectField}
-                      validate={required}
-                    >
-                      <MenuItem>
-                        <em>{t('NotSet')}</em>
-                      </MenuItem>
-                      <MenuItem value={'sales_manager'}>{t('Roles.SalesManager')}</MenuItem>
-                      <MenuItem value={'super_sales_manager'}>
-                        {t('Roles.SuperSalesManager')}
-                      </MenuItem>
-                      <MenuItem value={'sales_support'}>{t('Roles.SalesSupport')}</MenuItem>
-                      <MenuItem value={'admin'}>{t('Roles.Admin')}</MenuItem>
-                    </Field>
+                    <Field name="firstName" label={t('FirstName')} component={TextField} />
+                  </Grid>
+                  <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
+                    <Field name="middleName" label={t('MiddleName')} component={TextField} />
+                  </Grid>
+                  <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
+                    <PhoneInputField name="phoneNumber" label={t('PhoneNumber')} />
                   </Grid>
                 </Grid>
+                <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
+                  <Field
+                    name="role"
+                    label={t('UserType')}
+                    component={SelectField}
+                    validate={required}
+                  >
+                    <MenuItem>
+                      <em>{t('NotSet')}</em>
+                    </MenuItem>
+                    <MenuItem value={'sales_manager'}>{t('Roles.SalesManager')}</MenuItem>
+                    <MenuItem value={'super_sales_manager'}>
+                      {t('Roles.SuperSalesManager')}
+                    </MenuItem>
+                    <MenuItem value={'sales_support'}>{t('Roles.SalesSupport')}</MenuItem>
+                    <MenuItem value={'admin'}>{t('Roles.Admin')}</MenuItem>
+                  </Field>
+                </Grid>
+                {groups.length > 0 ? (
+                  <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
+                    <Typography variant="body1" className={classes.membershipTitle}>
+                      {t('Membership in groups')}
+                    </Typography>
+                    <ul>
+                      {groups.map((group) => (
+                        <li key={group.id} className={classes.membershipItem}>
+                          <Typography variant="subtitle2" color="secondary">
+                            {group.name}
+                          </Typography>
+                        </li>
+                      ))}
+                    </ul>
+                  </Grid>
+                ) : null}
                 {submitError && <Alert severity="error">{submitError}</Alert>}
               </CardContent>
               <CardActions className={classes.actions}>

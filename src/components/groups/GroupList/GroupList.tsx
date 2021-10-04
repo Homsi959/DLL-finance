@@ -2,7 +2,7 @@ import { Button, Grid } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { Pagination } from 'components';
 import { GroupFilterForm } from './GroupFilterForm';
-import { GroupDataGrid } from './GroupDataGrid';
+import { GroupTable } from './GroupTable';
 import { useGroupsQuery } from './useGroupsQuery';
 import { useTranslation } from 'react-i18next';
 
@@ -25,7 +25,7 @@ export const GroupList = () => {
       </Grid>
       <Grid container item direction="column">
         <Grid item>
-          <GroupDataGrid groups={groups} loading={loading} />
+          <GroupTable groups={groups} loading={loading} />
         </Grid>
         <Grid item>
           <Pagination {...paging} />

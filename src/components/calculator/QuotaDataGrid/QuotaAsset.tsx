@@ -11,26 +11,30 @@ const useStyles = makeStyles((theme: Theme) =>
       lineHeight: 2,
     },
     name: {
-      color: theme.palette.secondary.main,
-      fontSize: '14px',
       fontWeight: 500,
+      fontSize: '14px',
+      color: theme.palette.textGrey1.main,
+      lineHeight: 1,
+    },
+    assets: {
+      marginTop: theme.spacing(1),
     },
     subjectProp: {
       paddingRight: theme.spacing(0.9),
       maxHeight: '14px',
+      fontSize: '12px',
       lineHeight: '1.1',
+      color: theme.palette.textGrey2.main,
       '&:not(:first-child)': {
         display: 'flex',
         alignItems: 'center',
         paddingLeft: theme.spacing(0.9),
-        fontSize: '12px',
-        borderLeft: '1px solid #D1D7E4',
-        color: '#6B7888',
+        borderLeft: '1px solid ' + theme.palette.grey3.main,
         flexShrink: 0,
       },
     },
     typeAnnual: {
-      minWidth: '138px',
+      minWidth: '105px',
     },
   })
 );
@@ -84,7 +88,7 @@ export const QuotaAsset = (props: QuotaAssetProps) => {
       <Grid className={classes.name} item>
         {name}
       </Grid>
-      <Grid item container direction="row">
+      <Grid className={classes.assets} item container direction="row">
         <Grid item className={classes.subjectProp}>
           {t('NumberOfItems')}: {numberOfItems}
         </Grid>

@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { UseMutationOptions, useMutation, UseQueryOptions, useQuery, QueryKey } from 'react-query';
 import { ValidationProblemDetails } from 'schema';
 import { useUserAuth } from 'services';
-import { UnauthorizedError } from './UnauthorizedError';
 
 const defaultHeaders = {
   Accept: 'application/json',
@@ -27,13 +26,7 @@ export const useBackendFetch = () => {
             ...headers,
           };
       const request = { headers: requestHeaders, ...rest };
-
       const response = await fetch(url, request);
-
-      if (response.status === 401) {
-        throw new UnauthorizedError();
-      }
-
       return response;
     },
     [accessToken]
@@ -57,11 +50,6 @@ export const useBackendQuery = <TResponse, TQueryKey extends QueryKey = QueryKey
 
   const getData = useCallback(async (): Promise<TResponse> => {
     const response = await fetchBackend(url);
-
-    if (response.status === 404) {
-      throw new Error();
-    }
-
     const result: TResponse = await response.json();
     return result;
   }, [url, fetchBackend]);
@@ -110,9 +98,9 @@ export const useBackendMutation = <TRequest, TResponse, TContext = unknown>(
         const validationErrors: ValidationProblemDetails | undefined = await response.json();
         throw validationErrors ?? { errors: { '': ['Ошибка'] } };
       }
-
-      if (response.status === 404) {
-        throw new Error();
+      if (response.status === 500) {
+        const error: ValidationProblemDetails = { errors: { '': ['Ошибка'] } };
+        throw error;
       }
 
       if (json) {

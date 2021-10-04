@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const getIconImageLink = (action: ActionButtonProps['action']) => {
   return action === 'increase'
-    ? '/img/svg-sprite.svg#svg-icon-arrow-right'
-    : '/img/svg-sprite.svg#svg-icon-arrow-left';
+    ? '/img/svg-sprite.svg#arrow-right'
+    : '/img/svg-sprite.svg#arrow-left';
 };
 
 const treshold = 0.1;

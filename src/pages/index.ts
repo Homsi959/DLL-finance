@@ -5,4 +5,4 @@ export * from './login-page';
 export * from './silent-page';
 export * from './users-page';
 export * from './groups-page';
-export * from './counterparties-page'
+export * from './counterparties-page';

@@ -42,13 +42,19 @@ export const useGroupsQuery = () => {
     data,
     isLoading: loading,
     refetch,
-  } = useBackendQuery<GroupListResult>(url, ['groups', page, pageSize]);
+  } = useBackendQuery<GroupListResult>(url, ['groups', url]);
 
   useEffect(() => {
     refetch();
   }, [refetch, url]);
 
   const groups = data?.data ?? [];
+
+  const newGroups = groups.map((group) => ({
+    ...group,
+    // @ts-ignore
+    owners: group.owners[0], //TODO owners [] -> string hack, delete @ts-ignore
+  }));
 
   return {
     paging: {
@@ -62,7 +68,7 @@ export const useGroupsQuery = () => {
       search,
       setSearch,
     },
-    groups,
+    groups: newGroups,
     loading,
   };
 };

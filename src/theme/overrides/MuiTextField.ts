@@ -28,11 +28,6 @@ const style: Partial<StyleRules<TextFieldClassKey>> = {
         padding: '10px 10px',
       },
     },
-    '& svg': {
-      position: 'absolute',
-      right: 0,
-      pointerEvents: 'none',
-    }
   },
 };
 

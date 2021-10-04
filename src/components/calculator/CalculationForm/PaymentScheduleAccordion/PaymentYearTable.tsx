@@ -8,6 +8,8 @@ import { CheckboxField } from 'components/form/CheckboxField';
 import { NumberInputField } from 'components/form/NumberInputField';
 import { useRequired } from 'components/form';
 import { white } from 'theme/palette';
+import { MonthPaymentOption } from 'schema/serverTypes';
+import { OnIsPaymentChanged } from './OnIsPaymentChanged';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,11 +20,11 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: 0,
         '& .MuiButtonBase-root': {
           padding: 0,
-        }
+        },
       },
       '& .MuiFormHelperText-root': {
-        marginTop: 0
-      }
+        marginTop: 0,
+      },
     },
     input: {
       verticalAlign: 'middle',
@@ -44,34 +46,34 @@ const useStyles = makeStyles((theme: Theme) =>
       '& th': {
         verticalAlign: 'middle',
         '&:first-child': {
-          paddingLeft: theme.spacing(2)
-        }
-      }
+          paddingLeft: theme.spacing(2),
+        },
+      },
     },
     lineTable: {
       height: '36px',
       '&:nth-child(odd)': {
-        backgroundColor: theme.palette.secondary.light
-      }
-    },
-    Preferential: {
-      paddingLeft: theme.spacing(3)
+        backgroundColor: theme.palette.secondary.light,
+      },
     },
     Payment: {
-      paddingLeft: theme.spacing(3)
+      paddingLeft: theme.spacing(3),
+    },
+    Preferential: {
+      paddingLeft: theme.spacing(4),
     },
     Coefficient: {
-      paddingLeft: theme.spacing(1)
+      paddingLeft: theme.spacing(3.3),
     },
     tbody: {
       color: theme.palette.secondary.main,
       '& td': {
-        verticalAlign: 'middle'
-      }
+        verticalAlign: 'middle',
+      },
     },
     index: {
-      paddingLeft: theme.spacing(2) 
-    }
+      paddingLeft: theme.spacing(2),
+    },
   })
 );
 
@@ -79,6 +81,7 @@ export type PaymentYearTableProps = {
   fields: YearField[];
   numberOfMonths: number;
   year: number;
+  update: (index: number, value: MonthPaymentOption) => void;
 };
 
 export const PaymentYearTable = (props: PaymentYearTableProps) => {
@@ -153,8 +156,9 @@ export const PaymentYearTable = (props: PaymentYearTableProps) => {
                   type="checkbox"
                   component={CheckboxField}
                   disabled={disabled}
-                  isСircle={true}
+                  isCircle={true}
                 />
+                <Field name={name} component={OnIsPaymentChanged} />
               </td>
               <Field name={isPaymentFieldName} type="checkbox">
                 {({ input }) => {
@@ -168,7 +172,7 @@ export const PaymentYearTable = (props: PaymentYearTableProps) => {
                           type="checkbox"
                           component={CheckboxField}
                           disabled={isDisabled}
-                          isСircle={true}
+                          isCircle={true}
                         />
                       </td>
                       <td className={classes.input}>

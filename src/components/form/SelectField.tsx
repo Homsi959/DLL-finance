@@ -7,61 +7,59 @@ import {
   FormControlProps,
 } from '@material-ui/core';
 import { FieldRenderProps } from 'react-final-form-hooks';
-import { withStyles, StyledComponentProps } from '@material-ui/core/styles';
-import { IconArrowLight } from 'components/icons';
-import palette, { white } from 'theme/palette';
+import { withStyles, StyledComponentProps, Theme, createStyles } from '@material-ui/core/styles';
+import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 
-const styles = {
-  root: {
-    width: '100%',
-    minWidth: '0',
-    color: palette.secondary.main,
-    '& .MuiSelect-outlined.MuiSelect-outlined': {
-      paddingRight: 0,
-    },
-    '& svg': {
-      position: 'absolute',
-      right: '0',
-      pointerEvents: 'none',
-    },
-  },
-  paper: {
-    borderRadius: 0,
-    boxShadow: '0px 5px 10px 0px #383C611A',
-    border: '1px solid #D1D7E4',
-    maxHeight: 185,
-  },
-  list: {
-    paddingTop: 0,
-    paddingBottom: 0,
-    '& li': {
-      color: palette.secondary.main,
-    },
-    '& .MuiListItem-button:hover': {
-      backgroundColor: palette.secondary.light,
-    },
-    '& .MuiListItem-button.Mui-selected': {
-      backgroundColor: palette.secondary.light,
-    },
-  },
-  lowercaseUl: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr',
-    padding: 0,
-    gap: '0px 0px',
-    '& .MuiListItem-root': {
-      minHeight: 0,
-      justifyContent: 'center',
-      padding: '5px',
-      borderBottom: '1px solid #E9F1FE',
-      borderRight: '1px solid #E9F1FE',
-      '&:hover': {
-        backgroundColor: palette.primary.main,
-        color: white,
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+      minWidth: '0',
+      color: theme.palette.secondary.main,
+      '& .MuiSelect-outlined.MuiSelect-outlined': {
+        paddingRight: 0,
+      },
+      '& .MuiSelect-icon': {
+        color: theme.palette.primary.main,
       },
     },
-  },
-};
+    paper: {
+      borderRadius: 0,
+      boxShadow: '0px 5px 10px 0px #383C611A',
+      border: '1px solid #D1D7E4',
+      maxHeight: 185,
+    },
+    list: {
+      paddingTop: 0,
+      paddingBottom: 0,
+      '& li': {
+        color: theme.palette.secondary.main,
+      },
+      '& .MuiListItem-button:hover': {
+        backgroundColor: theme.palette.secondary.light,
+      },
+      '& .MuiListItem-button.Mui-selected': {
+        backgroundColor: theme.palette.secondary.light,
+      },
+    },
+    lowercaseUl: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr',
+      padding: 0,
+      gap: '0px 0px',
+      '& .MuiListItem-root': {
+        minHeight: 0,
+        justifyContent: 'center',
+        padding: '5px',
+        borderBottom: '1px solid #E9F1FE',
+        borderRight: '1px solid #E9F1FE',
+        '&:hover': {
+          backgroundColor: theme.palette.primary.main,
+          color: theme.palette.common.white,
+        },
+      },
+    },
+  });
 
 export type SelectFieldProps = Omit<SelectProps, 'name' | 'onChange' | 'value'> &
   FieldRenderProps &
@@ -101,7 +99,9 @@ export const SelectField = withStyles(styles)((props: SelectFieldProps) => {
         onFocus={input.onFocus}
         label={label}
         className={classes?.root}
-        IconComponent={() => <IconArrowLight colors={{ fill: palette.primary.main }} />}
+        IconComponent={(props) => {
+          return <KeyboardArrowDownRoundedIcon {...props} color="primary" />;
+        }}
         MenuProps={{
           classes: {
             paper: classes?.paper,

@@ -30,17 +30,17 @@ export const useMeQuery = () => {
 
   const getUser = useCallback(async () => {
     const user = await userManager.getUser();
-    if (!user || !user.access_token || !user.profile.email) {
-      throw new Error('Invalid user');
+    if (!user) {
+      return undefined;
     }
 
     const claims = getParsedJwt<{ role: string | undefined }>(user.access_token);
 
     const me: MeQueryResult = {
       id: user.profile.sub,
-      name: user.profile.name ?? user.profile.email,
+      name: user.profile.name ?? user.profile.email ?? '',
       role: claims?.role,
-      email: user.profile.email,
+      email: user.profile.email ?? '',
     };
 
     return me;

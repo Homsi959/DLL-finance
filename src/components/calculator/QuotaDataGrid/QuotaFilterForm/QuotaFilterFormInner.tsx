@@ -10,8 +10,10 @@ import { CounterpartyType } from 'schema/serverTypes';
 import { useDebounce } from 'use-debounce';
 import { FilterFormValues, FilterFormRenderProps, QuotaFilterFormProps } from './types';
 import { UserAutocomplete } from './UserAutocomplete';
-import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
+import { IconSprite } from 'components';
+import clsx from 'clsx';
+import { palette } from 'theme';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     item: {
-      minWidth: '320px',
+      minWidth: '280px',
       marginRight: '20px',
     },
     buttonReset: {
@@ -32,10 +34,9 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'flex-end',
     },
     noIcon: {
-      '& .MuiInputBase-root': {
-        '& svg:': {
-          backgroundColor: 'red',
-          display: 'none !important',
+      '& .MuiTextField-root': {
+        '& svg': {
+          display: 'none',
         },
       },
     },
@@ -125,7 +126,17 @@ export const QuotaFilterFormInner = (props: FilterFormRenderProps) => {
           </Grid>
         )}
         <Grid item className={classes.item}>
-          <Field label={t('Search')} variant="standard" name="search" component={TextField} />
+          <Field
+            label={t('Search')}
+            variant="standard"
+            name="search"
+            component={TextField}
+            InputProps={{
+              endAdornment: (
+                <IconSprite width="16px" color={palette.textGrey2.main} icon="search" />
+              ),
+            }}
+          />
         </Grid>
         <Grid className={classes.buttonReset} item>
           <FormControl>

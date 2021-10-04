@@ -4,7 +4,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core';
 import { IconColors } from './types';
 
 export type IconCheckboxProps = IconColors & {
-  isChecked: boolean;
+  checked: boolean;
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -17,10 +17,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const IconCheckbox = (props: IconCheckboxProps) => {
-  const { stroke = palette.secondary.dark, fill = 'white', isChecked } = props;
+  const { stroke = palette.secondary.dark, fill = 'white', checked } = props;
   const classes = useStyles();
 
-  return isChecked ? (
+  return checked ? (
     <SvgIcon className={classes.root}>
       <rect x="0.5" y="0.5" width="17" height="17" fill={fill} stroke={stroke} />
       <path
