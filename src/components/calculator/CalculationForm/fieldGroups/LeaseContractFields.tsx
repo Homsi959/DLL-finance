@@ -1,30 +1,31 @@
-import { Grid, MenuItem } from '@material-ui/core';
+import { createStyles, makeStyles, MenuItem, Theme } from '@material-ui/core';
+import { Grid } from 'components/Grid';
 import { Field } from 'react-final-form';
 import { OnChange } from 'react-final-form-listeners';
 import { useRequired, SelectField, SwitchField, TextField } from 'components';
 import { AmountField } from '../../AmountField';
 import { Amount, AmountType, CalculationMethod } from 'schema';
 import { FormFieldsProps } from './types';
-import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 
-const useStyles = makeStyles({
-  hasResidualValue: {
-    marginTop: '-10px',
-  },
-});
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    wrapper: {
+      width: '100%',
+    },
+  })
+);
 
 export const LeaseContractFields = (props: FormFieldsProps) => {
-  const { form } = props;
   const classes = useStyles();
-
+  const { form } = props;
   const { t } = useTranslation();
   const { required } = useRequired();
 
   return (
-    <Grid container spacing={0}>
-      <Grid container item xs={12} spacing={2}>
-        <Grid item md={1} xs={12}>
+    <div className={classes.wrapper}>
+      <Grid container columnSpacing={2} rowSpacing={2.5}>
+        <Grid item xl={2} md={3} xs={24}>
           <AmountField
             name="prepayment.value"
             label={`${t('Prepayment')}, %`}
@@ -32,7 +33,7 @@ export const LeaseContractFields = (props: FormFieldsProps) => {
             amountMode={AmountType.Percents}
           />
         </Grid>
-        <Grid item md={3} xs={12}>
+        <Grid item xl={4} md={5} xs={24}>
           <AmountField
             name="prepaymentAmount"
             label={t('PrepaymentAmount')}
@@ -40,7 +41,7 @@ export const LeaseContractFields = (props: FormFieldsProps) => {
             disabled
           />
         </Grid>
-        <Grid item md={1} xs={12}>
+        <Grid item xl={2} md={3} xs={24}>
           <AmountField
             name="tradeFee"
             label={`${t('Commission')}, %`}
@@ -48,7 +49,7 @@ export const LeaseContractFields = (props: FormFieldsProps) => {
             amountMode={AmountType.Percents}
           />
         </Grid>
-        <Grid item md={3} xs={12}>
+        <Grid item xl={4} md={5} xs={24}>
           <AmountField
             name="tradeFeeAmount"
             label={t('CommisionAmount')}
@@ -56,7 +57,7 @@ export const LeaseContractFields = (props: FormFieldsProps) => {
             disabled
           />
         </Grid>
-        <Grid item md={1} xs={12}>
+        <Grid item xl={2} md={3} xs={24}>
           <Field
             name="numberOfMonths"
             label={t('LeaseTerm')}
@@ -73,7 +74,7 @@ export const LeaseContractFields = (props: FormFieldsProps) => {
             })}
           </Field>
         </Grid>
-        <Grid item md={3} xs={12}>
+        <Grid item xl={4} md={5} xs={24}>
           <AmountField
             name="fundingAmount"
             label={t('FundingAmount')}
@@ -81,9 +82,7 @@ export const LeaseContractFields = (props: FormFieldsProps) => {
             disabled
           />
         </Grid>
-      </Grid>
-      <Grid container item xs={12} spacing={2}>
-        <Grid className={classes.hasResidualValue} item lg={2} md={2} xs={12}>
+        <Grid item md="auto" xs={24}>
           <Field
             name="hasResidualValue"
             label={t('RV')}
@@ -93,7 +92,7 @@ export const LeaseContractFields = (props: FormFieldsProps) => {
             component={SwitchField}
           />
         </Grid>
-        <Grid item lg={3} md={3} xs={12}>
+        <Grid item xl={5} md={6} xs={24}>
           <Field name="hasResidualValue" type="checkbox">
             {({ input }) => {
               return (
@@ -120,7 +119,7 @@ export const LeaseContractFields = (props: FormFieldsProps) => {
             }}
           </OnChange>
         </Grid>
-        <Grid item md={3} xs={12}>
+        <Grid item xl={6} md={7} xs={24}>
           <Field
             name="calculationMethod"
             label={t('ScheduleType')}
@@ -138,7 +137,7 @@ export const LeaseContractFields = (props: FormFieldsProps) => {
             </MenuItem>
           </Field>
         </Grid>
-        <Grid item md={1} xs={12}>
+        <Grid item xl={2} md={3} xs={24}>
           <AmountField
             name="cofPercents"
             label={`${t('Cof')}, %`}
@@ -146,7 +145,7 @@ export const LeaseContractFields = (props: FormFieldsProps) => {
             required
           />
         </Grid>
-        <Grid item md={1} xs={12}>
+        <Grid item xl={2} md={3} xs={24}>
           <AmountField
             name="marginPercents"
             label={`${t('Margin')}, %`}
@@ -154,7 +153,7 @@ export const LeaseContractFields = (props: FormFieldsProps) => {
             required
           />
         </Grid>
-        <Grid item md={2} xs={12}>
+        <Grid item xl={3} md={4} xs={24}>
           <Field
             name="generalRatePercents"
             label={`${t('GeneralRate')}, %`}
@@ -163,6 +162,6 @@ export const LeaseContractFields = (props: FormFieldsProps) => {
           />
         </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };

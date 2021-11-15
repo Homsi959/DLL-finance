@@ -14,8 +14,10 @@ import { OnIsPaymentChanged } from './OnIsPaymentChanged';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      borderCollapse: 'collapse',
+      border: 'none',
       width: '100%',
-      boxShadow: '0px 0px 5px 0px #383C611A',
+      boxShadow: '0px 0px 5px 0px ' + theme.palette.grey5.main,
       '& .MuiFormControlLabel-root': {
         margin: 0,
         '& .MuiButtonBase-root': {
@@ -27,9 +29,15 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     input: {
+      paddingLeft: theme.spacing(1.5),
+      paddingRight: theme.spacing(1.5),
       verticalAlign: 'middle',
       '& .MuiFormControl-root': {
         marginTop: 0,
+        justifyContent: 'center',
+        '& .MuiGrid-root': {
+          justifyContent: 'center',
+        },
       },
       '& .MuiInputBase-root': {
         backgroundColor: theme.palette.common.white,
@@ -44,35 +52,44 @@ const useStyles = makeStyles((theme: Theme) =>
       color: white,
       height: '38px',
       '& th': {
+        fontWeight: 500,
         verticalAlign: 'middle',
+        padding: theme.spacing(0, 1.5),
         '&:first-child': {
-          paddingLeft: theme.spacing(2),
+          paddingLeft: theme.spacing(2.5),
+        },
+        '&:last-child': {
+          paddingRight: theme.spacing(2.5),
         },
       },
     },
     lineTable: {
       height: '36px',
+      '& td': {
+        padding: theme.spacing(0, 1.5),
+        '&:first-child': {
+          paddingLeft: theme.spacing(2.5),
+        },
+        '&:last-child': {
+          paddingRight: theme.spacing(2.5),
+        },
+      },
       '&:nth-child(odd)': {
         backgroundColor: theme.palette.secondary.light,
       },
     },
     Payment: {
-      paddingLeft: theme.spacing(3),
+      textAlign: 'center',
     },
     Preferential: {
-      paddingLeft: theme.spacing(4),
+      textAlign: 'center',
     },
-    Coefficient: {
-      paddingLeft: theme.spacing(3.3),
-    },
+    Coefficient: {},
     tbody: {
       color: theme.palette.secondary.main,
       '& td': {
         verticalAlign: 'middle',
       },
-    },
-    index: {
-      paddingLeft: theme.spacing(2),
     },
   })
 );
@@ -116,8 +133,8 @@ export const PaymentYearTable = (props: PaymentYearTableProps) => {
     <table className={classes.root}>
       <thead className={classes.thead}>
         <tr>
-          <th>№</th>
-          <th>{t('Month')}</th>
+          <th align="left">№</th>
+          <th align="left">{t('Month')}</th>
           <th>{t('IsPayment')}</th>
           <th>{t('IsPreferential')}</th>
           <th className={classes.Coefficient}>{t('Coefficient')}</th>
@@ -138,7 +155,7 @@ export const PaymentYearTable = (props: PaymentYearTableProps) => {
                   const { value } = input;
                   return (
                     <>
-                      <td className={classes.index}>{value}</td>
+                      <td>{value}</td>
                       <td>
                         <Field<string | undefined> name="seasonalPaymentOptions.date">
                           {({ input }) => {

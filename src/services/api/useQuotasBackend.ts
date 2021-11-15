@@ -42,3 +42,8 @@ export const useQuotasDictionaryBackendQuery = <TResponse>(
     relativeUrl,
     createOptions(options)
   );
+
+export const useDictionaryBackendMutation = <TRequest, TResponse, TContext = unknown>(
+  relativeUrl: string | ((form: TRequest) => string),
+  options: MutationOptions<TRequest, TResponse, TContext> | undefined = { method: 'POST' }
+) => useBackendMutation(`${calculationUrl}/api/v1/dictionaries/${relativeUrl}`, options);

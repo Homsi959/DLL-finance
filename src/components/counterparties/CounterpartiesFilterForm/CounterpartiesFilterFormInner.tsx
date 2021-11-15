@@ -1,7 +1,5 @@
 import { useCallback, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import { Field, FormSpy, FormSpyRenderProps } from 'react-final-form';
 import { TextField } from 'components/form/TextField';
@@ -15,27 +13,22 @@ import {
 import { useTranslation } from 'react-i18next';
 import { MenuItem } from '@material-ui/core';
 import { SelectField } from 'components/form';
-import { IconSprite } from 'components';
+import { Grid, IconSprite, Button } from 'components';
 import { palette } from 'theme';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginBottom: theme.spacing(1),
-    },
-    grid: {
-      '& .MuiFormControl-root': {
-        marginTop: 0,
-      },
+      width: '100%',
     },
     item: {
-      minWidth: '175px',
-      marginRight: '20px',
+      minWidth: '200px',
+      marginRight: theme.spacing(2.5),
     },
     buttonReset: {
       display: 'flex',
       alignItems: 'flex-end',
-      marginBottom: theme.spacing(0.5),
+      marginBottom: theme.spacing(0.2),
     },
   })
 );
@@ -80,8 +73,8 @@ export const CounterpartiesFilterFormInner = (props: CounterpartyFilterFormRende
           return <FilterFormSpy {...formSpyProps} setType={setType} setSearch={setSearch} />;
         }}
       </FormSpy>
-      <Grid container spacing={1} className={classes.grid}>
-        <Grid item className={classes.item}>
+      <Grid xs={24} container>
+        <Grid md={6} xs={24} lg={4} item className={classes.item}>
           <Field name="type" label={t('Type')} component={SelectField} variant="standard">
             <MenuItem value={CounterpartyType.dealer}>{t('Dealer')}</MenuItem>
             <MenuItem value={CounterpartyType.lessee}>{t('Lessee')}</MenuItem>
@@ -89,7 +82,7 @@ export const CounterpartiesFilterFormInner = (props: CounterpartyFilterFormRende
             <MenuItem value={CounterpartyType.insuranceCompany}>{t('InsuranceCompany')}</MenuItem>
           </Field>
         </Grid>
-        <Grid item className={classes.item}>
+        <Grid md={6} xs={24} lg={4} item className={classes.item}>
           <Field
             label={t('Search')}
             variant="standard"
@@ -102,7 +95,7 @@ export const CounterpartiesFilterFormInner = (props: CounterpartyFilterFormRende
             }}
           />
         </Grid>
-        <Grid className={classes.buttonReset} item>
+        <Grid md={6} xs={24} lg={4} className={classes.buttonReset} item>
           <FormControl>
             <Button variant="text" onClick={handleOnReset}>
               {t('Reset')}

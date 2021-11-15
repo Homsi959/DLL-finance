@@ -1,5 +1,5 @@
 export const formatNumber = (
-  value: Number,
+  value: number,
   fractionDigits: number | undefined = 2,
   trimEnd: boolean | undefined = false
 ) => {

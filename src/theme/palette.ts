@@ -65,7 +65,7 @@ const style = createPalette({
     light: colors.red[50],
   },
   text: {
-    primary: KitColors.textGrey3,
+    primary: KitColors.textGrey1,
     secondary: KitColors.grey4,
     disabled: '#aeaeae',
   },

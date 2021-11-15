@@ -1,11 +1,11 @@
-import { Button, Grid } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Box, Grid } from '@material-ui/core';
 import { Pagination } from 'components';
 import { useCounterpartiesData } from './useCounterpartiesData';
 import { useTranslation } from 'react-i18next';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { CounterpartiesFilterForm } from './CounterpartiesFilterForm';
 import { CounterpartiesTable } from './CounterpartiesTable';
+import { Button } from 'components';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,26 +31,37 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       marginLeft: theme.spacing(4),
     },
-    indicatContent: {
+    indicatorContent: {
       marginLeft: theme.spacing(1),
     },
-    button: {
-      '& .MuiButtonBase-root': {
-        backgroundColor: theme.palette.common.white,
+    filter: {
+      display: 'inline-block',
+      [theme.breakpoints.up('md')]: {
+        display: 'flex',
       },
+      alignItems: 'flex-end',
     },
   })
 );
 
-type IndicatorProps = {
-  ok: boolean;
+type IndicatorOn = {
+  on: true;
 };
 
-const Indicator = (props: IndicatorProps) => {
-  const { ok } = props;
-  const classes = useStyles();
+type IndicatorOff = {
+  off: true;
+};
 
-  return <div className={ok ? classes.ok : classes.error}></div>;
+type IndicatorProps = IndicatorOn | IndicatorOff;
+
+function isOn(indicator: IndicatorOn | IndicatorOff): indicator is IndicatorOn {
+  return (indicator as IndicatorOn).on === true;
+}
+
+const Indicator = (props: IndicatorProps) => {
+  const classes = useStyles();
+  const ok = isOn(props);
+  return <div className={ok ? classes.ok : classes.error} />;
 };
 
 export const CounterpartiesDataGrid = () => {
@@ -59,29 +70,25 @@ export const CounterpartiesDataGrid = () => {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={1} direction="column">
-      <Grid container item justify="space-between" alignItems="center">
-        <Grid item>
-          <CounterpartiesFilterForm {...filter} />
-        </Grid>
-        <Grid className={classes.button} item>
-          <Button variant="outlined" color="primary" component={Link} to="/counterparties/create">
-            {t('Buttons.AddCounterparty')}
-          </Button>
-        </Grid>
-      </Grid>
+    <Grid container direction="column">
+      <Box mb={2.5} className={classes.filter}>
+        <CounterpartiesFilterForm {...filter} />
+        <Button variant="contained2" to="/counterparties/create">
+          {t('Buttons.AddCounterparty')}
+        </Button>
+      </Box>
       <Grid container item direction="column">
         <Grid item>
           <CounterpartiesTable {...dataProps} />
         </Grid>
         <Grid container className={classes.wrapIndicators}>
           <Grid item className={classes.indicator}>
-            <Indicator ok={true} />
-            <Grid className={classes.indicatContent}>Заполнен</Grid>
+            <Indicator on />
+            <Grid className={classes.indicatorContent}>{t('Filled')}</Grid>
           </Grid>
           <Grid item className={classes.indicator}>
-            <Indicator ok={false} />
-            <Grid className={classes.indicatContent}>Не заполнен</Grid>
+            <Indicator off />
+            <Grid className={classes.indicatorContent}>{t('Not filled')}</Grid>
           </Grid>
         </Grid>
         <Grid item>

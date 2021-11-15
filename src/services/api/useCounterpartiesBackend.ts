@@ -1,7 +1,7 @@
 import { QueryKey } from 'react-query';
-import { CounterpartyViewModel } from 'schema';
 import { useBackendQuery, useBackendMutation, QueryOptions, MutationOptions } from '.';
 import { calculationUrl } from '../calculation';
+import { CounterpartyViewModel } from 'schema';
 
 const createUrlFromParts = (relativeUrl: string) => {
   const parts = [

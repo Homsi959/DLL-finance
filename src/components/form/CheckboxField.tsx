@@ -1,9 +1,24 @@
-import { FormControlLabel, Checkbox, CheckboxProps } from '@material-ui/core';
+import {
+  FormControlLabel,
+  Checkbox,
+  CheckboxProps,
+  makeStyles,
+  Theme,
+  createStyles,
+} from '@material-ui/core';
 import { FieldRenderProps } from 'react-final-form-hooks';
 import { StyledComponentProps } from '@material-ui/core/styles';
 import { IconCheckbox } from '../icons';
 import { IconCheckboxCircyle } from '../icons';
 import { IconCheckboxUncheckedCircyle } from '../icons';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      height: '34px',
+    },
+  })
+);
 
 export type CheckboxFieldProps = CheckboxProps &
   FieldRenderProps<boolean> &
@@ -16,6 +31,7 @@ const CheckedIcon = <IconCheckbox checked={true} />;
 const UncheckedIcon = <IconCheckbox checked={false} />;
 
 export const CheckboxField = (props: CheckboxFieldProps) => {
+  const classes = useStyles();
   const {
     input,
     color = 'primary',
@@ -29,6 +45,7 @@ export const CheckboxField = (props: CheckboxFieldProps) => {
 
   return (
     <FormControlLabel
+      className={classes.root}
       label={label}
       control={
         <Checkbox

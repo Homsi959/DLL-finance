@@ -2,8 +2,6 @@ import { FormControlClassKey, StyleRules } from '@material-ui/core';
 
 const style: Partial<StyleRules<FormControlClassKey>> = {
   root: {
-    marginTop: 16,
-    marginBottom: 0,
     '& .MuiOutlinedInput-adornedEnd': {
       paddingRight: 0,
     },

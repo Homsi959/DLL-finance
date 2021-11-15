@@ -9,7 +9,8 @@ import { Field } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 import { CalculationMethod, MonthPaymentOption, SeasonalPaymentType } from 'schema/serverTypes';
 import { getNumber } from 'components/calculator/utils';
-import { Grid, MenuItem } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
+import { Grid } from 'components/Grid';
 import { SelectField } from 'components/form/SelectField';
 import { useRequired } from 'components/form';
 import { DateField } from './DateField';
@@ -21,6 +22,9 @@ import { OnHasCyclicityChanged } from './OnHasCyclicityChanged';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    wrapper: {
+      width: '100%',
+    },
     hidden: {
       display: 'none',
     },
@@ -29,12 +33,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     payment: {
       marginTop: theme.spacing(1),
-    },
-    hasCyclicity: {
-      marginLeft: theme.spacing(2),
-      '& .MuiTypography-root': {
-        paddingTop: 0,
-      },
     },
   })
 );
@@ -78,9 +76,9 @@ const PaymentSchedule = (props: PaymentScheduleProps) => {
         <Typography variant="subtitle1">{t('PaymentSchedule')}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Grid container spacing={0}>
-          <Grid container item spacing={1}>
-            <Grid item md={3} xs={12}>
+        <div className={classes.wrapper}>
+          <Grid container columnSpacing={2} rowSpacing={2.5}>
+            <Grid item xl={4} lg={6} md={8} xs={24}>
               <Field
                 name="seasonalPaymentOptions.paymentType"
                 label={t('SeasonalPaymentType')}
@@ -93,7 +91,7 @@ const PaymentSchedule = (props: PaymentScheduleProps) => {
                 <MenuItem value={SeasonalPaymentType.MainDebt}>{t('ToMainDebt')}</MenuItem>
               </Field>
             </Grid>
-            <Grid item md={2} xs={12}>
+            <Grid item xl={3} lg={4} md={5} xs={24}>
               <Field
                 name="seasonalPaymentOptions.date"
                 label={t('StartDate')}
@@ -103,7 +101,7 @@ const PaymentSchedule = (props: PaymentScheduleProps) => {
                 validate={calculationMethod === CalculationMethod.Seasonal ? required : undefined}
               />
             </Grid>
-            <Grid className={classes.hasCyclicity} item md={3} xs={12}>
+            <Grid item md="auto" xs={24}>
               <Field
                 name="seasonalPaymentOptions.hasCyclicity"
                 label={t('Cyclicity')}
@@ -141,7 +139,7 @@ const PaymentSchedule = (props: PaymentScheduleProps) => {
               return <PaymentOptionList {...arrayProps} numberOfMonths={numberOfMonths} />;
             }}
           </FieldArray>
-        </Grid>
+        </div>
       </AccordionDetails>
     </Accordion>
   );

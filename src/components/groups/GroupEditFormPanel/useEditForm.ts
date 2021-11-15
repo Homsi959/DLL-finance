@@ -3,7 +3,9 @@ import { useCallback } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useUserAuth } from 'services/authentication';
 import { IDENTITY_CONFIG } from 'services/authentication/AuthenticationConfig';
-import { GroupEditFormValues, GroupUsersViewModel } from '../types';
+import { GroupEditFormValues } from '../types';
+import { GroupUsersViewModel, UpdateGroupViewModel } from 'schema/serverTypes';
+import { useLessorsQuery } from '../useLessorsQuery';
 
 const useUpdateGroupMutation = (id: number) => {
   const { user } = useUserAuth();
@@ -12,12 +14,12 @@ const useUpdateGroupMutation = (id: number) => {
   const updateGroup = useCallback(
     async (values: GroupEditFormValues) => {
       const requestUrl = `${IDENTITY_CONFIG.authority}/api/v1/groups/${id}`;
-      const group = {
+      const group: UpdateGroupViewModel = {
         ...values,
         users: values.users.map((user) => {
           return { id: user.id };
         }),
-        owners: [{ id: values.owners }],
+        owners: [{ id: values.owner }],
       };
       const response = await fetch(requestUrl, {
         method: 'PUT',
@@ -62,10 +64,20 @@ const useUpdateGroupMutation = (id: number) => {
 };
 
 export const useEditForm = (group: GroupUsersViewModel) => {
-  const initialValues = {
+  const initialValues: GroupEditFormValues = {
     ...group,
-    owners: group.owners.id,
+    owner: group.owners.length > 0 ? group.owners[0].id : '',
+    lessorInn: group.lessor?.inn ?? '',
   };
+
+  const { data = [], isLoading: isLoadingLessors } = useLessorsQuery();
+  let options = data;
+  if (
+    group.lessor !== undefined &&
+    options.find((t) => t.inn === group.lessor?.inn) === undefined
+  ) {
+    options.push(group.lessor);
+  }
 
   const { mutateAsync, isLoading, isError } = useUpdateGroupMutation(group.id);
 
@@ -78,8 +90,9 @@ export const useEditForm = (group: GroupUsersViewModel) => {
 
   return {
     initialValues,
-    isLoading,
+    isLoading: isLoadingLessors || isLoading,
     isError,
+    options,
     onSubmit,
   };
 };

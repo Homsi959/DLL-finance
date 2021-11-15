@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
-import { Button, Divider, Grid } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import { Grid } from 'components/Grid';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { FieldArrayWithId, useWatch, UseFieldArrayReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -7,24 +8,41 @@ import { CounterpartyViewModel } from 'schema/serverTypes';
 import { Checkbox, Input } from 'components/form';
 import { IconSprite } from 'components/icons';
 import { CounterpartyFormProps } from './types';
-import palette from 'theme/palette';
 import { RadioButtonCheckedOutlined, RadioButtonUncheckedOutlined } from '@material-ui/icons';
+import theme from 'theme';
+import { BicAutocomplete } from './BicAutocomplete';
+import { BankAutocomplete } from './BankAutocomplete';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {
+      padding: '16px 20px',
+      width: 'calc(100% + 40px)',
+      margin: '0 -20px',
+    },
+    main: {
+      backgroundColor: theme.palette.lightBlue2.main,
+    },
     head: {
       color: theme.palette.secondary.main,
     },
     delete: {
-      minWidth: 0,
-      color: theme.palette.primary.light,
-    },
-    divider: {
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(2),
-      '&:last-of-type': {
-        display: 'none',
+      textAlign: 'right',
+      '& > *': {
+        minWidth: 0,
+        color: theme.palette.primary.light,
       },
+    },
+    whiteInput: {
+      '& input': {
+        backgroundColor: 'white',
+      },
+    },
+    checkBox: {
+      margin: theme.spacing(-2, 0),
+    },
+    wrapper: {
+      width: '100%',
     },
   })
 );
@@ -73,46 +91,43 @@ export const Requisite = (props: RequisiteProps) => {
     },
     [item, checkedIndex, index, update]
   );
+  const mainClass = checkedIndex === index ? classes.main : '';
 
   return (
-    <>
+    <div className={`${classes.root} ${mainClass}`}>
       <Grid container item spacing={2}>
-        <Grid item xs></Grid>
-        <Grid item xs={'auto'}>
-          <Button className={classes.delete} onClick={onDelete}>
-            <IconSprite icon="delete" color={palette.primary.light} width="14px" height="15px" />
+        <Grid item xs={22}>
+          <Checkbox
+            icon={<RadioButtonUncheckedOutlined fontSize="default" color="disabled" />}
+            checkedIcon={<RadioButtonCheckedOutlined fontSize="default" color="primary" />}
+            name={`requisites.${index}.isMain` as const}
+            control={control}
+            onChange={handleOnChange}
+            label={t('Master account')}
+            className={classes.checkBox}
+          />
+        </Grid>
+        <Grid item xs={2} className={classes.delete}>
+          <Button onClick={onDelete}>
+            <IconSprite
+              icon="delete"
+              color={theme.palette.primary.light}
+              width="14px"
+              height="15px"
+            />
           </Button>
         </Grid>
       </Grid>
       <Grid container item spacing={2}>
-        <Grid item md={3} xs={12}>
-          <Input
-            label={t('BIK')}
-            name={`requisites.${index}.bic` as const}
-            control={control}
-            rules={{
-              required: {
-                value: true,
-                message: t('Required'),
-              },
-            }}
-          />
+        <Grid item md={6} xs={24}>
+          <BicAutocomplete index={index} control={control} setValue={setValue} />
         </Grid>
-        <Grid item md={3} xs={12}>
-          <Input
-            label={t('Bank')}
-            name={`requisites.${index}.bank` as const}
-            control={control}
-            rules={{
-              required: {
-                value: true,
-                message: t('Required'),
-              },
-            }}
-          />
+        <Grid item md={6} xs={24}>
+          <BankAutocomplete index={index} control={control} setValue={setValue} />
         </Grid>
-        <Grid item md={3} xs={12}>
+        <Grid item md={6} xs={24}>
           <Input
+            className={classes.whiteInput}
             label={t('Сorrespondent account')}
             name={`requisites.${index}.correspondentAccount` as const}
             control={control}
@@ -124,8 +139,9 @@ export const Requisite = (props: RequisiteProps) => {
             }}
           />
         </Grid>
-        <Grid item md={3} xs={12}>
+        <Grid item md={6} xs={24}>
           <Input
+            className={classes.whiteInput}
             label={t('Number of account')}
             name={`requisites.${index}.account` as const}
             control={control}
@@ -138,18 +154,6 @@ export const Requisite = (props: RequisiteProps) => {
           />
         </Grid>
       </Grid>
-      <Grid container item spacing={2}>
-        <Grid item md={3} xs={12}>
-          <Checkbox
-            icon={<RadioButtonUncheckedOutlined fontSize="default" color="primary" />}
-            checkedIcon={<RadioButtonCheckedOutlined fontSize="default" color="primary" />}
-            name={`requisites.${index}.isMain` as const}
-            control={control}
-            onChange={handleOnChange}
-          />
-        </Grid>
-      </Grid>
-      <Divider light className={classes.divider} />
-    </>
+    </div>
   );
 };

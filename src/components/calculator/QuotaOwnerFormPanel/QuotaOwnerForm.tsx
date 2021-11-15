@@ -1,6 +1,5 @@
 import { Skeleton } from '@material-ui/lab';
 import {
-  Button,
   Card,
   CardHeader,
   CardContent,
@@ -16,7 +15,7 @@ import { Alert } from '@material-ui/lab';
 import { Field } from 'react-final-form';
 import { QuotaHistoryWithAvailableOwners } from 'schema';
 import { useChangeOwnerForm } from './useChangeOwnerForm';
-import { AutoFocusedForm, SelectField, useRequired } from 'components';
+import { AutoFocusedForm, SelectField, useRequired, Button } from 'components';
 import { Typography } from '@material-ui/core';
 import { IconArrowLineRight } from 'components/icons/IconArrowLineRight';
 import { useGoBack } from 'hooks';
@@ -31,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
       minWidth: '400px',
       border: 'none',
       boxShadow: 'none',
+      overflow: 'visible',
     },
     header: {
       fontWeight: 'bolder',
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 500,
     },
     oldOwner: {
-      color: '#6B7888',
+      color: palette.textGrey2.main,
     },
     GridCloseButton: {
       backgroundColor: palette.secondary.light,

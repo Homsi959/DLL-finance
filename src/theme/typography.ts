@@ -11,11 +11,11 @@ const style = createTypography(palette, {
     lineHeight: '26px',
   },
   h2: {
-    color: palette.text.primary,
-    fontWeight: 400,
-    fontSize: '24px',
+    color: palette.primary.main,
+    fontWeight: 700,
+    fontSize: '16px',
     letterSpacing: '0',
-    lineHeight: '26px',
+    lineHeight: 1.2,
   },
   h3: {
     color: palette.text.primary,

@@ -1,3 +1,5 @@
+import { PagedList } from 'components';
+
 export type ValidationProblemErrors = {
   [k: string]: string[];
 };
@@ -163,6 +165,7 @@ export type CalculationResult = {
   numberOfMonths: number;
   payments: QuotaPayment[];
   discount?: number;
+  fundingAmountNBV?: number;
   discountAmount?: number;
   subsidyDiscount?: number;
   subsidyAmount?: number;
@@ -271,6 +274,8 @@ export type QuotaHistoryWithAvailableOwners = {
 };
 
 export type NomenclatureItem = {
+  id: number;
+  vendor: string;
   brand: string;
   category: string;
   model: string;
@@ -320,6 +325,7 @@ export enum CounterpartyType {
 export type CounterpartyOption = {
   inn: string;
   name: string;
+  heads?: Head[];
 };
 
 export type Cof = {
@@ -345,9 +351,37 @@ export enum GroupSortBy {
   name = 'name',
 }
 
+export type GroupUserViewModel = {
+  id: string;
+  userName: string;
+  name: string;
+};
+
+export type GroupOwnersViewModel = GroupViewModel & {
+  owners: GroupUserViewModel[];
+};
+
+export type GroupPagedList = PagedList<GroupOwnersViewModel>;
+
+export type GroupUsersViewModel = GroupOwnersViewModel & {
+  users: GroupUserViewModel[];
+  lessor?: Lessor;
+};
+
 export enum QuotaSortBy {
   id = 'id',
   lessee = 'lessee',
+}
+
+export enum CounterpartySortBy {
+  id = 'id',
+  inn = 'inn',
+  name = 'name',
+}
+
+export enum SortOrder {
+  asc = 'asc',
+  desc = 'desc',
 }
 
 export type Topo = {
@@ -392,6 +426,7 @@ export type Address = {
 };
 
 export type Head = {
+  id: number;
   lastName?: string;
   firstName?: string;
   middleName?: string;
@@ -423,15 +458,37 @@ export type CounterpartyRequisite = {
   isMain: boolean;
 };
 
+export type Requisite = {
+  bic: string;
+  bank: string;
+  correspondentAccount: string;
+};
+
 export type CounterpartyActivity = {
   code: string;
   text: string;
   date?: string;
 };
 
-export type GroupViewModel = {
-  id: string;
+export type Lessor = {
+  inn: string;
   name: string;
+};
+
+export type GroupViewModel = {
+  id: number;
+  name: string;
+};
+
+export type UpdateGroupUserViewModel = {
+  id: string;
+};
+
+export type UpdateGroupViewModel = {
+  name: string;
+  users: UpdateGroupUserViewModel[];
+  owners: UpdateGroupUserViewModel[];
+  lessorInn: string;
 };
 
 export type CounterpartyViewModel = {
@@ -451,7 +508,7 @@ export type CounterpartyViewModel = {
   isLessor: boolean;
   phoneNumber?: string;
   email?: string;
-  legalAddress: Address;
+  legalAddress?: Address;
   actualAddress?: Address;
   mailingAddress?: Address;
   generalCondidionsSellerDate?: string;
@@ -462,6 +519,7 @@ export type CounterpartyViewModel = {
   principalActivity?: CounterpartyActivity;
   complementaryActivities: CounterpartyActivity[];
   groups: GroupViewModel[];
+  typeOptions: TypeOptions;
 };
 
 export type CounterpartyListViewModel = {
@@ -475,8 +533,106 @@ export type CounterpartyListViewModel = {
   groups: GroupViewModel[];
 };
 
-export enum CounterpartySortBy {
-  id = 'id',
-  inn = 'inn',
-  name = 'name',
+export type TypeOptions = {
+  isDealer: boolean;
+  isLessee: boolean;
+  isInsuranceCompany: boolean;
+  isLessor: boolean;
+};
+
+export enum DepreciationGroup {
+  Group1 = 'group1',
+  Group2 = 'group2',
+  Group3 = 'group3',
+  Group4 = 'group4',
+  Group5 = 'group5',
+  Group6 = 'group6',
 }
+
+export type Depreciation = {
+  group: DepreciationGroup;
+  numberOfMonths: number;
+  coefficient: number;
+};
+
+export enum Region {
+  RussiaExceptRepublics = 'russiaExceptRepublics',
+  RussiaCisEurope = 'russiaCisEurope',
+}
+
+export enum PrepaymentAdvanceOrder {
+  OneTimeWithFirstPayment = 'oneTimeWithFirstPayment',
+  EvenlyDuringFirst12Months = 'evenlyDuringFirst12Months',
+  EvenlyDuringLeaseTerm = 'evenlyDuringLeaseTerm',
+}
+
+export type ContractViewModel = {
+  id: number;
+  contractNumber?: string;
+  date?: string;
+  leaseSubject?: string;
+  leaseSubjectInDocument?: string;
+  depreciation: Depreciation;
+  region: Region;
+  dealer?: CounterpartyViewModel;
+  dealerHead?: Head;
+  lessee?: CounterpartyViewModel;
+  lesseeHead?: Head;
+  lessor?: CounterpartyViewModel;
+  lessorHead?: Head;
+  prepaymentPercents?: number;
+  prepaymentAmount?: number;
+  prepaymentAdvanceOrder: PrepaymentAdvanceOrder;
+  prepaymentCondition?: string;
+  saleCurrency: Currency;
+  paymentCurrencyRate?: string;
+  paymentPercents?: number;
+  paymentAmount?: number;
+  paymentCondition?: string;
+  expectedShippingDate?: string;
+  prefunding: boolean;
+  shippingAddress?: string;
+};
+
+export type UpdateContractViewModel = {
+  contractNumber?: string;
+  date?: string;
+  leaseSubject?: string;
+  leaseSubjectInDocument?: string;
+  depreciationGroup: DepreciationGroup;
+  region: Region;
+  dealerInn?: string;
+  dealerHeadId?: number;
+  lesseeInn?: string;
+  lesseeHeadId?: number;
+  lessorInn?: string;
+  lessorHeadId?: number;
+  prepaymentPercents: number | null;
+  prepaymentAmount: number | null;
+  prepaymentAdvanceOrder: PrepaymentAdvanceOrder;
+  prepaymentCondition?: string;
+  saleCurrency: Currency;
+  paymentCurrencyRate?: string;
+  paymentPercents: number | null;
+  paymentAmount: number | null;
+  paymentCondition?: string;
+  expectedShippingDate?: string;
+  prefunding: boolean;
+  shippingAddress?: string;
+};
+
+export type LeasingProductItem = {
+  id: number;
+  name: string;
+};
+
+export type UpdateLeasingProductItemRequest = LeasingProductItem;
+
+export type SalesPoint = {
+  id: number;
+  name: string;
+};
+
+export type UpdateSalesPointRequest = SalesPoint;
+
+export type UpdateNomenclatureItemRequest = NomenclatureItem;

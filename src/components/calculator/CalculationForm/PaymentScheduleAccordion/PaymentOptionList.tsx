@@ -14,16 +14,22 @@ const useStyles = makeStyles((theme: Theme) =>
     table: {
       width: '50%',
       float: 'left',
+      marginBottom: theme.spacing(3),
       '&:nth-child(2n-1)': {
         paddingRight: theme.spacing(1.3),
+        '&:last-child': {
+          marginBottom: 0,
+        },
       },
       '&:nth-child(2n)': {
         float: 'right',
         paddingLeft: theme.spacing(1.3),
+        '&:last-child': {
+          marginBottom: 0,
+        },
       },
     },
     header: {
-      marginTop: '14px',
       marginBottom: '14px',
       lineHeight: 1.2,
     },

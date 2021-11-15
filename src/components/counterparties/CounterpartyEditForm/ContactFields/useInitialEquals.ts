@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { isEmpty, equals } from '../types';
 import { Address, CounterpartyViewModel } from 'schema/serverTypes';
 import { UseFormSetValue } from 'react-hook-form';
+import { CounterpartyFormValues } from 'components/counterparties/types';
 
 export type AddressName = keyof Pick<
   CounterpartyViewModel,
@@ -12,7 +13,7 @@ export const useInitialEquals = (
   name: AddressName,
   left?: Address,
   right?: Address,
-  setValue?: UseFormSetValue<CounterpartyViewModel>
+  setValue?: UseFormSetValue<CounterpartyFormValues>
 ) => {
   const initialValue = !isEmpty(left) && !isEmpty(right) ? equals(left!, right!) : false;
   const [equalsTo, setEqualsTo] = useState(initialValue);

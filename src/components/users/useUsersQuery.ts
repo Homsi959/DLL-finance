@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useQueryParams, NumberParam, withDefault } from 'use-query-params';
 import { IDENTITY_CONFIG } from 'services/authentication/AuthenticationConfig';
 import { UserListResult } from './types';
-import { ApplicationRole } from 'schema';
+import { ApplicationRole, SortOrder, UserSortBy } from 'schema';
 import { useBackendQuery } from 'services/api/useBackend';
 
 type SearchUrlParams = {
@@ -10,10 +10,12 @@ type SearchUrlParams = {
   pageSize: number;
   search?: string;
   role?: ApplicationRole;
+  sortBy?: UserSortBy;
+  order?: SortOrder;
 };
 
 const useSearchUrl = (searchParams: SearchUrlParams) => {
-  const { page, pageSize, role, search } = searchParams;
+  const { page, pageSize, role, search, sortBy, order } = searchParams;
 
   return useMemo(() => {
     const searchParams = new URLSearchParams();
@@ -26,8 +28,15 @@ const useSearchUrl = (searchParams: SearchUrlParams) => {
     if (search) {
       searchParams.set('search', search);
     }
+    if (sortBy) {
+      searchParams.set('sortBy', sortBy);
+    }
+    if (order) {
+      searchParams.set('order', order);
+    }
+
     return `${IDENTITY_CONFIG.authority}/api/v1/users?${searchParams}`;
-  }, [page, pageSize, role, search]);
+  }, [page, pageSize, role, search, sortBy, order]);
 };
 
 export const useUsersQuery = () => {
@@ -39,8 +48,10 @@ export const useUsersQuery = () => {
 
   const [role, setRole] = useState<ApplicationRole>();
   const [search, setSearch] = useState<string>();
+  const [sortBy, setSortBy] = useState<UserSortBy>();
+  const [order, setOrder] = useState<SortOrder>();
 
-  const url = useSearchUrl({ page, pageSize, role, search });
+  const url = useSearchUrl({ page, pageSize, role, search, sortBy, order });
 
   const {
     data,
@@ -54,6 +65,14 @@ export const useUsersQuery = () => {
 
   const users = data?.data ?? [];
 
+  const handleSortBy = useCallback((sortBy: UserSortBy | undefined) => {
+    setSortBy(sortBy);
+  }, []);
+
+  const handleSortOrder = useCallback((orderBy: SortOrder | undefined) => {
+    setOrder(orderBy);
+  }, []);
+
   return {
     paging: {
       pageCount: data?.pageCount ?? 0,
@@ -61,6 +80,12 @@ export const useUsersQuery = () => {
       page,
       pageSize,
       dataCount: users.length,
+    },
+    sorting: {
+      sortBy,
+      order,
+      setSortBy: handleSortBy,
+      setOrder: handleSortOrder,
     },
     filter: {
       role,

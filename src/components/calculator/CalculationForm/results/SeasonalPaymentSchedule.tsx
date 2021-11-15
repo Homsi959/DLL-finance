@@ -10,10 +10,6 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 500,
       columns: '9',
       listStyleType: 'none',
-      // display: "grid",
-      // gridTemplateRows: "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
-      // gap: "0px 20px",
-      // gridAutoFlow: "column",
       [theme.breakpoints.down('lg')]: {
         columns: '6',
       },
@@ -29,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing('0px', '8px'),
       margin: theme.spacing('0px', '8px'),
       '&:nth-of-type(2n+1)': {
-        background: '#f2f7fc',
+        background: theme.palette.lightBlue2.main,
       },
     },
     cell: {

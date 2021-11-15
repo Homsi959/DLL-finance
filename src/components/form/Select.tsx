@@ -21,19 +21,11 @@ const styles = (theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
-      minWidth: '0',
-      color: theme.palette.secondary.main,
-      '& .MuiSelect-outlined.MuiSelect-outlined': {
-        paddingRight: 0,
-      },
-      '& .MuiSelect-icon': {
-        color: theme.palette.primary.main,
-      },
     },
     paper: {
       borderRadius: 0,
-      boxShadow: '0px 5px 10px 0px #383C611A',
-      border: '1px solid #D1D7E4',
+      boxShadow: '0px 5px 10px 0px ' + theme.palette.grey5.main,
+      border: '1px solid ' + theme.palette.grey3.main,
       maxHeight: 185,
     },
     list: {
@@ -58,8 +50,8 @@ const styles = (theme: Theme) =>
         minHeight: 0,
         justifyContent: 'center',
         padding: '5px',
-        borderBottom: '1px solid #E9F1FE',
-        borderRight: '1px solid #E9F1FE',
+        borderBottom: '1px solid ' + theme.palette.lightBlue.main,
+        borderRight: '1px solid ' + theme.palette.lightBlue.main,
         '&:hover': {
           backgroundColor: theme.palette.primary.main,
           color: theme.palette.common.white,
@@ -124,9 +116,7 @@ function StyledSelect<
         value={value}
         label={label}
         className={classes?.root}
-        IconComponent={(props) => {
-          return <KeyboardArrowDownRoundedIcon {...props} color="primary" />;
-        }}
+        IconComponent={(props) => <KeyboardArrowDownRoundedIcon {...props} color="primary" />}
         MenuProps={{
           classes: {
             paper: classes?.paper,

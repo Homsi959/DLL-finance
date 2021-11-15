@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardHeader,
   CardContent,
@@ -7,26 +6,23 @@ import {
   createStyles,
   CardActions,
   Theme,
-  Grid,
-  IconButton,
   Typography,
   MenuItem,
+  Box,
 } from '@material-ui/core';
+import { Grid } from 'components/Grid';
 import { Skeleton, Alert } from '@material-ui/lab';
 import { Field } from 'react-final-form';
-import { AutoFocusedForm, SelectField, TextField, useRequired } from 'components';
-import { GroupUsersViewModel } from '../types';
+import { AutoFocusedForm, Button, SelectField, TextField, useRequired } from 'components';
 import { useEditForm } from './useEditForm';
-import { useGoBack } from 'hooks';
-import { useCallback } from 'react';
-import { palette } from 'theme';
 import { useTranslation } from 'react-i18next';
 import { UserSelectField } from '../UserSelectField';
 import { useUserSearchQuery } from '../useUserSearchQuery';
+import { GroupUsersViewModel } from 'schema/serverTypes';
 
-export interface GroupEditFormProps {
+export type GroupEditFormProps = {
   group: GroupUsersViewModel;
-}
+};
 
 export const GroupEditFormSkeleton = () => {
   return <Skeleton></Skeleton>;
@@ -40,10 +36,22 @@ const useStyles = makeStyles((theme: Theme) =>
       border: 'none',
       boxShadow: 'none',
     },
+    cardContent: {
+      paddingTop: 20,
+      paddingRight: 20,
+      paddingBottom: 20,
+      paddingLeft: 20,
+    },
+    headerWrapper: {
+      marginBottom: theme.spacing(0.5),
+    },
     header: {
+      paddingTop: theme.spacing(5.5),
       fontWeight: 'bolder',
       textAlign: 'left',
-      paddingTop: 0,
+      paddingRight: 20,
+      paddingBottom: 20,
+      paddingLeft: 20,
     },
     actions: {
       justifyContent: 'flex-start',
@@ -51,40 +59,23 @@ const useStyles = makeStyles((theme: Theme) =>
     cancelButton: {
       color: theme.palette.error.main,
     },
-    item: {
-      marginBottom: theme.spacing(1),
-    },
-    GridCloseButton: {
-      backgroundColor: palette.secondary.light,
-    },
-    closeButton: {
-      marginRight: theme.spacing(2),
-      marginTop: theme.spacing(2),
-      '& img': {
-        maxWidth: '10px',
-      },
-    },
+    item: {},
   })
 );
 
-export const GroupEditForm = (props: any) => {
-  //TODO any -> GroupEditFormProps
+export const GroupEditForm = (props: GroupEditFormProps) => {
   const classes = useStyles();
   const { group } = props;
-  const title = group.name;
-  const { onSubmit, initialValues, isLoading } = useEditForm(group);
+  const { onSubmit, initialValues, isLoading, options } = useEditForm(group);
+  const { name: title } = initialValues;
   const { users } = useUserSearchQuery('', []);
-  const goBack = useGoBack();
-  const handleOnClose = useCallback(() => {
-    goBack('/users/groups');
-  }, [goBack]);
 
   const { required } = useRequired();
   const { t } = useTranslation();
   return (
     <AutoFocusedForm
       onSubmit={onSubmit}
-      initialValues={initialValues as any} //TODO type
+      initialValues={initialValues}
       subscription={{
         submitError: true,
       }}
@@ -92,21 +83,34 @@ export const GroupEditForm = (props: any) => {
         return (
           <form onSubmit={handleSubmit}>
             <Card className={classes.root}>
-              <Grid container justify="flex-end" className={classes.GridCloseButton}>
-                <IconButton className={classes.closeButton} onClick={handleOnClose}>
-                  <img src="/img/icons/close-icon.svg" alt="" />
-                </IconButton>
-              </Grid>
-              <CardHeader className={classes.header} title={title} />
-              <CardContent>
-                <Grid container spacing={1}>
-                  <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
+              <Box className={classes.headerWrapper}>
+                <CardHeader className={classes.header} title={title} />
+              </Box>
+              <CardContent className={classes.cardContent}>
+                <Grid container rowSpacing={2.5} columnSpacing={0}>
+                  <Grid item xs={24} className={classes.item}>
                     <Field name="name" component={TextField} validate={required} />
                   </Grid>
-                  <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
+                  <Grid item xs={24} className={classes.item}>
+                    <Field
+                      label={t('Lessor')}
+                      name="lessorInn"
+                      component={SelectField}
+                      validate={required}
+                    >
+                      {options.map((option) => {
+                        return (
+                          <MenuItem key={option.inn} value={option.inn}>
+                            {option.name}&nbsp;{option.inn}
+                          </MenuItem>
+                        );
+                      })}
+                    </Field>
+                  </Grid>
+                  <Grid item xs={24} className={classes.item}>
                     <Field
                       label={t('Owner')}
-                      name="owners"
+                      name="owner"
                       component={SelectField}
                       validate={required}
                     >
@@ -119,7 +123,7 @@ export const GroupEditForm = (props: any) => {
                       })}
                     </Field>
                   </Grid>
-                  <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
+                  <Grid item xs={24} className={classes.item}>
                     <Field
                       label={t('Members')}
                       name="users"
@@ -127,7 +131,7 @@ export const GroupEditForm = (props: any) => {
                       validate={required}
                     />
                   </Grid>
-                  <Grid item lg={12} md={12} xl={12} xs={12}>
+                  <Grid item xs={24}>
                     <Typography variant="body1">{t('All fields are required')}</Typography>
                   </Grid>
                 </Grid>

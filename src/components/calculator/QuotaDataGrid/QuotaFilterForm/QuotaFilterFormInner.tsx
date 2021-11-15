@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import { Grid } from 'components';
 import FormControl from '@material-ui/core/FormControl';
 import { Field, FormSpy, FormSpyRenderProps } from 'react-final-form';
 import { CounterpartyAutocompleteField } from '../../CalculationForm/DictionaryFields';
@@ -11,34 +11,25 @@ import { useDebounce } from 'use-debounce';
 import { FilterFormValues, FilterFormRenderProps, QuotaFilterFormProps } from './types';
 import { UserAutocomplete } from './UserAutocomplete';
 import { useTranslation } from 'react-i18next';
-import { IconSprite } from 'components';
-import clsx from 'clsx';
+import { IconSprite, Button } from 'components';
 import { palette } from 'theme';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      marginBottom: theme.spacing(1),
-    },
-    grid: {
-      '& .MuiFormControl-root': {
-        marginTop: 0,
-      },
-    },
-    item: {
-      minWidth: '280px',
-      marginRight: '20px',
-    },
-    buttonReset: {
-      display: 'flex',
-      alignItems: 'flex-end',
-    },
     noIcon: {
       '& .MuiTextField-root': {
         '& svg': {
           display: 'none',
         },
       },
+    },
+    buttonReset: {
+      display: 'flex',
+      alignItems: 'flex-end',
+    },
+    item: {
+      marginRight: theme.spacing(2.5),
     },
   })
 );
@@ -78,14 +69,17 @@ export const QuotaFilterFormInner = (props: FilterFormRenderProps) => {
 
   const { reset } = form;
 
+  const history = useHistory();
+
   const handleOnReset = useCallback(() => {
     reset();
-  }, [reset]);
+    history.push('/calculator/results');
+  }, [reset, history]);
 
   const { t } = useTranslation();
 
   return (
-    <form onSubmit={handleSubmit} className={classes.root}>
+    <form onSubmit={handleSubmit}>
       <FormSpy<FilterFormValues> subscription={{ values: true }}>
         {(formSpyProps) => {
           return (
@@ -99,15 +93,15 @@ export const QuotaFilterFormInner = (props: FilterFormRenderProps) => {
           );
         }}
       </FormSpy>
-      <Grid container spacing={1} className={classes.grid}>
-        <Grid item className={clsx(classes.item, classes.noIcon)}>
+      <Grid container>
+        <Grid item md={6} xs={24} xl={4} className={clsx(classes.noIcon, classes.item)}>
           <CounterpartyAutocompleteField
             variant="standard"
             label={t('Lessee')}
             counterpartyType={CounterpartyType.lessee}
           />
         </Grid>
-        <Grid item className={classes.item}>
+        <Grid item md={6} xs={24} xl={4} className={classes.item}>
           <CounterpartyAutocompleteField
             variant="standard"
             label={t('Dealer')}
@@ -115,7 +109,7 @@ export const QuotaFilterFormInner = (props: FilterFormRenderProps) => {
           />
         </Grid>
         {tabIndex === 1 && (
-          <Grid item className={classes.item}>
+          <Grid item md={6} xs={24} xl={4} className={classes.item}>
             <Field
               label={t('QuotaCreator')}
               variant="standard"
@@ -125,7 +119,7 @@ export const QuotaFilterFormInner = (props: FilterFormRenderProps) => {
             />
           </Grid>
         )}
-        <Grid item className={classes.item}>
+        <Grid item md={5} xs={24} xl={4} className={classes.item}>
           <Field
             label={t('Search')}
             variant="standard"
@@ -138,7 +132,7 @@ export const QuotaFilterFormInner = (props: FilterFormRenderProps) => {
             }}
           />
         </Grid>
-        <Grid className={classes.buttonReset} item>
+        <Grid md="auto" xs={24} xl={4} item className={classes.buttonReset}>
           <FormControl>
             <Button variant="text" onClick={handleOnReset}>
               {t('Reset')}

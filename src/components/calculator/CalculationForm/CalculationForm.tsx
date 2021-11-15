@@ -1,6 +1,6 @@
 import { forwardRef, useCallback } from 'react';
 import { FormApi } from 'final-form';
-import { makeStyles, createStyles, Button, Theme, Paper } from '@material-ui/core';
+import { makeStyles, createStyles, Theme, Paper, Portal } from '@material-ui/core';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -9,7 +9,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { SaleContractFields, LeaseContractFields, ComponentsFields } from './fieldGroups';
 import { FormRenderProps } from 'react-final-form';
-import { CalculationMethod, CalculationResult, ValidationProblemDetails } from 'schema';
+import { CalculationMethod, CalculationResult, Currency, ValidationProblemDetails } from 'schema';
 import { CalculationFormValues } from '../types';
 import {
   CalculationResults,
@@ -17,12 +17,13 @@ import {
   StraightLinePaymentSchedule,
   SeasonalPaymentSchedule,
 } from './results';
-import { AutoFocusedForm } from 'components';
+import { AutoFocusedForm, Button } from 'components';
 import { CurrencyRatesInfo } from './CurrencyRatesInfo';
 import { CalculatedFields } from './CalculatedFields';
 import { PaymentScheduleAccordion } from './PaymentScheduleAccordion';
 import { CalculationFormApiContextProvider } from './CalculationFormApiContextProvider';
 import { useTranslation } from 'react-i18next';
+import { formatCurrency, formatNumber } from '../utils';
 
 type CalculationProps = {
   error?: ValidationProblemDetails | null;
@@ -53,12 +54,14 @@ const useStyles = makeStyles((theme: Theme) =>
     actions: {
       [theme.breakpoints.down(1200)]: {
         width: 'calc(100% - 85px)',
+        left: 63,
       },
       display: 'flex',
       justifyContent: 'flex-start',
-      width: 'calc(100% - 230px)',
+      width: 'calc(100% - 238px)',
       padding: theme.spacing('20px', '32px'),
       bottom: 0,
+      left: 216,
       position: 'fixed',
       zIndex: 1,
     },
@@ -68,26 +71,40 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+let submit: any;
+
 const CalculationFormInner = forwardRef<HTMLDivElement, CalculationInnerFormProps>(
   (props: CalculationInnerFormProps, ref) => {
     const classes = useStyles();
     const { handleSubmit, isLoading, data, form, submitting, copyEnabled = false } = props;
-
+    submit = handleSubmit;
     const change = form.change;
 
-    const handleOnCalculate = useCallback(() => {
-      change('save', false);
-    }, [change]);
+    const handleOnCalculate = useCallback(
+      (event) => {
+        change('save', false);
+        submit(event);
+      },
+      [change]
+    );
 
-    const handleOnSave = useCallback(() => {
-      change('save', true);
-    }, [change]);
+    const handleOnSave = useCallback(
+      (event) => {
+        change('save', true);
+        submit(event);
+      },
+      [change]
+    );
 
-    const handleOnCopy = useCallback(() => {
-      if (copyEnabled) {
-        change('copy', true);
-      }
-    }, [copyEnabled, change]);
+    const handleOnCopy = useCallback(
+      (event) => {
+        if (copyEnabled) {
+          submit(event);
+          change('copy', true);
+        }
+      },
+      [copyEnabled, change]
+    );
 
     const { t } = useTranslation();
 
@@ -139,7 +156,11 @@ const CalculationFormInner = forwardRef<HTMLDivElement, CalculationInnerFormProp
             <AccordionSummary ref={ref} aria-controls="panel4a-content" id="panel4a-header">
               <Typography variant="subtitle1">{t('CalculationResult')}</Typography>
               <Typography color="secondary" variant="body1">
-                &nbsp; ({t('IncludingVAT')})
+                &nbsp; ({t('IncludingVAT')}) &nbsp; | NBV &nbsp;
+              </Typography>
+              <Typography color="secondary" variant="subtitle1">
+                {data?.fundingAmountNBV && formatNumber(data?.fundingAmountNBV, 2, true)}&nbsp;
+                {data?.fundingAmountNBV && formatCurrency(Currency.Euro)}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>{data && <CalculationResults data={data} />}</AccordionDetails>
@@ -163,46 +184,48 @@ const CalculationFormInner = forwardRef<HTMLDivElement, CalculationInnerFormProp
             </AccordionDetails>
           </Accordion>
         </div>
-        <Paper square className={classes.actions}>
-          <div className={classes.actionButton}>
-            <Button
-              color="primary"
-              size="medium"
-              type="submit"
-              variant="contained"
-              disabled={isLoading || submitting}
-              onClick={handleOnCalculate}
-            >
-              {t('Calculate')}
-            </Button>
-          </div>
-          <div className={classes.actionButton}>
-            <Button
-              color="primary"
-              size="medium"
-              type="submit"
-              variant="outlined"
-              disabled={isLoading || submitting}
-              onClick={handleOnSave}
-            >
-              {t('Save')}
-            </Button>
-          </div>
-          {copyEnabled && (
+        <Portal container={document.body}>
+          <Paper square className={classes.actions}>
             <div className={classes.actionButton}>
               <Button
                 color="primary"
                 size="medium"
                 type="submit"
-                variant="outlined"
+                variant="contained"
                 disabled={isLoading || submitting}
-                onClick={handleOnCopy}
+                onClick={(event) => handleOnCalculate(event)}
               >
-                {t('SaveAsNew')}
+                {t('Calculate')}
               </Button>
             </div>
-          )}
-        </Paper>
+            <div className={classes.actionButton}>
+              <Button
+                color="primary"
+                size="medium"
+                type="submit"
+                variant="outlined2"
+                disabled={isLoading || submitting}
+                onClick={(event) => handleOnSave(event)}
+              >
+                {t('Save')}
+              </Button>
+            </div>
+            {copyEnabled && (
+              <div className={classes.actionButton}>
+                <Button
+                  color="primary"
+                  size="medium"
+                  type="submit"
+                  variant="outlined2"
+                  disabled={isLoading || submitting}
+                  onClick={(event) => handleOnCopy(event)}
+                >
+                  {t('SaveAsNew')}
+                </Button>
+              </div>
+            )}
+          </Paper>
+        </Portal>
       </form>
     );
   }

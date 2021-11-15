@@ -31,6 +31,7 @@ const style: Partial<StyleRules<InputBaseClassKey>> = {
       borderRadius: '0px',
       '& legend': {
         fontSize: '0.75em',
+        marginLeft: '-5px',
       },
     },
     '& .MuiSelect-select:focus': {

@@ -14,3 +14,4 @@ export * from './PhoneInput';
 export * from './Select';
 export * from './DatePicker';
 export * from './Radio';
+export * from './Switch';

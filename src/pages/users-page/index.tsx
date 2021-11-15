@@ -7,12 +7,13 @@ import { PageAuthenticatedLayout, Tabs, TabPanel, useTabs } from 'components';
 import { UsersPage as UsersPageContent } from './UsersPage';
 import { GroupsPage } from '../groups-page';
 import { useGoBack } from 'hooks';
+import SwipeableViews from 'react-swipeable-views';
 
 const UserGroupPage = () => {
   const { t } = useTranslation();
   const tabs = [t('User_plural'), t('Group_plural')];
   const tabsProps = useTabs(tabs);
-  const { tabIndex } = tabsProps;
+  const { tabIndex, onChangeTabIndex, onChangeTab } = tabsProps;
 
   const { pathname } = useLocation();
   const isGroupsPath = pathname.indexOf('/groups') > -1;
@@ -36,15 +37,23 @@ const UserGroupPage = () => {
 
   return (
     <Grid container spacing={1} direction="column">
-      <Grid item>
-        <Tabs {...tabsProps} />
-      </Grid>
-      <TabPanel value={tabIndex} index={0} dir={theme.direction}>
-        <UsersPageContent />
-      </TabPanel>
-      <TabPanel value={tabIndex} index={1} dir={theme.direction}>
-        <GroupsPage />
-      </TabPanel>
+      <Tabs {...tabsProps} value={tabIndex} onChangeTab={onChangeTab} />
+      <SwipeableViews
+        containerStyle={{
+          transition: 'transform 0.6s ease-out 0s',
+        }}
+        springConfig={{ duration: '0.6s', easeFunction: 'transform 0.6s ease-out 0s', delay: '0s' }}
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={tabIndex}
+        onChangeIndex={onChangeTabIndex}
+      >
+        <TabPanel value={tabIndex} index={0} dir={theme.direction}>
+          <UsersPageContent />
+        </TabPanel>
+        <TabPanel value={tabIndex} index={1} dir={theme.direction}>
+          <GroupsPage />
+        </TabPanel>
+      </SwipeableViews>
     </Grid>
   );
 };

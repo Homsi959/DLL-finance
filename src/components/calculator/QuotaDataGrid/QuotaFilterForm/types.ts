@@ -6,6 +6,7 @@ export type FilterFormValues = {
   lessee?: string;
   search?: string;
   ownerId?: string;
+  inn?: string;
 };
 
 export type QuotaFilterFormProps = {

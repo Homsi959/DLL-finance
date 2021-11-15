@@ -1,4 +1,5 @@
-import { Grid, MenuItem, makeStyles, createStyles, Theme, Divider } from '@material-ui/core';
+import { MenuItem, makeStyles, createStyles, Theme, Divider } from '@material-ui/core';
+import { Grid } from 'components/Grid';
 import { Field } from 'react-final-form';
 import { OnChange } from 'react-final-form-listeners';
 import { SelectField, SwitchField, RadioField, RadioFieldOption, useRequired } from 'components';
@@ -19,71 +20,20 @@ import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    leaseProduct: {
-      minWidth: '193px',
-      [theme.breakpoints.up('lg')]: {
-        minWidth: 0,
-      },
-    },
-    secondHandField: {
-      '& .MuiTypography-root': {
-        minWidth: '20px',
-        [theme.breakpoints.down(1765)]: {
-          paddingTop: theme.spacing(0),
-        },
-      },
-      '& .MuiFormControl-root': {
-        marginTop: theme.spacing(1),
-      },
-    },
-    CounterpartyAutocompleteField: {
-      maxWidth: '368px',
-      [theme.breakpoints.up('lg')]: {
-        maxWidth: 'none',
-      },
-    },
-    currencySaleField: {
-      [theme.breakpoints.up('lg')]: {
-        maxWidth: '160px',
-      },
-      '& fieldset': {
-        marginLeft: theme.spacing(1),
-      },
-      '& .MuiButtonBase-root': {
-        padding: theme.spacing(1),
-      },
-      '& .MuiFormControl-root': {
-        marginTop: theme.spacing(1),
-      },
+    wrapper: {
+      width: '100%',
     },
     divider: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(1),
+      marginBottom: theme.spacing(2.5),
     },
     commissionLabel: {
+      width: '165px',
       textAlign: 'right',
       '& .MuiGrid-root': {
         flexWrap: 'nowrap',
       },
-    },
-    currencyCommission: {
-      [theme.breakpoints.up('lg')]: {
-        maxWidth: '180px',
-      },
-      '& .MuiFormControl-root': {
-        marginTop: theme.spacing(0.5),
-      },
-    },
-    AmountField: {
-      maxWidth: '130px',
-      [theme.breakpoints.up('lg')]: {
-        maxWidth: 'none',
-      },
-    },
-    currencyRate: {
-      minWidth: '100px',
-      [theme.breakpoints.up('lg')]: {
-        minWidth: 0,
+      '& .MuiFormControlLabel-root': {
+        marginRigh: 0,
       },
     },
   })
@@ -99,44 +49,40 @@ export const SaleContractFields = (props: FormFieldsProps) => {
   const { required } = useRequired();
 
   return (
-    <Grid container spacing={0}>
-      <Grid container item xs={12} spacing={2}>
-        <Grid className={classes.leaseProduct} item md={2} xs={12}>
-          <Field
-            name="leaseProduct"
-            label={t('LeaseProduct')}
-            component={LeaseProductAutocomplete}
-            validate={requiredOnSave}
-          />
-        </Grid>
-        <Grid className={classes.CounterpartyAutocompleteField} item md={5} xs={12}>
-          <CounterpartyAutocompleteField
-            label={t('Dealer')}
-            counterpartyType={CounterpartyType.dealer}
-            validate={requiredOnSave}
-          />
-        </Grid>
-        <Grid className={classes.CounterpartyAutocompleteField} item md={5} xs={12}>
-          <CounterpartyAutocompleteField
-            label={t('Lessee')}
-            counterpartyType={CounterpartyType.lessee}
-          />
-        </Grid>
-      </Grid>
+    <div className={classes.wrapper}>
       <NomenclatureContextProvider form={form}>
-        <Grid container item xs={12} spacing={2}>
-          <Grid item md={6} xs={12}>
+        <Grid container columnSpacing={2} rowSpacing={2.5}>
+          <Grid item xl={4} md={6} xs={24}>
+            <Field
+              name="leaseProduct"
+              label={t('LeaseProduct')}
+              component={LeaseProductAutocomplete}
+              validate={requiredOnSave}
+            />
+          </Grid>
+          <Grid item xl={6} md={9} xs={24}>
+            <CounterpartyAutocompleteField
+              label={t('Dealer')}
+              counterpartyType={CounterpartyType.dealer}
+              validate={requiredOnSave}
+            />
+          </Grid>
+          <Grid item xl={6} md={9} xs={24}>
+            <CounterpartyAutocompleteField
+              label={t('Lessee')}
+              counterpartyType={CounterpartyType.lessee}
+            />
+          </Grid>
+          <Grid item xl={8} md={12} xs={24}>
             <BrandAutocompleteField />
           </Grid>
-          <Grid item md={6} xs={12}>
+          <Grid item xl={8} md={12} xs={24}>
             <CategoryAutocompleteField />
           </Grid>
-        </Grid>
-        <Grid container item xs={12} spacing={2}>
-          <Grid item md={8} xs={12}>
+          <Grid item xl={10} md={15} xs={24}>
             <ModelAutocompleteField />
           </Grid>
-          <Grid item md={1} xs={12}>
+          <Grid item xl={2} md={3} xs={24}>
             <Field
               name="numberOfItems"
               label={t('NumberOfItems')}
@@ -152,7 +98,7 @@ export const SaleContractFields = (props: FormFieldsProps) => {
               })}
             </Field>
           </Grid>
-          <Grid item md={2} xs={12}>
+          <Grid item xl={2} md={3} xs={24}>
             <Field name="year" label={t('Year')} component={SelectField}>
               {Array.from(Array(11)).map((_, i) => {
                 return (
@@ -170,7 +116,7 @@ export const SaleContractFields = (props: FormFieldsProps) => {
               }}
             </OnChange>
           </Grid>
-          <Grid className={classes.secondHandField} item md={1} xs={12}>
+          <Grid item xl={2} md={3} xs={24}>
             <Field
               name="secondHand"
               labelOn={t('SecondHand')}
@@ -181,9 +127,11 @@ export const SaleContractFields = (props: FormFieldsProps) => {
           </Grid>
         </Grid>
       </NomenclatureContextProvider>
+
       <Divider light className={classes.divider} />
-      <Grid container item xs={12} spacing={0}>
-        <Grid item md={2} xs={12}>
+
+      <Grid container columnSpacing={2} rowSpacing={2.5}>
+        <Grid item xl={4} lg={5} md={7} xs={24}>
           <AmountField
             name="itemPrice"
             label={t('ItemPrice')}
@@ -191,7 +139,7 @@ export const SaleContractFields = (props: FormFieldsProps) => {
             required
           />
         </Grid>
-        <Grid className={classes.currencySaleField} item md={2} xs={12}>
+        <Grid item md={'auto'} xs={24}>
           <Field
             name="currencySale"
             label={t('Currencies.Sale')}
@@ -204,7 +152,7 @@ export const SaleContractFields = (props: FormFieldsProps) => {
             ]}
           />
         </Grid>
-        <Grid className={classes.currencyRate} item lg={2} md={1} xs={12}>
+        <Grid item xl={3} lg={4} md={7} xs={24}>
           <AmountField
             name="currencyRate"
             label={t('Currencies.Rate')}
@@ -212,7 +160,7 @@ export const SaleContractFields = (props: FormFieldsProps) => {
             fractionDigits={4}
           />
         </Grid>
-        <Grid className={classes.currencySaleField} item md={2} xs={12}>
+        <Grid item md={'auto'} xs={24}>
           <Field
             name="currencyLease"
             label={t('Currencies.Lease')}
@@ -225,7 +173,7 @@ export const SaleContractFields = (props: FormFieldsProps) => {
             ]}
           />
         </Grid>
-        <Grid className={classes.currencyCommission} item lg={2} md={3} xs={12}>
+        <Grid item md={'auto'} xs={24}>
           <Field
             name="currencyCommission"
             label={t('Currencies.ConversionFee')}
@@ -238,7 +186,7 @@ export const SaleContractFields = (props: FormFieldsProps) => {
             component={SwitchField}
           />
         </Grid>
-        <Grid className={classes.AmountField} item md={2} xs={12}>
+        <Grid item xl={4} lg={5} md={7} xs={24}>
           <AmountField
             name="leaseItemCost"
             label={t('LeaseItemCost')}
@@ -246,6 +194,6 @@ export const SaleContractFields = (props: FormFieldsProps) => {
           />
         </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };

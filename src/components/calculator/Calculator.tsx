@@ -1,10 +1,10 @@
-import { Grid, createStyles, makeStyles, Theme } from '@material-ui/core';
+import { Grid, createStyles, makeStyles, Theme, Box } from '@material-ui/core';
 import theme from 'theme';
-import { useTabs, Tabs, TabPanel } from 'components';
+import { useTabs, Tabs, TabPanel, Button, IconBackTo } from 'components';
 import { useCalculatorForm } from './useCalculatorForm';
 import { CalculationForm } from './CalculationForm';
-import { NavigateBackButton } from 'components';
 import { useTranslation } from 'react-i18next';
+import SwipeableViews from 'react-swipeable-views';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,28 +46,42 @@ export const Calculator = () => {
     },
   ];
   const tabsProps = useTabs(tabs);
-  const { tabIndex } = tabsProps;
+  const { tabIndex, onChangeTabIndex, onChangeTab } = tabsProps;
 
   return (
     <Grid container direction="column">
       <Grid item>
         <Grid className={classes.navBottom} item>
-          <NavigateBackButton fallbackRoute="/calculator/results" />
+          <Button variant="iconButton" endIcon={<IconBackTo />} to="/calculator/results" />
         </Grid>
       </Grid>
+      <Box mb={2.5}>
+        <Tabs {...tabsProps} value={tabIndex} onChangeTab={onChangeTab} />
+      </Box>
       <Grid item>
-        <Tabs {...tabsProps} />
-      </Grid>
-      <Grid item>
-        <TabPanel value={tabIndex} index={0} dir={theme.direction}>
-          <CalculatorForm />
-        </TabPanel>
-        <TabPanel value={tabIndex} index={1} dir={theme.direction}>
-          {t('Contract')}
-        </TabPanel>
-        <TabPanel value={tabIndex} index={2} dir={theme.direction}>
-          {t('Shipment')}
-        </TabPanel>
+        <SwipeableViews
+          containerStyle={{
+            transition: 'transform 0.6s ease-out 0s',
+          }}
+          springConfig={{
+            duration: '0.6s',
+            easeFunction: 'transform 0.6s ease-out 0s',
+            delay: '0s',
+          }}
+          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          index={tabIndex}
+          onChangeIndex={onChangeTabIndex}
+        >
+          <TabPanel value={tabIndex} index={0} dir={theme.direction}>
+            <CalculatorForm />
+          </TabPanel>
+          <TabPanel value={tabIndex} index={1} dir={theme.direction}>
+            {t('Contract')}
+          </TabPanel>
+          <TabPanel value={tabIndex} index={2} dir={theme.direction}>
+            {t('Shipment')}
+          </TabPanel>
+        </SwipeableViews>
       </Grid>
     </Grid>
   );

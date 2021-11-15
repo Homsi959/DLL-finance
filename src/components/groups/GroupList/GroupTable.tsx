@@ -1,23 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { IconSprite } from 'components';
-import { GroupOwnersViewModel } from '../types';
-import {
-  Table,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableBody,
-  TableSortLabel,
-} from '@material-ui/core';
+import { Table, TableCell, TableHead, TableRow, TableBody } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { palette } from 'theme';
+import { GroupOwnersViewModel } from 'schema/serverTypes';
+import { useGroupsQuery } from './useGroupsQuery';
 
-export interface GroupTableGridProps {
-  groups: GroupOwnersViewModel[];
-  loading: boolean;
-}
+export type GroupTableProps = Pick<
+  ReturnType<typeof useGroupsQuery>,
+  'groups' | 'sorting' | 'loading'
+>;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const GroupTable = (props: GroupTableGridProps) => {
+export const GroupTable = (props: GroupTableProps) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const { groups } = props;
@@ -42,7 +35,7 @@ export const GroupTable = (props: GroupTableGridProps) => {
           <Link to={groupUrl}>{name}</Link>
         </TableCell>
         <TableCell size="medium" width="50%">
-          {owners?.name}
+          {owners.length > 0 ? owners[0].name : null}
         </TableCell>
         <TableCell className={classes.button} size="medium">
           <Link to={groupUrl}>
@@ -62,9 +55,7 @@ export const GroupTable = (props: GroupTableGridProps) => {
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell size="medium">
-            <TableSortLabel IconComponent={ArrowDropDownIcon}>{t('Group')}</TableSortLabel>
-          </TableCell>
+          <TableCell size="medium">{t('Group')}</TableCell>
           <TableCell size="medium">{t('Owner')}</TableCell>
         </TableRow>
       </TableHead>

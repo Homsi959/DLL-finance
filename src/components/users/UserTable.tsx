@@ -15,11 +15,12 @@ import {
   Theme,
 } from '@material-ui/core';
 import { Link as MuiLink } from '@material-ui/core';
+import { useUsersQuery } from './useUsersQuery';
 
-export interface UserTableProps {
-  users: UserListViewModel[];
-  loading: boolean;
-}
+export type UserTableProps = Pick<
+  ReturnType<typeof useUsersQuery>,
+  'users' | 'sorting' | 'loading'
+>;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

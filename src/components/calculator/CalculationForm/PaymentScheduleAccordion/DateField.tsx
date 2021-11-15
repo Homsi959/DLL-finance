@@ -7,6 +7,7 @@ import formLabelStyles from 'theme/overrides/MuiFormLabel';
 import inputBaseStyles from 'theme/overrides/MuiInputBase';
 import palette from 'theme/palette';
 import typography from 'theme/typography';
+import { IconSprite } from '../../../icons';
 
 export type DateFieldProps = Omit<DatePickerProps, 'value' | 'onChange'> & FieldRenderProps;
 
@@ -17,6 +18,14 @@ const calendarTheme = createMuiTheme({
     MuiFormControl: formControlStyles,
     MuiFormLabel: formLabelStyles,
     MuiInputBase: inputBaseStyles,
+    MuiOutlinedInput: {
+      inputMarginDense: {
+        paddingTop: 12,
+        paddingRight: 10,
+        paddingBottom: 8,
+        paddingLeft: 10,
+      },
+    },
     MuiTypography: {
       subtitle1: {
         color: 'white',
@@ -117,6 +126,9 @@ export const DateField = (props: DateFieldProps) => {
         value={value}
         invalidDateMessage={invalidDateMessage}
         autoOk={autoOk}
+        InputProps={{
+          endAdornment: <IconSprite width="16px" color={palette.textGrey2.main} icon="calendar" />,
+        }}
       />
     </ThemeProvider>
   );

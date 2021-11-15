@@ -2,10 +2,18 @@ import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQueryClient } from 'react-query';
 import { useLocation, useParams } from 'react-router-dom';
-import { CounterpartyViewModel } from 'schema';
+import { CounterpartyViewModel, GroupViewModel, TypeOptions } from 'schema/serverTypes';
 import { useCounterpartiesBackendMutation, useCounterpartyQuery } from 'services/api';
 import { emptyAddress } from './types';
 import { useGroupsQuery } from './useGroupsQuery';
+import { CounterpartyFormValues, CounterpartyGroupViewModel } from '../types';
+
+const defaultTypeOptions: TypeOptions = {
+  isDealer: true,
+  isInsuranceCompany: true,
+  isLessee: true,
+  isLessor: true,
+};
 
 const useDefaultValues = (inn: string) => {
   return useMemo(() => {
@@ -36,13 +44,17 @@ const useDefaultValues = (inn: string) => {
       requisites: [],
       complementaryActivities: [],
       groups: [],
+      typeOptions: defaultTypeOptions,
     };
 
     return values;
   }, [inn]);
 };
 
-const getDefaultValues = (counterparty: CounterpartyViewModel): CounterpartyViewModel => {
+const getDefaultValues = (
+  counterparty: CounterpartyViewModel,
+  userGroups: GroupViewModel[]
+): CounterpartyFormValues => {
   const {
     inn,
     name = '',
@@ -64,8 +76,15 @@ const getDefaultValues = (counterparty: CounterpartyViewModel): CounterpartyView
     heads = [],
     contacts = [],
     requisites = [],
+    groups = [],
+    typeOptions = defaultTypeOptions,
     ...rest
   } = counterparty;
+
+  const formGroups: CounterpartyGroupViewModel[] = userGroups.map((group) => ({
+    id: group.id,
+    checked: groups.find((t) => t.id === group.id) !== undefined,
+  }));
 
   return {
     inn,
@@ -85,9 +104,13 @@ const getDefaultValues = (counterparty: CounterpartyViewModel): CounterpartyView
     mailingAddress,
     generalCondidionsSellerDate,
     generalCondidionsLesseeDate,
-    heads,
+    heads: heads.map(({ id: headId, ...rest }) => {
+      return { ...rest, headId };
+    }),
     contacts,
     requisites,
+    groups: formGroups,
+    typeOptions,
     ...rest,
   };
 };
@@ -101,19 +124,21 @@ export const useCounterpartyEditForm = () => {
   });
 
   const defaultValues = useDefaultValues(inn);
-  const counterparty = getDefaultValues(state ?? data ?? defaultValues);
+
+  const { data: groups = [], isLoading: groupsLoading } = useGroupsQuery();
+  const counterparty = getDefaultValues(state ?? data ?? defaultValues, groups);
 
   const { handleSubmit, control, reset, setError, clearErrors, formState, ...rest } =
-    useForm<CounterpartyViewModel>({
+    useForm<CounterpartyFormValues>({
       mode: 'onBlur',
       defaultValues: counterparty,
     });
 
   useEffect(() => {
-    if (data) {
-      reset(getDefaultValues(data));
+    if (data && groups) {
+      reset(getDefaultValues(data, groups));
     }
-  }, [data, reset]);
+  }, [data, groups, reset]);
 
   const queryClient = useQueryClient();
   const { mutateAsync } = useCounterpartiesBackendMutation<
@@ -127,21 +152,31 @@ export const useCounterpartyEditForm = () => {
   });
 
   const onSubmit = useMemo(() => {
-    const submit = async ({ inn, ...form }: CounterpartyViewModel) => {
+    const submit = async ({ inn, heads, ...form }: CounterpartyFormValues) => {
       try {
-        const { requisites: allRequisites = [] } = form;
+        const { requisites: allRequisites = [], groups: allGroups = [] } = form;
         const requisites = allRequisites.filter((t) => {
           return t.bank !== '' || t.bic !== '' || t.correspondentAccount !== '' || t.account !== '';
         });
-        await mutateAsync({ ...form, requisites });
+        const groups = allGroups
+          .filter((group) => group.checked)
+          .map((group) => ({
+            id: group.id,
+            name: group.id.toString(),
+          }));
+
+        await mutateAsync({
+          ...form,
+          heads: heads.map(({ headId: id, ...rest }) => ({ id, ...rest })),
+          requisites,
+          groups,
+        });
       } catch (error) {
         setError('inn', { message: 'Не удалось обновить' }, { shouldFocus: true });
       }
     };
     return handleSubmit(submit);
   }, [handleSubmit, mutateAsync, setError]);
-
-  const { data: groups, isLoading: groupsLoading } = useGroupsQuery();
 
   return {
     control,

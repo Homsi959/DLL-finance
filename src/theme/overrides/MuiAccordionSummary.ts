@@ -4,7 +4,7 @@ import palette from '../palette';
 const style: Partial<StyleRules<AccordionSummaryClassKey>> = {
   root: {
     backgroundColor: palette.background.paper,
-    borderBottom: '3px solid #E3E6F3',
+    borderBottom: '3px solid ' + palette.grey6.main,
     marginBottom: -1,
     minHeight: 48,
     '&$expanded': {

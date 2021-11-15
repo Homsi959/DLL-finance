@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useQueryParams, NumberParam, withDefault } from 'use-query-params';
 import { calculationUrl } from 'services/calculation';
 import { CounterpartyListResult } from './types';
-import { CounterpartyType } from 'schema/serverTypes';
+import { CounterpartySortBy, CounterpartyType, SortOrder } from 'schema/serverTypes';
 import { useBackendQuery } from 'services';
 
 export type QuotaAction = 'changeOwner' | 'viewHistory';
@@ -12,6 +12,8 @@ type SearchUrlParams = {
   pageSize: number;
   search?: string;
   type?: CounterpartyType;
+  sortBy?: CounterpartySortBy;
+  order?: SortOrder;
 };
 
 const getCounterpartyFilterName = (type: CounterpartyType) => {
@@ -28,7 +30,7 @@ const getCounterpartyFilterName = (type: CounterpartyType) => {
 };
 
 const useSearchUrl = (searchParams: SearchUrlParams) => {
-  const { page, pageSize, search, type } = searchParams;
+  const { page, pageSize, search, type, sortBy, order } = searchParams;
 
   return useMemo(() => {
     const searchParams = new URLSearchParams();
@@ -44,8 +46,16 @@ const useSearchUrl = (searchParams: SearchUrlParams) => {
       searchParams.set(name, 'true');
     }
 
+    if (sortBy) {
+      searchParams.set('sortBy', sortBy);
+    }
+
+    if (order) {
+      searchParams.set('order', order);
+    }
+
     return `${calculationUrl}/api/v1/counterparties?${searchParams}`;
-  }, [page, pageSize, search, type]);
+  }, [page, pageSize, search, type, order, sortBy]);
 };
 
 export const useCounterpartiesData = () => {
@@ -57,14 +67,17 @@ export const useCounterpartiesData = () => {
 
   const [search, setSearch] = useState<string>();
   const [type, setType] = useState<CounterpartyType>();
+  const [sortBy, setSortBy] = useState<CounterpartySortBy>();
+  const [order, setOrder] = useState<SortOrder>();
 
   const url = useSearchUrl({
     page,
     pageSize,
     search,
     type,
+    sortBy,
+    order,
   });
-
   const {
     data,
     isLoading: loading,
@@ -77,10 +90,24 @@ export const useCounterpartiesData = () => {
 
   const rows = data?.data ?? [];
 
+  const handleSortBy = useCallback((sortBy: CounterpartySortBy | undefined) => {
+    setSortBy(sortBy);
+  }, []);
+
+  const handleSortOrder = useCallback((orderBy: SortOrder | undefined) => {
+    setOrder(orderBy);
+  }, []);
+
   return {
     filter: {
       setType,
       setSearch,
+    },
+    sorting: {
+      sortBy,
+      order,
+      setSortBy: handleSortBy,
+      setOrder: handleSortOrder,
     },
     paging: {
       pageCount: data?.pageCount ?? 0,

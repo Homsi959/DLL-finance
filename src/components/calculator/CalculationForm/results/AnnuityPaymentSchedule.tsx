@@ -1,4 +1,5 @@
-import { Grid, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import { Grid } from 'components/Grid';
 import { CalculationResult, Currency } from 'schema/serverTypes';
 import { formatNumber, formatCurrency } from '../../utils';
 import { useStyles } from './CalculationResults';
@@ -18,30 +19,24 @@ export const AnnuityPaymentSchedule = (props: AnnuityPaymentScheduleProps) => {
   const { t } = useTranslation();
 
   return (
-    <Grid className={classes.table} container spacing={4}>
-      <Grid container item xs={12} spacing={1}>
-        <Grid item lg={2} md={4} xs={12}>
-          <dl>
-            <dt>
-              <Typography color="textSecondary" className={classes.label}>
-                {t('ByAnnuityPayments')}
-              </Typography>
-            </dt>
-            <dd>{t('MonthWithCount', { count: numberOfMonths })}</dd>
-          </dl>
-        </Grid>
-        <Grid item lg={2} md={4} xs={12}>
-          <dl>
-            <dt>
-              <Typography color="textSecondary" className={classes.label}>
-                {t('MonthlyPaymentIncludingVAT')}
-              </Typography>
-            </dt>
-            <dd>
-              {formatNumber(monthlyPayment)} {formatCurrency(leaseCurrency)}
-            </dd>
-          </dl>
-        </Grid>
+    <Grid container item spacing={2} className={classes.table}>
+      <Grid item xl={4} lg={6} md={8} xs={24}>
+        <dl>
+          <Typography component={'dt'} className={classes.label}>
+            {t('ByAnnuityPayments')}
+          </Typography>
+          <dd>{t('MonthWithCount', { count: numberOfMonths })}</dd>
+        </dl>
+      </Grid>
+      <Grid item xl={4} lg={6} md={8} xs={24}>
+        <dl>
+          <Typography component={'dt'} className={classes.label}>
+            {t('MonthlyPaymentIncludingVAT')}
+          </Typography>
+          <dd>
+            {formatNumber(monthlyPayment)} {formatCurrency(leaseCurrency)}
+          </dd>
+        </dl>
       </Grid>
     </Grid>
   );

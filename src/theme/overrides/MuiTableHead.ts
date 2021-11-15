@@ -9,7 +9,7 @@ const style: MuiTableCellStyles = {
     fontSize: 14,
     '& .MuiTableCell-root': {
       color: palette.textGrey3.main,
-      textTransform: 'capitalize',
+      textTransform: 'none',
       lineHeight: 1.2,
     },
   },

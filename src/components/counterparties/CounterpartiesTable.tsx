@@ -1,67 +1,75 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  Table,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableBody,
-  TableSortLabel,
-} from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { Table, TableCell, TableHead, TableRow, TableBody } from '@material-ui/core';
 import { CounterpartyListViewModel } from 'schema';
 import { IconSprite } from 'components';
 import { palette } from 'theme';
+import { CounterpartiesDataReturn } from './types';
 
-const useStyles = makeStyles((theme) => ({
-  abbreviatedName: {
-    minWidth: '420px',
-  },
-  list: {
-    marginTop: theme.spacing(0.2),
-    marginBottom: theme.spacing(0.2),
-  },
-  change: {
-    width: '60px',
-  },
-  calculation: {
-    width: '100px',
-  },
-  monitoring: {
-    width: '120px',
-  },
-  verification: {
-    width: '130px',
-  },
-  tin: {
-    width: '130px',
-  },
-  userType: {
-    width: '130px',
-  },
-}));
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    abbreviatedName: {
+      minWidth: '420px',
+    },
+    list: {
+      marginTop: theme.spacing(0.2),
+      marginBottom: theme.spacing(0.2),
+    },
+    change: {
+      width: '41px',
+    },
+    calculation: {
+      width: '55px',
+    },
+    monitoring: {
+      width: '80px',
+    },
+    verification: {
+      width: '92px',
+    },
+    tin: {
+      width: '100px',
+      [theme.breakpoints.up('md')]: {
+        width: '140px',
+      },
+      [theme.breakpoints.up('lg')]: {
+        width: '200px',
+      },
+    },
+    userType: {
+      width: '140px',
+      [theme.breakpoints.up('md')]: {
+        width: '212px',
+      },
+      [theme.breakpoints.up('lg')]: {
+        width: '372px',
+      },
+    },
+  })
+);
 
 const TableItem = (props: CounterpartyListViewModel) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const { name, inn, isDealer, isInsuranceCompany, isLessee, isLessor } = props;
 
-  const arrRoles = [
+  const roles = [
     isDealer ? t('Lessee') : false,
     isInsuranceCompany ? t('InsuranceCompany') : false,
     isLessee ? t('Lessee') : false,
     isLessor ? t('Lessor') : false,
   ];
+  const counterpartyUrl = `/counterparties/${inn}`;
 
   return (
     <TableRow>
       <TableCell className={classes.abbreviatedName} size="medium">
-        <Link to={`/counterparties/${inn}`}>{name}</Link>
+        <Link to={counterpartyUrl}>{name}</Link>
       </TableCell>
       <TableCell size="medium">
         <ul>
-          {arrRoles
+          {roles
             .filter((t) => t !== false)
             .map((role, i) => (
               <li className={classes.list} key={i}>
@@ -71,11 +79,18 @@ const TableItem = (props: CounterpartyListViewModel) => {
         </ul>
       </TableCell>
       <TableCell size="medium">{inn}</TableCell>
-      <TableCell size="medium"></TableCell>
-      <TableCell size="medium"></TableCell>
-      <TableCell size="medium"></TableCell>
+      <TableCell size="medium" />
+      <TableCell size="medium" />
+      <TableCell size="medium" align="center">
+        <IconSprite
+          width="14px"
+          color={palette.textGrey2.main}
+          hoverColor={palette.primary.main}
+          icon="view"
+        />
+      </TableCell>
       <TableCell size="medium">
-        <Link to={'groupUrl'}>
+        <Link to={counterpartyUrl}>
           <IconSprite
             width="14px"
             color={palette.textGrey2.main}
@@ -87,9 +102,8 @@ const TableItem = (props: CounterpartyListViewModel) => {
     </TableRow>
   );
 };
-export type CounterpartiesTableProps = {
-  rows: CounterpartyListViewModel[];
-};
+
+export type CounterpartiesTableProps = Pick<CounterpartiesDataReturn, 'rows' | 'sorting'>;
 
 export const CounterpartiesTable = (props: CounterpartiesTableProps) => {
   const { rows } = props;
@@ -100,16 +114,12 @@ export const CounterpartiesTable = (props: CounterpartiesTableProps) => {
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell size="medium">
-            <TableSortLabel IconComponent={ArrowDropDownIcon}>
-              {t('AbbreviatedName')}
-            </TableSortLabel>
-          </TableCell>
+          <TableCell size="medium">{t('AbbreviatedName')}</TableCell>
           <TableCell className={classes.userType} size="medium">
             {t('UserType')}
           </TableCell>
           <TableCell className={classes.tin} size="medium">
-            {t('TIN')}
+            {t('Inn')}
           </TableCell>
           <TableCell className={classes.verification} size="medium">
             {t('Verification')}
@@ -120,7 +130,7 @@ export const CounterpartiesTable = (props: CounterpartiesTableProps) => {
           <TableCell className={classes.calculation} size="medium">
             {t('Calculation_plural')}
           </TableCell>
-          <TableCell className={classes.change} size="medium"></TableCell>
+          <TableCell className={classes.change} size="medium" />
         </TableRow>
       </TableHead>
       <TableBody>

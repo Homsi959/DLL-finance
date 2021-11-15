@@ -11,11 +11,11 @@ const style: MuiTableCellStyles = {
     position: 'relative',
     borderBottom: 'none',
     padding: '16px 6px',
-    '&:first-of-type': {
-      paddingLeft: '14px',
+    '&:last-child': {
+      paddingRight: '20px',
     },
-    '&:last-of-type': {
-      paddingRight: '14px',
+    '&:first-child': {
+      paddingLeft: '20px',
     },
   },
   head: {

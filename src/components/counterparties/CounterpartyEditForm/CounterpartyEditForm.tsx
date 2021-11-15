@@ -1,4 +1,4 @@
-import { makeStyles, createStyles, Button, Theme, Paper } from '@material-ui/core';
+import { makeStyles, createStyles, Theme, Paper } from '@material-ui/core';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -11,6 +11,7 @@ import { ContactFields } from './ContactFields';
 import { AdditionalDataFields } from './AdditionalDataFields';
 import { SignersFields } from './SignersFields/SignersFields';
 import { RequisitesFields } from './RequisitesFields';
+import { Button } from 'components';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       display: 'flex',
       justifyContent: 'flex-start',
-      width: 'calc(100% - 230px)',
+      width: 'calc(100% - 238px)',
       padding: theme.spacing('20px', '32px'),
       bottom: 0,
       position: 'fixed',
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const CounterpartyEditForm = () => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { onSubmit, control, setValue, clearErrors, ...rest } = useCounterpartyEditForm();
+  const { onSubmit, control, setValue, clearErrors, groups, ...rest } = useCounterpartyEditForm();
   const { isSubmitting, isValid } = rest;
 
   return (
@@ -54,6 +55,7 @@ export const CounterpartyEditForm = () => {
               control={control}
               clearErrors={clearErrors}
               isValid={isValid}
+              groups={groups}
             />
           </AccordionDetails>
         </Accordion>

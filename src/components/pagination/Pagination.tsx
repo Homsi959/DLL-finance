@@ -1,6 +1,26 @@
 import { useTranslation } from 'react-i18next';
 import { PaginationLink } from './PaginationLink';
 import { PaginationProps } from './types';
+import { IconSprite } from '../icons';
+import { Grid, createStyles, makeStyles, Theme } from '@material-ui/core';
+import { SelectPagination } from 'components';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    blockPages: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginTop: theme.spacing(2.7),
+      marginBottom: theme.spacing(2.7),
+      color: theme.palette.textGrey3.main,
+    },
+    blockControlItem: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+  })
+);
 
 export const Pagination = (props: PaginationProps) => {
   const {
@@ -8,7 +28,7 @@ export const Pagination = (props: PaginationProps) => {
     showLast = true,
     showNext = true,
     showPrev = true,
-    pagesCount = 4,
+    pagesCount = 6,
     page,
     pageSize,
     pageCount,
@@ -16,13 +36,15 @@ export const Pagination = (props: PaginationProps) => {
     dataCount,
   } = props;
 
+  const classes = useStyles();
+
   var from = page - pagesCount / 2;
   if (from < 1) {
     from = 1;
   }
 
   const to = from + (pagesCount - 1 > totalCount ? totalCount : pagesCount - 1);
-  const pages = [];
+  const pages: number[] = [];
 
   for (let page = from; page < to && page <= pageCount; page += 1) {
     pages.push(page);
@@ -36,43 +58,50 @@ export const Pagination = (props: PaginationProps) => {
 
   const { t } = useTranslation();
 
+  const LastPage = () => {
+    if (pages[pages.length - 1] === pageCount) {
+      return <></>;
+    }
+
+    return (
+      <span>
+        {pageCount <= 6 ? '' : '... '}
+        <PaginationLink page={pageCount} />
+      </span>
+    );
+  };
+
   return (
-    <div className="pagination">
-      <div className="pagination-links">
+    <Grid container className={classes.blockPages}>
+      <Grid item>
         {showFirst && (
           <PaginationLink page={1} disabled={page === 1}>
-            <svg className="svg-icon page-first">
-              <use xlinkHref="/img/svg-sprite.svg#page-first"></use>
-            </svg>
+            <IconSprite icon={'page-first'} width="8px" />
           </PaginationLink>
         )}
         {showPrev && (
           <PaginationLink page={prevPage} disabled={page === prevPage}>
-            <svg className="svg-icon page-prev">
-              <use xlinkHref="/img/svg-sprite.svg#page-prev"></use>
-            </svg>
+            <IconSprite icon={'page-prev'} width="5px" height="8px" />
           </PaginationLink>
         )}
         {pages.map((pageNumber) => {
           return <PaginationLink key={pageNumber} page={pageNumber} />;
         })}
+        <LastPage />
         {showNext && (
           <PaginationLink page={nextPage} disabled={page === nextPage}>
-            <svg className="svg-icon page-next">
-              <use xlinkHref="/img/svg-sprite.svg#page-next"></use>
-            </svg>
+            <IconSprite icon={'page-next'} width="5px" height="8px" />
           </PaginationLink>
         )}
         {showLast && (
           <PaginationLink page={pageCount} disabled={page === pageCount}>
-            <svg className="svg-icon page-last">
-              <use xlinkHref="/img/svg-sprite.svg#page-last"></use>
-            </svg>
+            <IconSprite icon={'page-last'} width="8px" />
           </PaginationLink>
         )}
-      </div>
-      <div className="pagination-limit">
-        <div className="pagination-limit-text">
+      </Grid>
+      <Grid item className={classes.blockControlItem}>
+        <SelectPagination />
+        <Grid item>
           {page === 1 && (
             <>
               {t('Pagination.Shown')}
@@ -91,8 +120,8 @@ export const Pagination = (props: PaginationProps) => {
               <span>&nbsp;{totalCount}&nbsp;</span>
             </>
           )}
-        </div>
-      </div>
-    </div>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };

@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useUserAuth } from 'services/authentication';
 import { IDENTITY_CONFIG } from 'services/authentication/AuthenticationConfig';
 import { GroupEditFormValues } from '../types';
+import { useLessorsQuery } from '../useLessorsQuery';
 
 const useCreateGroupMutation = () => {
   const { user } = useUserAuth();
@@ -17,7 +18,7 @@ const useCreateGroupMutation = () => {
         users: values.users.map((owner) => {
           return { id: owner.id };
         }),
-        owners: [{ id: values.owners }],
+        owners: [{ id: values.owner }],
       };
       const response = await fetch(requestUrl, {
         method: 'POST',
@@ -61,11 +62,11 @@ const useCreateGroupMutation = () => {
 };
 
 export const useCreateForm = () => {
-  const initialValues: any = {
-    //TODO type
+  const initialValues: GroupEditFormValues = {
     name: '',
     users: [],
-    owners: '',
+    owner: '',
+    lessorInn: '',
   };
 
   const { mutateAsync, isLoading, isError } = useCreateGroupMutation();
@@ -77,10 +78,13 @@ export const useCreateForm = () => {
     [mutateAsync]
   );
 
+  const { data: options = [], isLoading: isLoadingLessors } = useLessorsQuery();
+
   return {
     initialValues,
-    isLoading,
+    isLoading: isLoadingLessors || isLoading,
     isError,
+    options,
     onSubmit,
   };
 };

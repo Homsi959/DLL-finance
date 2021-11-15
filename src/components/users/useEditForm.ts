@@ -11,6 +11,8 @@ export interface UserEditFormValues {
   middleName?: string;
   firstName?: string;
   phoneNumber?: string;
+  leasingPrograms: string[];
+  salesPoints: string[];
 }
 
 const useUpdateUserMutation = (id: string) => {
@@ -69,6 +71,8 @@ export const useEditForm = (user: UserViewModel) => {
     firstName: user.firstName,
     phoneNumber: user.phoneNumber,
     role: user.role,
+    leasingPrograms: user.leasingPrograms,
+    salesPoints: user.salesPoints,
   };
 
   const { mutateAsync, isLoading, isError } = useUpdateUserMutation(user.id);

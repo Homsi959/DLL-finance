@@ -1,0 +1,94 @@
+body .form-wrap {
+  opacity: 0;
+}
+
+body.document-loaded .form-wrap {
+  opacity: 1;
+}
+
+body.document-loaded .loader {
+  transform: scale(0);
+  opacity: 0;
+  visibility: hidden;
+  display: none;
+}
+
+.loader {
+  display: flex;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: -4;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  50% {
+    stroke-dasharray: 40, 200;
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: 125, 200;
+    opacity: 1;
+  }
+}
+#letter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+#letter svg {
+  width: 100%;
+}
+#letter path {
+  fill: none;
+  stroke: #089cff;
+  stroke-width: 5;
+  -webkit-animation: dash 3s linear forwards infinite;
+  animation: dash 3s linear forwards infinite;
+  stroke-dashoffset: 100;
+  stroke-dasharray: 200;
+}
+path:nth-of-type(4) path {
+  -webkit-animation-delay: 4s;
+  animation-delay: 4s;
+}
+path:nth-of-type(4) path {
+  -webkit-animation-delay: 4s;
+  animation-delay: 4s;
+}
+path:nth-of-type(4) path {
+  -webkit-animation-delay: 4s;
+  animation-delay: 4s;
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 100;
+    stroke-dasharray: 200;
+  }
+  50% {
+    stroke-dashoffset: 500;
+  }
+  100% {
+    stroke-dashoffset: 800;
+    stroke-dasharray: 100;
+  }
+}

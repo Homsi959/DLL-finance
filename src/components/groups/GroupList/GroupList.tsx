@@ -1,36 +1,35 @@
-import { Button, Grid } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import { Pagination } from 'components';
+import { Box, Grid } from '@material-ui/core';
+import { Pagination, Button } from 'components';
 import { GroupFilterForm } from './GroupFilterForm';
 import { GroupTable } from './GroupTable';
 import { useGroupsQuery } from './useGroupsQuery';
 import { useTranslation } from 'react-i18next';
 
 export const GroupList = () => {
-  const { groups, loading, paging, filter } = useGroupsQuery();
+  const { groups, loading, paging, filter, sorting } = useGroupsQuery();
 
   const { t } = useTranslation();
 
   return (
-    <Grid container spacing={2} direction="column">
-      <Grid container item justify="space-between" alignItems="center">
-        <Grid item>
+    <>
+      <Box display="flex" justifyContent="space-between" mb={2.5} mt={1} alignItems="flex-end">
+        <Box>
           <GroupFilterForm {...filter} />
-        </Grid>
-        <Grid item>
-          <Button color="primary" variant="contained" component={Link} to="/users/groups/create">
+        </Box>
+        <Box>
+          <Button color="primary" variant="contained2" to="/users/groups/create">
             {t('Buttons.NewGroup')}
           </Button>
-        </Grid>
-      </Grid>
-      <Grid container item direction="column">
+        </Box>
+      </Box>
+      <Grid container direction="column">
         <Grid item>
-          <GroupTable groups={groups} loading={loading} />
+          <GroupTable groups={groups} loading={loading} sorting={sorting} />
         </Grid>
         <Grid item>
           <Pagination {...paging} />
         </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };

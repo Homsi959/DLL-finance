@@ -7,6 +7,7 @@ type IconSpriteProps = {
   height?: string;
   color?: string;
   hoverColor?: string;
+  className?: string;
 };
 
 const useStyles = makeStyles({
@@ -22,10 +23,10 @@ const useStyles = makeStyles({
 
 export const IconSprite = (props: IconSpriteProps) => {
   const classes = useStyles(props);
-  const { icon } = props;
+  const { icon, className = '' } = props;
 
   return (
-    <svg className={classes.root}>
+    <svg className={`${classes.root} ${className}`}>
       <use xlinkHref={sprite + '#' + icon} />
     </svg>
   );

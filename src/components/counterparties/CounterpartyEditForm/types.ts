@@ -1,9 +1,10 @@
 import { UseFormReturn } from 'react-hook-form';
-import { Address, CounterpartyViewModel } from 'schema/serverTypes';
+import { Address } from 'schema/serverTypes';
+import { CounterpartyFormValues } from '../types';
 
 export type FieldsControlProps = {
-  control: UseFormReturn<CounterpartyViewModel>['control'];
-  setValue?: UseFormReturn<CounterpartyViewModel>['setValue'];
+  control: UseFormReturn<CounterpartyFormValues>['control'];
+  setValue?: UseFormReturn<CounterpartyFormValues>['setValue'];
 };
 
 export const emptyAddress: Address = {

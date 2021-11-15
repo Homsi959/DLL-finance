@@ -6,7 +6,6 @@ import { TabProps, TabsProps } from './types';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginBottom: theme.spacing(1),
       border: 0,
       '& .MuiTab-wrapper': {
         textTransform: 'uppercase',

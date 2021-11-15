@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { GridSortModel, GridSortModelParams } from '@material-ui/data-grid';
-import { useQueryParams, NumberParam, withDefault } from 'use-query-params';
+import { useQueryParams, NumberParam, StringParam, withDefault } from 'use-query-params';
 import { calculationUrl } from 'services/calculation';
 import { QuotaListResult } from './types';
 import { useBackendQuery, useUserAuth } from 'services';
-import { QuotaSortBy } from 'schema';
+import { QuotaSortBy, SortOrder } from 'schema';
 
 export type QuotaAction = 'changeOwner' | 'viewHistory';
 
@@ -16,11 +15,14 @@ type SearchUrlParams = {
   lessee?: string;
   search?: string;
   ownerId?: string;
-  sortModel?: GridSortModel;
+  inn?: string;
+  sortBy?: QuotaSortBy;
+  order?: SortOrder;
 };
 
 const useSearchUrl = (searchParams: SearchUrlParams) => {
-  const { page, pageSize, tabIndex, dealer, lessee, search, ownerId, sortModel } = searchParams;
+  const { page, pageSize, tabIndex, dealer, lessee, search, ownerId, sortBy, order, inn } =
+    searchParams;
 
   return useMemo(() => {
     const searchParams = new URLSearchParams();
@@ -30,11 +32,15 @@ const useSearchUrl = (searchParams: SearchUrlParams) => {
     if (tabIndex === 0) {
       searchParams.set('owned', 'true');
     }
-    if (lessee) {
-      searchParams.set('lesseeInn', lessee);
-    }
-    if (dealer) {
-      searchParams.set('dealerInn', dealer);
+    if (inn) {
+      searchParams.set('inn', inn);
+    } else {
+      if (lessee) {
+        searchParams.set('lesseeInn', lessee);
+      }
+      if (dealer) {
+        searchParams.set('dealerInn', dealer);
+      }
     }
     if (search) {
       searchParams.set('search', search);
@@ -42,40 +48,33 @@ const useSearchUrl = (searchParams: SearchUrlParams) => {
     if (ownerId) {
       searchParams.set('ownerId', ownerId);
     }
-    if (sortModel?.length === 1) {
-      searchParams.set('sortBy', sortModel[0].field);
-      if (sortModel[0].sort) {
-        searchParams.set('order', sortModel[0].sort);
-      }
+
+    if (sortBy) {
+      searchParams.set('sortBy', sortBy);
     }
+
+    if (order) {
+      searchParams.set('order', order);
+    }
+
     return `${calculationUrl}/api/v1/quotas?${searchParams}`;
-  }, [page, pageSize, tabIndex, dealer, lessee, search, ownerId, sortModel]);
+  }, [page, pageSize, tabIndex, dealer, lessee, search, ownerId, sortBy, order, inn]);
 };
 
 export const useQuotaData = (tabIndex: number) => {
   const [queryParams] = useQueryParams({
     page: withDefault(NumberParam, 1),
     pageSize: withDefault(NumberParam, 20),
+    inn: withDefault(StringParam, undefined),
   });
-  const { page, pageSize } = queryParams;
+  const { page, pageSize, inn } = queryParams;
 
   const [dealer, setDealer] = useState<string>();
   const [lessee, setLessee] = useState<string>();
   const [search, setSearch] = useState<string>();
   const [ownerId, setOwnerId] = useState<string>();
-
-  const [sortModel, setSortModel] = useState<GridSortModel>([
-    {
-      field: QuotaSortBy.id,
-      sort: 'desc',
-    },
-  ]);
-  const onSortModelChange = useCallback(
-    (params: GridSortModelParams) => {
-      setSortModel(params.sortModel);
-    },
-    [setSortModel]
-  );
+  const [sortBy, setSortBy] = useState<QuotaSortBy>();
+  const [order, setOrder] = useState<SortOrder>();
 
   const url = useSearchUrl({
     page,
@@ -85,7 +84,9 @@ export const useQuotaData = (tabIndex: number) => {
     lessee,
     ownerId,
     search,
-    sortModel,
+    sortBy,
+    order,
+    inn,
   });
 
   const {
@@ -136,10 +137,20 @@ export const useQuotaData = (tabIndex: number) => {
     }
   );
 
+  const handleSortBy = useCallback((sortBy: QuotaSortBy | undefined) => {
+    setSortBy(sortBy);
+  }, []);
+
+  const handleSortOrder = useCallback((orderBy: SortOrder | undefined) => {
+    setOrder(orderBy);
+  }, []);
+
   return {
     sorting: {
-      sortModel,
-      onSortModelChange,
+      sortBy,
+      order,
+      setSortBy: handleSortBy,
+      setOrder: handleSortOrder,
     },
     filter: {
       setDealer,

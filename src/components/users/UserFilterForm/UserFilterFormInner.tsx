@@ -1,7 +1,5 @@
 import { useCallback, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import { Field, FormSpy, FormSpyRenderProps } from 'react-final-form';
 import { TextField } from 'components/form/TextField';
@@ -13,11 +11,12 @@ import { SelectField } from 'components/form';
 import { useTranslation } from 'react-i18next';
 import { IconSprite } from '../../icons';
 import { palette } from '../../../theme';
+import { Button, Grid } from 'components';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginBottom: theme.spacing(1),
+      width: '100%',
     },
     grid: {
       '& .MuiFormControl-root': {
@@ -25,13 +24,14 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     item: {
-      minWidth: '320px',
-      marginRight: '20px',
+      minWidth: '240px',
+      marginRight: theme.spacing(2.5),
     },
     buttonReset: {
       '& .MuiButton-text': {
         lineHeight: 1.65,
       },
+      marginBottom: '-2px',
       display: 'flex',
       alignItems: 'flex-end',
     },
@@ -78,8 +78,8 @@ export const UserFilterFormInner = (props: UserFilterFormRenderProps) => {
           return <FilterFormSpy {...formSpyProps} setRole={setRole} setSearch={setSearch} />;
         }}
       </FormSpy>
-      <Grid container spacing={1} className={classes.grid}>
-        <Grid item className={classes.item}>
+      <Grid md={24} container className={classes.grid}>
+        <Grid md={6} xs={24} item className={classes.item}>
           <Field name="role" label={t('UserType')} component={SelectField} variant="standard">
             <MenuItem value={ApplicationRole.Admin}>{t('Roles.Admin')}</MenuItem>
             <MenuItem value={ApplicationRole.SalesManager}>{t('Roles.SalesManager')}</MenuItem>
@@ -89,7 +89,7 @@ export const UserFilterFormInner = (props: UserFilterFormRenderProps) => {
             <MenuItem value={ApplicationRole.SalesSupport}>{t('Roles.SalesSupport')}</MenuItem>
           </Field>
         </Grid>
-        <Grid item className={classes.item}>
+        <Grid md={6} xs={24} item className={classes.item}>
           <Field
             label={t('Search')}
             variant="standard"
@@ -102,7 +102,7 @@ export const UserFilterFormInner = (props: UserFilterFormRenderProps) => {
             }}
           />
         </Grid>
-        <Grid className={classes.buttonReset} item>
+        <Grid md={6} xs={24} className={classes.buttonReset} item>
           <FormControl>
             <Button variant="text" onClick={handleOnReset}>
               {t('Reset')}

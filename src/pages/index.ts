@@ -6,3 +6,4 @@ export * from './silent-page';
 export * from './users-page';
 export * from './groups-page';
 export * from './counterparties-page';
+export * from './dictionaries-page';

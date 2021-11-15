@@ -1,5 +1,6 @@
 import { createContext } from 'react';
 import { AmountType } from 'schema/serverTypes';
+import { OutlinedInputProps } from '@material-ui/core';
 
 export type AmountTypeContextProps = {
   amountType: AmountType;
@@ -19,4 +20,5 @@ export type AmountFieldProps = {
   fractionDigits?: number;
   useSaleCurrency?: boolean;
   allowZero?: boolean;
+  inputProps?: OutlinedInputProps['inputProps'];
 };

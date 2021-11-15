@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import { Field, FormSpy, FormSpyRenderProps } from 'react-final-form';
 import { TextField } from 'components/form/TextField';
@@ -10,12 +9,10 @@ import { FilterFormValues, GroupFilterFormRenderProps, GroupFilterFormProps } fr
 import { useTranslation } from 'react-i18next';
 import { IconSprite } from '../../../icons';
 import { palette } from '../../../../theme';
+import { Button } from 'components';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      marginBottom: theme.spacing(1),
-    },
     grid: {
       '& .MuiFormControl-root': {
         marginTop: 0,
@@ -29,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
       '& .MuiButton-text': {
         lineHeight: 1.65,
       },
+      marginBottom: theme.spacing(-0.2),
       display: 'flex',
       alignItems: 'flex-end',
     },
@@ -65,13 +63,13 @@ export const GroupFilterFormInner = (props: GroupFilterFormRenderProps) => {
   const { t } = useTranslation();
 
   return (
-    <form onSubmit={handleSubmit} className={classes.root}>
+    <form onSubmit={handleSubmit}>
       <FormSpy<FilterFormValues> subscription={{ values: true }}>
         {(formSpyProps) => {
           return <FilterFormSpy {...formSpyProps} setSearch={setSearch} />;
         }}
       </FormSpy>
-      <Grid container spacing={1} className={classes.grid}>
+      <Grid container className={classes.grid}>
         <Grid item className={classes.item}>
           <Field
             label={t('Search')}

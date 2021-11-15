@@ -1,18 +1,18 @@
+import { GroupViewModel } from 'schema/serverTypes';
 import { PagedList } from '../pagination';
-import { GroupViewModel } from '../groups/types';
 
-export interface UserListResult extends PagedList<UserListViewModel> {}
+export type UserListResult = PagedList<UserListViewModel>;
 
-export interface UserListViewModel {
+export type UserListViewModel = {
   id: string;
   userName: string;
   name: string;
   role?: string;
   email: string;
   groups?: GroupViewModel[];
-}
+};
 
-export interface UserViewModel {
+export type UserViewModel = {
   id: string;
   userName: string;
   name?: string;
@@ -23,4 +23,6 @@ export interface UserViewModel {
   role?: string;
   groups?: GroupViewModel[];
   ownedGroups?: GroupViewModel[];
-}
+  leasingPrograms: string[];
+  salesPoints: string[];
+};

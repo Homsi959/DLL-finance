@@ -1,4 +1,5 @@
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import { Grid } from 'components/Grid';
 import { useCallback } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -6,12 +7,16 @@ import { CounterpartyRequisite } from 'schema/serverTypes';
 import { Requisite } from './Requisite';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { CounterpartyFormProps } from './types';
+import { Button } from 'components';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     add: {
       color: theme.palette.primary.light,
-      marginTop: theme.spacing(2),
+      marginTop: 0,
+    },
+    wrapper: {
+      width: '100%',
     },
   })
 );
@@ -38,7 +43,7 @@ export const RequisitesFields = (props: CounterpartyFormProps) => {
   }, [append]);
 
   return (
-    <Grid container spacing={1}>
+    <div className={classes.wrapper}>
       {fields.map((item, index) => {
         return (
           <Requisite
@@ -52,11 +57,13 @@ export const RequisitesFields = (props: CounterpartyFormProps) => {
           />
         );
       })}
-      <Grid item xs={12}>
-        <Button variant="text" className={classes.add} onClick={onAdd}>
-          <Typography variant="subtitle1">+ {t('Add')}</Typography>
-        </Button>
+      <Grid container columnSpacing={2} rowSpacing={2.5}>
+        <Grid item xs={24}>
+          <Button variant="text" className={classes.add} onClick={onAdd}>
+            <Typography variant="subtitle1">+ {t('Add')}</Typography>
+          </Button>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };

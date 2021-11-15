@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useQuery } from 'react-query';
+import { GroupUserViewModel } from 'schema/serverTypes';
 import { useUserAuth } from 'services/authentication';
 import { IDENTITY_CONFIG } from 'services/authentication/AuthenticationConfig';
-import { GroupUserViewModel } from './types';
 
 export const useUserSearchQuery = (name: string | null, exceptUserIds: string[] | null) => {
   const { user } = useUserAuth();

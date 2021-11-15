@@ -17,7 +17,7 @@ import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRo
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     select: {
-      minWidth: '70px',
+      minWidth: '52px',
       height: '34px',
       border: '1px solid ' + theme.palette.secondary.dark,
       backgroundColor: theme.palette.secondary.light,
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: {
       borderRadius: 0,
-      boxShadow: '0px 5px 10px 0px #383C611A',
+      boxShadow: '0px 5px 10px 0px ' + theme.palette.grey5.main,
       border: '1px solid ' + theme.palette.secondary.dark,
       maxHeight: 185,
     },

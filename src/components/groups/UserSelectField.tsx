@@ -7,10 +7,10 @@ import { useUserSearchQuery } from './useUserSearchQuery';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
-import { GroupUserViewModel } from './types';
 import { FieldRenderProps } from 'react-final-form';
 import { palette } from 'theme';
 import { IconCheckbox } from '../icons';
+import { GroupUserViewModel } from 'schema/serverTypes';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

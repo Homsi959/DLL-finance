@@ -25,7 +25,7 @@ const style: Partial<StyleRules<TextFieldClassKey>> = {
         borderColor: palette.divider,
       },
       '& .MuiOutlinedInput-input': {
-        padding: '10px 10px',
+        padding: '12px 10px 8px',
       },
     },
   },

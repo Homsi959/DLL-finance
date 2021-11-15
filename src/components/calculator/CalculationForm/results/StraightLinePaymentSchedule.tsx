@@ -9,17 +9,16 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       fontSize: '12px',
       fontWeight: 500,
-      columns: '10',
+      columns: '2',
       listStyleType: 'none',
-      // display: "grid",
-      // gridTemplateRows: "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
-      // gap: "0px 20px",
-      // gridAutoFlow: "column",
-      [theme.breakpoints.down('lg')]: {
+      [theme.breakpoints.up('md')]: {
         columns: '6',
       },
-      [theme.breakpoints.down('md')]: {
-        columns: '2',
+      [theme.breakpoints.up('lg')]: {
+        columns: '8',
+      },
+      [theme.breakpoints.up('xl')]: {
+        columns: '10',
       },
     },
     wrap: {
@@ -36,11 +35,11 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'flex-start',
     },
     cell: {
+      textAlign: 'right',
       padding: theme.spacing('17px', '10px', '11px'),
       lineHeight: 1,
       '&:nth-child(1)': {
         width: '36px',
-        textAlign: 'right',
       },
       '&:nth-child(2)': {
         flexGrow: 1,

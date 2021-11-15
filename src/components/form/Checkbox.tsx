@@ -10,6 +10,7 @@ import { IconCheckbox } from '../icons';
 import { IconCheckboxCircyle } from '../icons';
 import { IconCheckboxUncheckedCircyle } from '../icons';
 import { useCallback } from 'react';
+import { CreateCSSProperties } from '@material-ui/core/styles/withStyles';
 
 type StyleProps = {
   invalid?: boolean;
@@ -17,13 +18,22 @@ type StyleProps = {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {
+      marginRight: '20px',
+      marginTop: '-9px',
+      marginBottom: '-9px',
+    },
     label: ({ invalid = false }: StyleProps) => {
+      let style: CreateCSSProperties<StyleProps> = {
+        whiteSpace: 'nowrap',
+      };
       if (invalid) {
         return {
+          ...style,
           color: theme.palette.error.main,
         };
       }
-      return {};
+      return style;
     },
   })
 );
@@ -60,7 +70,7 @@ export function Checkbox<
   } = props;
 
   const {
-    field: { ref, value: checked, onChange, ...inputProps },
+    field: { ref, value: checked = false, onChange, ...inputProps },
     fieldState: { invalid },
   } = useController<TFieldValues, TName>({
     control,
@@ -85,10 +95,12 @@ export function Checkbox<
     <FormControlLabel
       label={label}
       classes={{
+        root: classes.root,
         label: classes.label,
       }}
       control={
         <MuiCheckbox
+          disabled={disabled}
           checked={checked}
           checkedIcon={isCircle ? <IconCheckboxCircyle /> : CheckedIcon}
           icon={isCircle ? <IconCheckboxUncheckedCircyle disabled={disabled} /> : UncheckedIcon}

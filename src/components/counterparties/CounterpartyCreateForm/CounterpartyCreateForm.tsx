@@ -1,16 +1,21 @@
-import { makeStyles, createStyles, Button, Theme, Paper, Grid } from '@material-ui/core';
-import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@material-ui/core';
+import { makeStyles, createStyles, Button, Theme, Paper } from '@material-ui/core';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import { useCounterpartyCreateForm } from './useCounterpartyCreateForm';
-import { Checkbox } from 'components/form';
-import { SearchAutocomplete } from './SearchAutocomplete';
-import { useWatch } from 'react-hook-form';
-import { useCallback, useEffect } from 'react';
+import { GeneralInformationFields } from './GeneralInformationFields';
+import { ContactFields } from '../CounterpartyEditForm/ContactFields';
+import { AdditionalDataFields } from '../CounterpartyEditForm/AdditionalDataFields';
+import { SignersFields } from '../CounterpartyEditForm/SignersFields/SignersFields';
+import { RequisitesFields } from '../CounterpartyEditForm/RequisitesFields';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
-    form: {
+    panels: {
       marginBottom: '75px',
     },
     actions: {
@@ -19,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       display: 'flex',
       justifyContent: 'flex-start',
-      width: 'calc(100% - 230px)',
+      width: 'calc(100% - 238px)',
       padding: theme.spacing('20px', '32px'),
       bottom: 0,
       position: 'fixed',
@@ -34,122 +39,74 @@ const useStyles = makeStyles((theme: Theme) =>
 export const CounterpartyCreateForm = () => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { onSubmit, isSubmitting, control, clearErrors, isValid } = useCounterpartyCreateForm();
-
-  const { isDealer, isInsuranceCompany, isLessee, isLessor } = useWatch({
-    control,
-  });
-
-  useEffect(() => {
-    if (isDealer || isInsuranceCompany || isLessee || isLessor) {
-      if (!isValid) {
-        clearErrors(['isDealer', 'isInsuranceCompany', 'isLessee', 'isLessor']);
-      }
-    }
-  }, [isDealer, isInsuranceCompany, isLessee, isLessor, isValid, clearErrors]);
-
-  const required = t('Required');
-
-  const validateIsLessee = useCallback(
-    (value: boolean) => {
-      if (!value && !isDealer && !isInsuranceCompany && !isLessor) {
-        return required;
-      }
-      if (value && isLessor) {
-        return required;
-      }
-      return true;
-    },
-    [isDealer, isInsuranceCompany, isLessor, required]
-  );
-
-  const validateIsDealer = useCallback(
-    (value: boolean) => {
-      if (!value && !isLessee && !isInsuranceCompany && !isLessor) {
-        return required;
-      }
-      return true;
-    },
-    [isLessee, isInsuranceCompany, isLessor, required]
-  );
-
-  const validateIsLessor = useCallback(
-    (value: boolean) => {
-      if (!value && !isLessee && !isInsuranceCompany && !isDealer) {
-        return required;
-      }
-      if (value && isLessee) {
-        return required;
-      }
-      return true;
-    },
-    [isLessee, isInsuranceCompany, isDealer, required]
-  );
-
-  const validateIsInsuranceCompany = useCallback(
-    (value: boolean) => {
-      if (!value && !isLessee && !isLessor && !isDealer) {
-        return required;
-      }
-      return true;
-    },
-    [isLessee, isLessor, isDealer, required]
-  );
+  const { onSubmit, control, setValue, clearErrors, reset, ...rest } = useCounterpartyCreateForm();
+  const { isSubmitting, isValid } = rest;
 
   return (
     <form className={classes.root}>
-      <Accordion defaultExpanded={true} disabled className={classes.form}>
-        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
-          <Typography variant="subtitle1">{t('GeneralInfo')}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Grid container>
-            <Grid container item spacing={2}>
-              <Grid item>
-                <Checkbox
-                  name="isLessee"
-                  label={t('Lessee')}
-                  control={control}
-                  rules={{
-                    validate: validateIsLessee,
-                  }}
-                />
-              </Grid>
-              <Grid item>
-                <Checkbox
-                  name="isDealer"
-                  label={t('Dealer')}
-                  control={control}
-                  rules={{
-                    validate: validateIsDealer,
-                  }}
-                />
-              </Grid>
-              <Grid item>
-                <Checkbox
-                  name="isInsuranceCompany"
-                  label={t('InsuranceCompany')}
-                  control={control}
-                  rules={{
-                    validate: validateIsInsuranceCompany,
-                  }}
-                />
-              </Grid>
-              <Grid item>
-                <Checkbox
-                  name="isLessor"
-                  label={t('Lessor')}
-                  control={control}
-                  rules={{
-                    validate: validateIsLessor,
-                  }}
-                />
-              </Grid>
-            </Grid>
-            <SearchAutocomplete control={control} />
-          </Grid>
-        </AccordionDetails>
-      </Accordion>
+      <div className={classes.panels}>
+        <Accordion defaultExpanded={true} disabled>
+          <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+            <Typography variant="subtitle1">{t('GeneralInfo')}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <GeneralInformationFields
+              control={control}
+              reset={reset}
+              clearErrors={clearErrors}
+              isValid={isValid}
+            />
+          </AccordionDetails>
+        </Accordion>
+        <Accordion defaultExpanded={true}>
+          <AccordionSummary
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            expandIcon={<ExpandMoreIcon />}
+          >
+            <Typography variant="subtitle1">{t('Contacts')}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <ContactFields control={control} setValue={setValue} />
+          </AccordionDetails>
+        </Accordion>
+        <Accordion defaultExpanded={true}>
+          <AccordionSummary
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            expandIcon={<ExpandMoreIcon />}
+          >
+            <Typography variant="subtitle1">{t('Signers')}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <SignersFields control={control} />
+          </AccordionDetails>
+        </Accordion>
+        <Accordion defaultExpanded={true}>
+          <AccordionSummary
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            expandIcon={<ExpandMoreIcon />}
+          >
+            <Typography variant="subtitle1">{t('Requisites')}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <RequisitesFields control={control} setValue={setValue} />
+          </AccordionDetails>
+        </Accordion>
+        <Accordion defaultExpanded={true}>
+          <AccordionSummary
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            expandIcon={<ExpandMoreIcon />}
+          >
+            <Typography variant="subtitle1">{t('Additional data')}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <AdditionalDataFields control={control} />
+          </AccordionDetails>
+        </Accordion>
+      </div>
       <Paper square className={classes.actions}>
         <div className={classes.actionButton}>
           <Button

@@ -1,27 +1,10 @@
 import { useCallback } from 'react';
-import {
-  createStyles,
-  makeStyles,
-  TextField,
-  TextFieldProps as MuiTextFieldProps,
-  Theme,
-} from '@material-ui/core';
+import { TextField, TextFieldProps as MuiTextFieldProps } from '@material-ui/core';
 import MuiAutocomplete, {
   AutocompleteProps as MuiAutocompleteProps,
   AutocompleteRenderInputParams,
 } from '@material-ui/lab/Autocomplete';
-import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import { useTranslation } from 'react-i18next';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      '& .MuiInputBase-root': {
-        paddingRight: '0 !important',
-      },
-    },
-  })
-);
 
 export type AutocompleteProps<
   TOption = string,
@@ -37,7 +20,6 @@ type TextFieldProps = Pick<
 >;
 
 const useAutocompleteTextField = (props: TextFieldProps) => {
-  const classes = useStyles();
   const renderInput = useCallback(
     (params: AutocompleteRenderInputParams): React.ReactNode => {
       const { inputProps, inputComponent } = props.InputProps ?? {};
@@ -50,9 +32,9 @@ const useAutocompleteTextField = (props: TextFieldProps) => {
       if (inputComponent) {
         inProps.inputComponent = inputComponent;
       }
-      return <TextField {...params} {...props} InputProps={inProps} className={classes.root} />;
+      return <TextField {...params} {...props} InputProps={inProps} />;
     },
-    [props, classes.root]
+    [props]
   );
 
   return { renderInput };
@@ -71,7 +53,7 @@ export function Autocomplete<
     closeText = t('Close'),
     clearText = t('Clear'),
     autoHighlight = true,
-    popupIcon = <KeyboardArrowDownRoundedIcon color="primary" />,
+    popupIcon = '',
     label,
     variant = 'outlined',
     size = 'small',

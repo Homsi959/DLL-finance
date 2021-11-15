@@ -13,6 +13,7 @@ import {
   GroupsPage,
   CalculatorPage,
   CounterpartiesPage,
+  NomenclaturesPage,
 } from './pages';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
@@ -36,6 +37,7 @@ const PagesWithLanguage = () => {
         <PrivateRoute path="/groups" component={GroupsPage} role="admin" />
         <PrivateRoute path="/calculator" component={CalculatorPage} />
         <PrivateRoute path="/counterparties" component={CounterpartiesPage} />
+        <PrivateRoute path="/dictionaries" component={NomenclaturesPage} />
         <PrivateRoute exact path="/" component={HomePage} />
       </Switch>
     </MuiPickersUtilsProvider>

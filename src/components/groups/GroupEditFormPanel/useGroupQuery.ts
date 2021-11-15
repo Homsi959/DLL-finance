@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useQuery } from 'react-query';
+import { GroupUsersViewModel } from 'schema/serverTypes';
 import { useUserAuth } from 'services/authentication';
 import { IDENTITY_CONFIG } from 'services/authentication/AuthenticationConfig';
-import { GroupUsersViewModel } from '../types';
 
 export const useGroupQuery = (id: number) => {
   const { user } = useUserAuth();
@@ -26,16 +26,12 @@ export const useGroupQuery = (id: number) => {
     refetchInterval: false,
   });
 
-  const { data, ...rest } = query;
-
-  const newGroup = {
-    ...data,
-    // @ts-ignore
-    owners: data?.owners[0], //TODO owners [] -> string hack, delete @ts-ignore
-  };
+  const { data: group, ...rest } = query;
 
   return {
     ...rest,
-    group: newGroup,
+    group,
   };
 };
+
+export type UseGroupQueryReturn = ReturnType<typeof useGroupQuery>;

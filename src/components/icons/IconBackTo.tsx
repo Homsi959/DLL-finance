@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       marginLeft: theme.spacing(0),
       marginRight: theme.spacing(0),
-      fill: '#7E8794',
+      fill: theme.palette.textGrey3.main,
     },
   })
 );

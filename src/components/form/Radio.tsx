@@ -18,11 +18,8 @@ const styles = (theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
-      marginTop: '9px',
+      marginTop: '-6px',
       paddingLeft: theme.spacing(1),
-      '& .MuiTypography-body1': {
-        fontSize: '0.9em',
-      },
       '& .Mui-checked': {
         '& .MuiSvgIcon-root': {
           fill: theme.palette.primary.main,
@@ -117,6 +114,7 @@ function StyledRadio<
     </FormControl>
   );
 }
+
 export const Radio = withStyles(styles, { withTheme: true })(StyledRadio) as <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>

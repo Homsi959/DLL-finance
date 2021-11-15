@@ -1,25 +1,22 @@
 import {
-  Button,
   Card,
   CardContent,
   makeStyles,
   createStyles,
   CardActions,
   Theme,
-  Grid,
-  IconButton,
   CardHeader,
   MenuItem,
+  Box,
 } from '@material-ui/core';
+import { Grid } from 'components/Grid';
 import { Alert } from '@material-ui/lab';
 import { Field } from 'react-final-form';
-import { AutoFocusedForm, SelectField, TextField, useRequired } from 'components';
+import { AutoFocusedForm, Button, SelectField, TextField, useRequired } from 'components';
 import { useCreateForm } from './useCreateForm';
 import { useTranslation } from 'react-i18next';
 import { UserSelectField } from '../UserSelectField';
 import { palette } from '../../../theme';
-import { useGoBack } from '../../../hooks';
-import { useCallback } from 'react';
 import { useUserSearchQuery } from '../useUserSearchQuery';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -30,10 +27,22 @@ const useStyles = makeStyles((theme: Theme) =>
       border: 'none',
       boxShadow: 'none',
     },
+    cardContent: {
+      paddingTop: 20,
+      paddingRight: 20,
+      paddingBottom: 20,
+      paddingLeft: 20,
+    },
+    headerWrapper: {
+      marginBottom: theme.spacing(0.5),
+    },
     header: {
       fontWeight: 'bolder',
       textAlign: 'left',
-      paddingTop: 0,
+      paddingTop: theme.spacing(5.5),
+      paddingRight: 20,
+      paddingBottom: 20,
+      paddingLeft: 20,
     },
     actions: {
       justifyContent: 'flex-start',
@@ -41,9 +50,7 @@ const useStyles = makeStyles((theme: Theme) =>
     cancelButton: {
       color: theme.palette.error.main,
     },
-    item: {
-      marginBottom: theme.spacing(2),
-    },
+    item: {},
     GridCloseButton: {
       backgroundColor: palette.secondary.light,
     },
@@ -65,13 +72,9 @@ const useStyles = makeStyles((theme: Theme) =>
 export const GroupCreateForm = () => {
   const classes = useStyles();
 
-  const { onSubmit, initialValues, isLoading } = useCreateForm();
+  const { onSubmit, initialValues, isLoading, options } = useCreateForm();
   const { users } = useUserSearchQuery('', []);
   const { required } = useRequired();
-  const goBack = useGoBack();
-  const handleOnClose = useCallback(() => {
-    goBack('/users/groups');
-  }, [goBack]);
 
   const { t } = useTranslation();
 
@@ -86,15 +89,12 @@ export const GroupCreateForm = () => {
         return (
           <form onSubmit={handleSubmit}>
             <Card className={classes.root}>
-              <Grid container justify="flex-end" className={classes.GridCloseButton}>
-                <IconButton className={classes.closeButton} onClick={handleOnClose}>
-                  <img src="/img/icons/close-icon.svg" alt="" />
-                </IconButton>
-              </Grid>
-              <CardHeader className={classes.header} title={t('Buttons.NewGroup')} />
-              <CardContent>
-                <Grid container spacing={4}>
-                  <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
+              <Box className={classes.headerWrapper}>
+                <CardHeader className={classes.header} title={t('Buttons.NewGroup')} />
+              </Box>
+              <CardContent className={classes.cardContent}>
+                <Grid container rowSpacing={2.5} columnSpacing={0}>
+                  <Grid item xs={24} className={classes.item}>
                     <Field
                       name="name"
                       label={t('Name')}
@@ -102,30 +102,46 @@ export const GroupCreateForm = () => {
                       validate={required}
                     />
                   </Grid>
-                </Grid>
-                <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
-                  <Field
-                    label={t('Owner')}
-                    name="owners"
-                    validate={required}
-                    component={SelectField}
-                  >
-                    {users.map((user) => {
-                      return (
-                        <MenuItem key={user.id} value={user.id}>
-                          {user.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Field>
-                </Grid>
-                <Grid item lg={12} md={12} xl={12} xs={12} className={classes.item}>
-                  <Field
-                    label={t('Members')}
-                    name="users"
-                    validate={required}
-                    component={UserSelectField}
-                  />
+                  <Grid item xs={24} className={classes.item}>
+                    <Field
+                      label={t('Lessor')}
+                      name="lessorInn"
+                      component={SelectField}
+                      validate={required}
+                    >
+                      {options.map((option) => {
+                        return (
+                          <MenuItem key={option.inn} value={option.inn}>
+                            {option.name}&nbsp;{option.inn}
+                          </MenuItem>
+                        );
+                      })}
+                    </Field>
+                  </Grid>
+                  <Grid item xs={24} className={classes.item}>
+                    <Field
+                      label={t('Owner')}
+                      name="owner"
+                      validate={required}
+                      component={SelectField}
+                    >
+                      {users.map((user) => {
+                        return (
+                          <MenuItem key={user.id} value={user.id}>
+                            {user.name}
+                          </MenuItem>
+                        );
+                      })}
+                    </Field>
+                  </Grid>
+                  <Grid item xs={24} className={classes.item}>
+                    <Field
+                      label={t('Members')}
+                      name="users"
+                      validate={required}
+                      component={UserSelectField}
+                    />
+                  </Grid>
                 </Grid>
                 <div className={classes.required}>Все поля обязательны</div>
                 {submitError && <Alert severity="error">{submitError}</Alert>}

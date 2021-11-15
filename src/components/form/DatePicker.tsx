@@ -90,7 +90,6 @@ const calendarTheme = createMuiTheme({
         fontSize: '12px',
       },
     },
-
     MuiPickersYear: {
       root: {
         '&:hover': {
@@ -99,6 +98,13 @@ const calendarTheme = createMuiTheme({
       },
       yearSelected: {
         color: palette.common.white,
+      },
+    },
+    MuiInputLabel: {
+      outlined: {
+        '&$shrink': {
+          transform: 'translate(9px, -6px) scale(0.75)',
+        },
       },
     },
   },

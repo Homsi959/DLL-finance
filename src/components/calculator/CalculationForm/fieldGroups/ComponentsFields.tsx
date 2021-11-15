@@ -1,12 +1,5 @@
-import {
-  Grid,
-  MenuItem,
-  makeStyles,
-  createStyles,
-  Typography,
-  Theme,
-  Divider,
-} from '@material-ui/core';
+import { MenuItem, makeStyles, createStyles, Typography, Theme, Divider } from '@material-ui/core';
+import { Grid } from 'components/Grid';
 import { Field } from 'react-final-form';
 import { OnChange } from 'react-final-form-listeners';
 import { SelectField, TextField, RadioField, SwitchField, CheckboxField } from 'components';
@@ -24,71 +17,29 @@ import {
   InsuranceFranchise,
 } from 'schema';
 import { FormFieldsProps } from './types';
-import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
+import { FixedTypeInput } from '../../AmountField/FixedTypeInput';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    auditGridItem: {
-      maxWidth: '180px',
-      paddingTop: theme.spacing(0),
-    },
-    rizeInPrizeLabel: {
-      marginRight: theme.spacing(1),
+    wrapper: {
+      width: '100%',
     },
     divider: {
-      marginTop: theme.spacing(1.5),
-      marginBottom: theme.spacing(1.5),
+      marginBottom: theme.spacing(2.5),
     },
-    switchField: {
-      minWidth: '210px',
-      '& .MuiTypography-root': {
-        paddingTop: theme.spacing(0),
-      },
+    icon: {
+      borderLeft: '1px solid' + theme.palette.grey3.main,
+      width: theme.spacing(4),
+      height: theme.spacing(4),
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
-    hasPropertyTax: {
-      maxWidth: '200px',
-      minWidth: '200px',
-    },
-    insuranceFranchise: {
-      [theme.breakpoints.between(1200, 1440)]: {
-        maxWidth: '160px',
-      },
-    },
-    hasInsurance: {
-      minWidth: '170px',
-      '& .MuiTypography-root': {
-        paddingTop: theme.spacing(0),
-      },
-    },
-    insuranceCompany: {
-      minWidth: '290px',
-    },
-    telematics: {
-      maxWidth: '160px',
-    },
-    agentFeeRefund: {
-      [theme.breakpoints.between(1200, 1280)]: {
-        maxWidth: '310px',
-      },
-    },
-    itemDiscount: {
-      minWidth: '180px',
-    },
-    subsidyVendor: {
-      minWidth: '200px',
-    },
-    calculationMethodType: {
-      minWidth: '350px',
-    },
-    irr: {
-      maxWidth: '160px',
-    },
-    balanceHolder: {
-      marginTop: theme.spacing(-0.2),
-    },
-    marginTop: {
-      marginTop: theme.spacing(1),
+    checkTitle: {
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center',
     },
   })
 );
@@ -100,9 +51,9 @@ export const ComponentsFields = (props: FormFieldsProps) => {
   const { t } = useTranslation();
 
   return (
-    <Grid container spacing={0}>
-      <Grid container item xs={12} spacing={2}>
-        <Grid className={classes.balanceHolder} item lg={2} md={3} xs={12}>
+    <div className={classes.wrapper}>
+      <Grid container columnSpacing={2} rowSpacing={2.5}>
+        <Grid item md="auto" xs={24}>
           <Field
             name="balanceHolder"
             label={t('BalanceHolder')}
@@ -114,24 +65,26 @@ export const ComponentsFields = (props: FormFieldsProps) => {
             ]}
           />
         </Grid>
-        <Grid item md={4} xs={12} style={{ maxWidth: '270px' }}>
+        <Grid item md="auto" xs="auto">
           <Field
             name="hasPropertyTax"
             label={t('PropertyTax')}
             type="checkbox"
             component={SwitchField}
+            titleWrap={false}
           />
         </Grid>
-        <Grid className={clsx(classes.marginTop, classes.hasPropertyTax)} item md={2} xs={12}>
+        <Grid item xl={2} lg={4} md={6} xs={23}>
           <Field name="hasPropertyTax" type="checkbox">
             {({ input }) => {
               return (
-                <AmountField
+                <FixedTypeInput
                   name="propertyTax"
-                  label={`${t('PropertyTax')}, %`}
                   disabled={!input.checked}
                   required={input.checked}
                   amountMode={AmountType.Percents}
+                  icon="%"
+                  inputProps={{ maxLength: 3 }}
                 />
               );
             }}
@@ -150,9 +103,11 @@ export const ComponentsFields = (props: FormFieldsProps) => {
           </OnChange>
         </Grid>
       </Grid>
+
       <Divider light className={classes.divider} />
-      <Grid container item xs={12} spacing={2}>
-        <Grid className={classes.hasInsurance} item md={2} xs={12}>
+
+      <Grid container columnSpacing={2} rowSpacing={2.5}>
+        <Grid item md="auto" xs={24}>
           <Field
             name="hasInsurance"
             label={t('Insurance')}
@@ -165,7 +120,7 @@ export const ComponentsFields = (props: FormFieldsProps) => {
             const disabled = input.value !== true;
             return (
               <>
-                <Grid className={classes.insuranceCompany} item lg={4} md={3} xs={12}>
+                <Grid item xl={6} lg={9} md={7} xs={24}>
                   <CounterpartyAutocompleteField
                     label={t('InsuranceCompany')}
                     counterpartyType={CounterpartyType.insuranceCompany}
@@ -173,7 +128,7 @@ export const ComponentsFields = (props: FormFieldsProps) => {
                     setFirstOptionAsDefault={!disabled}
                   />
                 </Grid>
-                <Grid item md={2} xs={12}>
+                <Grid item xl={3} md={5} xs={24}>
                   <AmountField
                     name="insuranceRatePercents"
                     label={`${t('InsuranceRate')}, %`}
@@ -181,7 +136,7 @@ export const ComponentsFields = (props: FormFieldsProps) => {
                     disabled={disabled}
                   />
                 </Grid>
-                <Grid className={classes.insuranceFranchise} item lg={2} md={3} xs={12}>
+                <Grid item xl={3} lg={4} md={7} xs={24}>
                   <Field
                     name="insuranceFranchise"
                     label={t('Franchise')}
@@ -199,12 +154,13 @@ export const ComponentsFields = (props: FormFieldsProps) => {
                     </MenuItem>
                   </Field>
                 </Grid>
-                <Grid item md={2} xs={12}>
-                  <AmountField
+                <Grid item xl={4} lg={5} md={4} xs={24}>
+                  <FixedTypeInput
                     name="franchiseAmount"
                     label={t('Amount')}
-                    amountMode={AmountType.Money}
                     disabled={disabled}
+                    amountMode={AmountType.Money}
+                    icon="$"
                   />
                 </Grid>
               </>
@@ -212,12 +168,14 @@ export const ComponentsFields = (props: FormFieldsProps) => {
           }}
         </Field>
       </Grid>
+
       <Divider light className={classes.divider} />
-      <Grid container item xs={12} spacing={2}>
-        <Grid className={classes.itemDiscount} item md={2} xs={12}>
+
+      <Grid container columnSpacing={2} rowSpacing={2.5}>
+        <Grid item xl={3} lg={5} md={6} xs={24}>
           <AmountField name="itemDiscount" label={t('Discount')} useSaleCurrency={true} />
         </Grid>
-        <Grid className={classes.subsidyVendor} item md={2} xs={12}>
+        <Grid item xl={3} lg={5} md={6} xs={24}>
           <Field<CalculationMethodType> name="calculationMethodType">
             {({ input }) => {
               const disabled = input.value !== CalculationMethodType.Forward;
@@ -232,15 +190,16 @@ export const ComponentsFields = (props: FormFieldsProps) => {
             }}
           </Field>
         </Grid>
-        <Grid className={classes.switchField} item lg={2} md={3} xs={12}>
+        <Grid item md="auto" xs={24}>
           <Field
             name="hasVehicleRegistration"
             label={t('VehicleRegistration')}
             type="checkbox"
             component={SwitchField}
+            titleWrap={false}
           />
         </Grid>
-        <Grid className={classes.telematics} item md={3} xs={12}>
+        <Grid item xl={4} lg={6} md={8} xs={24}>
           <Field name="telematics" label={t('Telematics')} component={SelectField}>
             <MenuItem value={Telematics.Caesar}>{t('TelematicsType.Caesar')}</MenuItem>
             <MenuItem value={Telematics.XPro}>{t('TelematicsType.XPro')}</MenuItem>
@@ -264,15 +223,17 @@ export const ComponentsFields = (props: FormFieldsProps) => {
           </OnChange>
         </Grid>
       </Grid>
+
       <Divider light className={classes.divider} />
-      <Grid container item xs={12} spacing={2}>
-        <Grid item lg={4} md={4} xs={12}>
+
+      <Grid container columnSpacing={2} rowSpacing={2.5}>
+        <Grid item xl={5} lg={7} md={9} xs={24}>
           <Field name="agent" label={t('Agent')} component={TextField} disabled />
         </Grid>
-        <Grid item lg={4} md={4} xs={12}>
+        <Grid item xl={4} lg={5} md={7} xs={24}>
           <AmountField name="agentFee" label={t('AgentFee')} />
         </Grid>
-        <Grid item lg={4} md={4} xs={12}>
+        <Grid item xl={4} lg={5} md={8} xs={24}>
           <Field
             name="agentFeeRecipient"
             label={t('AgentFeeRecipient')}
@@ -284,21 +245,23 @@ export const ComponentsFields = (props: FormFieldsProps) => {
             </MenuItem>
           </Field>
         </Grid>
-        <Grid className={classes.agentFeeRefund} item lg={4} md={6} xs={12}>
+        <Grid item xl={5} lg={7} md={9} xs={24}>
           <Field
             name={t('AgentFeeRefund')}
             label="Способ возмещения агентской комиссии"
             component={SelectField}
             disabled
-          ></Field>
+          />
         </Grid>
       </Grid>
+
       <Divider light className={classes.divider} />
-      <Grid container item xs={12} spacing={2}>
-        <Grid item md={4} xs={12} className={classes.auditGridItem}>
+
+      <Grid container columnSpacing={2} rowSpacing={2.5}>
+        <Grid item md="auto" xs={24}>
           <Field name="hasAudit" label={t('Audit')} type="checkbox" component={SwitchField} />
         </Grid>
-        <Grid item md={4} xs={12} className={classes.auditGridItem}>
+        <Grid item md="auto" xs={24}>
           <Field
             name="auditType"
             label={t('Type')}
@@ -310,7 +273,7 @@ export const ComponentsFields = (props: FormFieldsProps) => {
             ]}
           />
         </Grid>
-        <Grid item md={4} xs={12} className={classes.auditGridItem}>
+        <Grid item xl={2} lg={3} md={4} xs={24}>
           <Field name="hasAudit" type="checkbox">
             {({ input }) => {
               const { checked } = input;
@@ -333,12 +296,16 @@ export const ComponentsFields = (props: FormFieldsProps) => {
           </Field>
         </Grid>
       </Grid>
+
       <Divider light className={classes.divider} />
-      <Grid container item xs={12} spacing={2}>
-        <Grid item md={12} xs={12}>
-          <Typography className={classes.rizeInPrizeLabel} component="span">
+
+      <Grid container columnSpacing={2} rowSpacing={2.5}>
+        <Grid item xs="auto">
+          <Typography component="span" noWrap={true} className={classes.checkTitle}>
             {t('ConsiderIinPercentsRiseInPrice')}
           </Typography>
+        </Grid>
+        <Grid item xs={23}>
           <Field
             name="hasFeePriceRule"
             label={t('Commission')}
@@ -365,9 +332,11 @@ export const ComponentsFields = (props: FormFieldsProps) => {
           />
         </Grid>
       </Grid>
+
       <Divider light className={classes.divider} />
-      <Grid container item xs={12} spacing={2}>
-        <Grid className={classes.calculationMethodType} item md={4} xs={12}>
+
+      <Grid container columnSpacing={2} rowSpacing={2.5}>
+        <Grid item xl={5} lg={6} md={8} xs={24}>
           <Field
             name="calculationMethodType"
             label={t('CalculationMethod')}
@@ -391,20 +360,22 @@ export const ComponentsFields = (props: FormFieldsProps) => {
             const rizePriceDisabled = value !== CalculationMethodType.Reverse;
             return (
               <>
-                <Grid className={classes.irr} item md={3} xs={12}>
-                  <AmountField
+                <Grid item xl={3} lg={4} md={5} xs={24}>
+                  <FixedTypeInput
                     name="irrPercents"
                     label={t('IRR')}
                     disabled={irrDisabled}
                     amountMode={AmountType.Percents}
+                    icon="%"
                   />
                 </Grid>
-                <Grid item md={2} xs={12}>
-                  <AmountField
+                <Grid item xl={3} lg={4} md={5} xs={24}>
+                  <FixedTypeInput
                     name="rizeInPricePercents"
                     label={t('RizeInPrice')}
                     disabled={rizePriceDisabled}
                     amountMode={AmountType.Percents}
+                    icon="%"
                   />
                 </Grid>
               </>
@@ -412,6 +383,6 @@ export const ComponentsFields = (props: FormFieldsProps) => {
           }}
         </Field>
       </Grid>
-    </Grid>
+    </div>
   );
 };

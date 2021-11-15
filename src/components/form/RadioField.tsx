@@ -12,10 +12,8 @@ const styles = (theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
-      paddingLeft: theme.spacing(1),
-      '& .MuiTypography-body1': {
-        fontSize: '0.9em',
-      },
+      position: 'relative',
+      paddingTop: 4,
       '& .Mui-checked': {
         '& .MuiSvgIcon-root': {
           fill: palette.primary.main,
@@ -23,6 +21,9 @@ const styles = (theme: Theme) =>
       },
       '& .MuiFormControlLabel-root': {
         marginRight: theme.spacing(1.3),
+        '&:last-child': {
+          marginRight: 0,
+        },
       },
       '& .MuiButtonBase-root': {
         padding: theme.spacing(1),
@@ -32,10 +33,27 @@ const styles = (theme: Theme) =>
       },
       '& .MuiFormLabel-root': {
         fontSize: '9px',
+        display: 'block',
+        position: 'absolute',
+        top: -6,
       },
     },
-    group: {},
+    group: {
+      flexWrap: 'nowrap',
+    },
     option: {
+      height: '30px',
+      '& .MuiRadio-root': {
+        paddingRight: '8px',
+      },
+      '& .MuiFormControlLabel-label': {
+        fontSize: '12px',
+        marginLeft: '-4px',
+        color: theme.palette.textGrey3.main,
+      },
+      '& .Mui-checked + .MuiFormControlLabel-label': {
+        color: theme.palette.textGrey1.main,
+      },
       '&:hover': {
         '& svg': {
           fill: theme.palette.primary.main,
@@ -80,7 +98,7 @@ export const RadioField = withStyles(styles)((props: RadioFieldProps) => {
           );
         })}
       </RadioGroup>
-      <FormHelperText className={classes?.error}>{helperText}</FormHelperText>
+      {helperText && <FormHelperText className={classes?.error}>{helperText}</FormHelperText>}
     </FormControl>
   );
 });

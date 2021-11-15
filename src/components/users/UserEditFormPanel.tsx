@@ -1,25 +1,16 @@
-import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import { useUserQuery } from './useUserQuery';
 import { UserEditForm, UserEditFormSkeleton } from './UserEditForm';
-import { useGoBack } from 'hooks';
+import { Sidebar } from 'components/Sidebar';
 
-export const UserEditFormPanel = () => {
-  const { id } = useParams<{ id: string }>();
-  const { user, isLoading } = useUserQuery(id);
+export const UserEditFormPanel = ({ id }: { id: string }) => {
+  const { id: userId } = useParams<{ id: string }>();
 
-  const goBack = useGoBack();
-
-  const handleOnClose = useCallback(() => {
-    goBack('/users');
-  }, [goBack]);
-
-  const handleOnOpen = useCallback(() => {}, []);
+  const { user, isLoading } = useUserQuery(id || userId);
 
   return (
-    <SwipeableDrawer anchor="right" open={true} onClose={handleOnClose} onOpen={handleOnOpen}>
+    <Sidebar url="/users">
       {isLoading || user === undefined ? <UserEditFormSkeleton /> : <UserEditForm user={user} />}
-    </SwipeableDrawer>
+    </Sidebar>
   );
 };
